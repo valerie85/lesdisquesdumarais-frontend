@@ -4,11 +4,16 @@ import Link from 'next/link';
 
 function Article(props) {
 
-    let ImgSrc = "";   
+    let linkArticle = "/article?id="+props.release_id;
+
+    let ImgSrc = "";  
+    let ImgAlt = "";  
     if(props.pictures.length>0) {
         ImgSrc = props.pictures[0];
+        ImgAlt = styles.title;
     } else {
         ImgSrc = "/no_img.jpg";
+        ImgAlt = "Image indisponible";
     }
 
     const displayCondition = (arg) => {
@@ -28,18 +33,15 @@ function Article(props) {
                 return "";
         }
     }
-    /*const pattern = /\(([^()]*)\)/g;
-    let conditionSleeve = props.sleeve_condition.match(pattern);
-    let conditionMedia = props.media_condition.match(pattern);*/
     let conditionSleeve = displayCondition(props.sleeve_condition);
     let conditionMedia = displayCondition(props.media_condition);
 
     return (
         <div className={styles.card}>
-            <Link href="/">
+            <Link href={linkArticle}>
             <div className={styles.box}>
                 <div className={styles.image}>
-                    <Image src={ImgSrc} alt="Image indisponible" width={300} height={300} />
+                    <Image src={ImgSrc} alt={ImgAlt} width={300} height={300} />
                 </div>
                 <div className={styles.text}>
                     <div className={styles.artist}>
