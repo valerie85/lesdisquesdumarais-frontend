@@ -1,0 +1,48 @@
+.articleContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 4rem 0;
+  }
+  
+  .chemin {
+    line-height: 1.15;
+    font-size: 1 rem;
+  }
+
+  .photosContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    min-height: 50vh;
+
+  }
+
+  .detailsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+  }
+
+  .artist {
+    font-size: 3 rem;
+  }
+
+  .title {
+    font-size: 1 rem;
+  }
+ .articleInfos {
+  font-size: 1 rem;
+}
+
+  .title a {
+    color: #0070f3;
+    text-decoration: none;
+  }
+  
+  .title a:hover, .title a:focus, .title a:active {
+    text-decoration: underline;
+  }
