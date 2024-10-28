@@ -2,13 +2,95 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Variables */
+:root {
+  --color-primary: #172A3A;
+  --color-secondary: #09BC8A;
+  --color-tertiary: #508991;
+  --color-light: #FFFFFF;
+  --color-dark: #000000;
+  --font-main: "Radio Canada", sans-serif;
+  --font-title: "Radio Canada Big", sans-serif;
+}
+
+
+/* Layout */
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 16px;
+  font-family: var(--font-main);
 }
 
 * {
   box-sizing: border-box;
 }
+
+.layout {
+  background-color: var(--color-light);;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+.container {
+  display: flex;
+  max-width: 1400px;
+  width: 100%;
+  margin: auto;
+  flex-direction: column;
+  padding: 2rem 0;
+}
+.row {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.articlesList {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+
+/* Titles */
+h1.title {
+  font-size: 2em;
+  font-family: var(--font-title);
+  color: var(--color-secondary);
+}
+h2.title {
+  font-size: 1.5em;
+  font-family: var(--font-title);
+  color: var(--color-tertiary);
+}
+
+
+/* Buttons Styles */
+.btnPrimary {
+  background-color: var(--color-primary);
+  color: var(--color-light);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-size: 1em !important;
+}
+.btnSecondary {
+  background-color: var(--color-secondary);
+  color: var(--color-light);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-size: 1em !important;
+}
+.btnTertiary {
+  background-color: var(--color-tertiary);
+  color: var(--color-light);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-size: 1em !important;
+}
+
