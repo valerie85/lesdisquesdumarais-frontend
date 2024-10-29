@@ -4,6 +4,7 @@ import Image from 'next/image';
 import styles from '../styles/ArticleView.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import Link from "next/link";
 
 import { useRouter } from 'next/router';
 
@@ -36,7 +37,7 @@ function ArticleView() {
       <div className="container mx-auto">
 
         <div className="flex">
-          <p className={styles.breadcrumb}>Chemin</p>
+          <p className={styles.breadcrumb}><Link href="/">Accueil</Link> / </p>
         </div>
 
         <div className='flex flex-wrap'>

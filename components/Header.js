@@ -12,6 +12,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
+import { logout } from '../reducers/user';
+import MenuHeader from '../components/MenuHeader';
 
 function Header() {
   // useState for search
@@ -23,6 +25,8 @@ function Header() {
   if (user.token) {
     router.push("/");
   }
+
+  
 
   return (
     <>
@@ -80,6 +84,7 @@ function Header() {
           </div>
         </div>
         <div className={styles.menu}>
+          {/* <MenuHeader /> */}
           <Link href="/">Nouveaux arrivages</Link> <Link href="/">Genres</Link>
         </div>
       </div>
