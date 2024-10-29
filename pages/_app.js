@@ -2,10 +2,12 @@ import '../styles/globals.css';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import user from '../reducers/user';
+import likes from '../reducers/likes';
+import cart from '../reducers/cart';
 import { configureStore } from '@reduxjs/toolkit';
 
 const store = configureStore({
-  reducer: { user },
+  reducer: { user, likes, cart },
 });
 
 function App({ Component, pageProps }) {
