@@ -95,7 +95,7 @@ function Profile() {
                                     <ul className={styles.itemsList}>
                                         {order.articles.map((item) => (
                                             <li key={item._id} className={styles.item}>
-                                                Nom du produit : {item.title} - Prix : {item.price} €
+                                                Nom du produit : {item.artist} - {item.title} - Prix : {item.price} €
                                             </li>
                                         ))}
                                     </ul>
