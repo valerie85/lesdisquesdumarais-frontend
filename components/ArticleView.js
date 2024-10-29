@@ -32,6 +32,16 @@ function ArticleView() {
       'https://res.cloudinary.com/du1anmu9i/image/upload/f_auto,q_auto/yfupk1br0lbwakirdflf'
     ],
   };
+  
+
+  /*useEffect(() => {
+    fetch(`http://localhost:3000/byrelease:`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setArticlesData(data.allArticles.filter((data, i) => i > 0));
+      });
+  }, []);*/
 
   return (
     <div className={styles.articleContainer} >
