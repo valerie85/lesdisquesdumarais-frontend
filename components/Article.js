@@ -17,7 +17,6 @@ function Article(props) {
     }
 
     const displayCondition = (arg) => {
-        console.log(arg);
         switch (arg) {
             case 'Mint (M)':
                 return "M";

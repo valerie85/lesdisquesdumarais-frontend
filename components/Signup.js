@@ -5,7 +5,7 @@ import { login } from '../reducers/user';
 import Image from 'next/image';
 import styles from '../styles/SignUp.module.css';
 
-function SignUp() {
+function Signup() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
 
@@ -28,6 +28,7 @@ function SignUp() {
     }).then(response => response.json())
       .then(data => {
         data.result && dispatch(login({ token: data.token, lastName, email, firstName }));
+        console.log("L'inscription a réussi")
       });
   };
 
@@ -36,12 +37,12 @@ function SignUp() {
       <Image src="/logo.webp" alt="Logo" width={50} height={50} />
       <h3 className={styles.title}>Inscription</h3>
       <input type="text" className={styles.input} onChange={(e) => setFirstName(e.target.value)} value={firstName} placeholder="Prénom" />
-      <input type="text" className={styles.input} onChange={(e) => setLastname(e.target.value)} value={lastName} placeholder="Nom" />
+      <input type="text" className={styles.input} onChange={(e) => setLastName(e.target.value)} value={lastName} placeholder="Nom" />
       <input type="text" className={styles.input} onChange={(e) => setEmail(e.target.value)} value={email} placeholder="Email" />
       <input type="password" className={styles.input} onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Mot de Passe" />
-      <button className={styles.button} onClick={() => handleSubmit()}>Sign up</button>
+      <button className={styles.button} onClick={() => handleSubmit()}>Inscription</button>
     </div>
   );
 }
 
-export default SignUp;
+export default Signup;
