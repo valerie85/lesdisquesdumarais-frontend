@@ -25,26 +25,26 @@ useEffect(() => {
   });
 
   return (
-    <div>
+    <>
       <main className={styles.main}>
 
-        <div className="row">
+        <div className="container">
           <h1 className="title">
             Nouveaux arrivages       
           </h1>     
         </div>
 
-        <div className="row">
+        <div className="container">
           <h2 className="title">
             Liste des articles
           </h2>
-          <div className='articlesList'>
+          <div className='flex flex-wrap'>
             {articles}
           </div>          
         </div>
         
       </main>
-    </div>
+    </>
   );
 }
 
