@@ -9,10 +9,12 @@ export const likesSlice = createSlice({
   initialState,
   reducers: {
     addLike:(state,action)=> {
+      console.log('action payload add', action.payload);
         state.value.push(action.payload);
     },
     removeLike:(state,action)=> {
-        state.value=state.value.filter(item=>item._id !== action.payload._id)
+      console.log('action payload remove',action.payload);
+        state.value=state.value.filter(item=>item !== action.payload)
     },
   },
 });
