@@ -94,3 +94,24 @@ h3.title {
   font-size: 1em !important;
 }
 
+/* Ant Menu */
+.ant-menu {
+  background: transparent !important;
+  width: -webkit-fill-available;
+  justify-content: center;
+  align-items: center;
+}
+.ant-menu > ul > li {
+  
+  margin: 0 30px;
+  font-family: var(--font-main);
+  transition: all 0.2s ease-in-out;
+}
+.ant-menu .ant-menu-title-content {
+  text-transform: uppercase !important;
+  color: var(--color-light) !important;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  font-family: var(--font-title);
+}
+
