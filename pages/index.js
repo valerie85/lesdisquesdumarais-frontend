@@ -6,7 +6,7 @@ function Index() {
   return (
     <div className="layout">
       <Header />
-      <div className="container">
+      <div className="content">
         <Home />
       </div>
       <Footer />
