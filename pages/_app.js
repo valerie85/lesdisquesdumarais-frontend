@@ -1,4 +1,6 @@
 import '../styles/globals.css';
+// import "@ant-design/cssinjs";
+// import 'antd/dist/antd.css';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import user from '../reducers/user';
