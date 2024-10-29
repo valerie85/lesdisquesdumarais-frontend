@@ -12,7 +12,7 @@ export const likesSlice = createSlice({
         state.value.push(action.payload);
     },
     removeLike:(state,action)=> {
-        state.value=state.value.filter(item=>item._id !== action.payload._id)
+        state.value=state.value.filter(item=>item !== action.payload)
     },
   },
 });

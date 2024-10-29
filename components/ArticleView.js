@@ -4,15 +4,23 @@ import Image from 'next/image';
 import styles from '../styles/ArticleView.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { addLike, removeLike } from '../reducers/likes';
 
 import { useRouter } from 'next/router';
 
 function ArticleView() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const { article } = router.query;
 
   const [articleData, setArticleData] = useState({});
   const [articlePicture, setArticlePicture] = useState({ src: "/no_img.jpg", alt: "Image indisponible" });
+  //const user = { token: "mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S", email: "valerie.deviers@gmail.com" };
+  const user = { token: null, email: null };
+  const likes = useSelector((state) => state.likes.value);
+  const [isLiked, setIsLiked] = useState(false);
+
+  let likeStyle = {};
 
   useEffect(() => {
     if (!article) {
@@ -22,15 +30,65 @@ function ArticleView() {
     fetch(`http://localhost:3000/articles/byrelease/${article}`)
       .then(response => response.json())
       .then(data => {
-        console.log("data", data);
+        //     console.log("data", data);
         setArticleData(data.article);
-        if (data.article.pictures.length > 0) {
-          setArticlePicture({ src: data.article.pictures[0], alt: data.article.title });
-        }
-        console.log("articleData", articleData);
+          if (data.article.pictures.length > 0) {
+            setArticlePicture({ src: data.article.pictures[0], alt: data.article.title });
+          }
+          console.log("articleData", articleData);
+          if (!user.token) {
+            return;
+          }
+          fetch(`http://localhost:3000/users/${user.token}`)
+           .then(response => response.json())
+            .then(data => {
+           //  console.log('favoris', data.userData.favorites)
+           //   console.log('articleData._id', articleData._id)
+           //   console.log('dans les favoris', data.userData.favorites.some(e => e === articleData._id));
+              if (data.userData.favorites.some(e => e === articleData._id)) {
+                setIsLiked(true);
+                console.log(isLiked);
+                likeStyle = { 'color': 'red' };
+                console.log(likeStyle);
+              }
+          });
       });
   }, [article]);
 
+   console.log('likes', likes);
+      
+   const handleLikeClick = () => {
+     if (!user.token) {
+      console.log('articleData dans handleclick',articleData._id)
+      console.log('dans les likes',likes.some(e=> e == articleData._id))
+        if (!likes.some(e=> e == articleData._id)) {
+            dispatch(addLike(articleData._id));
+            likeStyle = { 'color': 'red' };
+        } else {
+            dispatch(removeLike(articleData._id));
+            likeStyle = { 'color': 'black' };
+        };
+     } else {
+       fetch('http://localhost:3000/users/like', {
+           method: 'PUT',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ token: user.token, articleId: articleData._id }),
+         }).then(response => response.json())
+           .then(data => {
+             if (data.result && data.message === 'favorite added') {
+                  dispatch(addLike(articleData._id));
+                  likeStyle = { 'color': 'red' };
+             } else if (data.result && data.message === 'favorite removed') {
+                  dispatch(removeLike(articleData._id));
+                  setIsLiked(false);
+                  likeStyle = { 'color': 'black' };
+             }
+           });
+       }
+     }
+   
+ 
+ 
   return (
     <>
       <div className="container mx-auto">
@@ -52,7 +110,11 @@ function ArticleView() {
 
               <div className='flex flex-wrap justify-between'>
                 <p className={styles.artist}>{articleData.artist}</p>
-                <FontAwesomeIcon icon={faHeart} className={styles.likeIcon} />
+                <FontAwesomeIcon
+                 icon={faHeart}
+                  className={styles.likeIcon}
+                   style={likeStyle}
+                   onClick={()=>handleLikeClick()} />
               </div>
 
               <h1 className={styles.title}>{articleData.title}</h1>
@@ -76,13 +138,13 @@ function ArticleView() {
               <button id='addToCart' className="btnPrimary">Ajouter au Panier</button>
 
             </div>
-          </div>   
-          
+          </div>
+
         </div>
-      
+
       </div>
-    
-      <div className="container mx-auto">   
+
+      <div className="container mx-auto">
         <div className={styles.details}>
           <div className={styles.description}>
             <h3 className="title">Description</h3>
