@@ -120,7 +120,7 @@ function Header() {
             <FontAwesomeIcon
               icon={faPowerOff}
               className={styles.cartIcon}
-              onClick={() => showLogoutModal()}
+              onClick={() => showLogoutModal() }
             />
           </div>
         </div>
