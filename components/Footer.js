@@ -13,10 +13,10 @@ function Footer() {
                 <p><span><FontAwesomeIcon icon={faHeart} className={styles.heartIcon} /></span> Par des passionnés pour des passionnés</p>
             </div>
             <div className={styles.dynamicInfos}>
-            <Link href="/"> Contactez-nous</Link> 
-            <Link href="/"> Conditions Générales de Vente</Link>
-            <Link href="/"> Informations légales</Link>
-            <Link href="/"> Politiques des cookies</Link>
+            <Link href="/contact"> Contactez-nous</Link> 
+            <Link href="/generalConditions"> Conditions Générales de Vente</Link>
+            <Link href="/legalInfos"> Informations légales</Link>
+            <Link href="/cookiesPolicy"> Politiques des cookies</Link>
             </div>
         </div>
     );
