@@ -4,33 +4,115 @@ import Image from 'next/image';
 import styles from '../styles/ArticleView.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
-import Link from "next/link";
+import { addLike, removeLike } from '../reducers/likes';
+import { addToCart, removeFromCart } from '../reducers/cart';
 
 import { useRouter } from 'next/router';
 
 function ArticleView() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const { article } = router.query;
 
   const [articleData, setArticleData] = useState({});
   const [articlePicture, setArticlePicture] = useState({ src: "/no_img.jpg", alt: "Image indisponible" });
+  //const user = { token: "mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S", email: "valerie.deviers@gmail.com" };
+  const user= useSelector((state)=> state.user.value);
+  const likes = useSelector((state) => state.likes.value);
+  const cart = useSelector((state) => state.cart.value);
+
+  const [isLiked, setIsLiked] = useState({ result: false, likeStyle: { 'color': 'black' } });
+  const [isInCart, setIsInCart] = useState(false);
+  const [bttnCart, setBttnCart] = useState({ message: "Ajouter au panier", cartBttnStyle: { 'backgroundColor': 'var(--color-primary)' } });
+
 
   useEffect(() => {
     if (!article) {
       return;
     }
-
+    //Récupération des données de l'article en BDD
     fetch(`http://localhost:3000/articles/byrelease/${article}`)
       .then(response => response.json())
       .then(data => {
-        console.log("data", data);
         setArticleData(data.article);
-        if (data.article.pictures.length > 0) {
-          setArticlePicture({ src: data.article.pictures[0], alt: data.article.title });
+          if (data.article.pictures.length > 0) {
+            setArticlePicture({ src: data.article.pictures[0], alt: data.article.title });
+          }
+
+        if (!user.token) {
+          //récupération des infos dans les reducers likes et cart si le user n'est pas connecté
+          if (likes.some(e => e === data.article._id)) {
+            setIsLiked({ result: true, likeStyle: { 'color': 'red' } });
+          };
+          if (cart.some(e => e === data.article._id)) {
+            setIsInCart(true);
+            setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
+          }else {
+            setIsInCart(false);
+            setBttnCart({ message: "Ajouter au panier", cartBttnStyle: { 'backgroundColor': 'var(--color-primary)' } });
+          };
+        } else {
+          //Récupération des données de likes du user en BDD s'il est connecté
+          fetch(`http://localhost:3000/users/${user.token}`)
+            .then(response => response.json())
+            .then(user => {
+              if (user.userData.favorites.some(e => e === data.article._id)) {
+                setIsLiked({ result: true, likeStyle: { 'color': 'red' } });
+              }
+              if (cart.some(e => e ===data.article._id)) {
+                setIsInCart(true);
+                setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
+               } else {
+                setIsInCart(false);
+                setBttnCart({ message: "Ajouter au panier", cartBttnStyle: { 'backgroundColor': 'var(--color-primary)' } });
+              };
+            });
         }
-        console.log("articleData", articleData);
+      
       });
   }, [article]);
+
+
+  //Click sur l'icone Heart pour le like
+  const handleLikeClick = () => {
+
+    //traitement si le user n'est pas connecté via le reducer likes
+    if (!user.token) {
+       if (!likes.some(e => e === articleData._id)) {
+        dispatch(addLike(articleData._id));
+        setIsLiked({ result: true, likeStyle: { 'color': 'red' } });
+      } else {
+        dispatch(removeLike(articleData._id));
+        setIsLiked({ result: false, likeStyle: { 'color': 'black' } });
+      };
+    } else {
+      //traitement si le user est connecté via la BDD et la récupération des likes existants
+      fetch('http://localhost:3000/users/like', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: user.token, articleId: articleData._id }),
+      }).then(response => response.json())
+        .then(data => {
+          if (data.result && data.message === 'favorite added') {
+            dispatch(addLike(articleData._id));
+            setIsLiked({ result: true, likeStyle: { 'color': 'red' } });
+          } else if (data.result && data.message === 'favorite removed') {
+            dispatch(removeLike(articleData._id));
+            setIsLiked({ result: false, likeStyle: { 'color': 'black' } });
+          }
+        });
+    }
+  }
+
+  //Traitement du click sur le bouton Panier 
+  const handleAddToCart = () => {
+    if (isInCart) {
+      return;
+    }
+    dispatch(addToCart(articleData._id));
+    setIsInCart(true);
+    setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
+  };
 
   return (
     <>
@@ -53,7 +135,11 @@ function ArticleView() {
 
               <div className='flex flex-wrap justify-between'>
                 <p className={styles.artist}>{articleData.artist}</p>
-                <FontAwesomeIcon icon={faHeart} className={styles.likeIcon} />
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  className={styles.likeIcon}
+                  style={isLiked.likeStyle}
+                  onClick={() => handleLikeClick()} />
               </div>
 
               <h1 className={styles.title}>{articleData.title}</h1>
@@ -74,16 +160,16 @@ function ArticleView() {
 
               <div className={styles.price}><span>{articleData.price} €</span></div>
 
-              <button id='addToCart' className="btnPrimary">Ajouter au Panier</button>
+              <button id='addToCart' className="btnPrimary" style={bttnCart.cartBttnStyle} onClick={() => handleAddToCart()}>{bttnCart.message}</button>
 
             </div>
-          </div>   
-          
+          </div>
+
         </div>
-      
+
       </div>
-    
-      <div className="container mx-auto">   
+
+      <div className="container mx-auto">
         <div className={styles.details}>
           <div className={styles.description}>
             <h3 className="title">Description</h3>
