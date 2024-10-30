@@ -2,7 +2,7 @@ import Profile from '../components/Profile';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-function Index() {
+function profile() {
   return (
     <div className="layout">
       <Header />
@@ -14,4 +14,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default profile;
