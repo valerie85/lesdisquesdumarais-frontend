@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import styles from '../styles/ArticleView.module.css';
+import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { addLike, removeLike } from '../reducers/likes';
