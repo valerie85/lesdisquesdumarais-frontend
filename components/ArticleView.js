@@ -5,7 +5,6 @@ import styles from '../styles/ArticleView.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import Link from "next/link";
-
 import { useRouter } from 'next/router';
 
 function ArticleView() {
@@ -53,7 +52,7 @@ function ArticleView() {
 
               <div className='flex flex-wrap justify-between'>
                 <p className={styles.artist}>{articleData.artist}</p>
-                <FontAwesomeIcon icon={faHeart} className={styles.likeIcon} />
+                <FontAwesomeIcon icon={faHeart} size={25} className={styles.likeIcon} />
               </div>
 
               <h1 className={styles.title}>{articleData.title}</h1>

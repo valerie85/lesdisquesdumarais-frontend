@@ -28,7 +28,7 @@ body {
 }
 
 .layout {
-  background-color: var(--color-light);;
+  background-color: var(--color-light);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,7 +37,7 @@ body {
 .content {
   display: flex;
   width: 100%;
-  margin: auto;
+  margin-bottom: auto;
   flex-direction: column;
   padding: 2rem 0;
 }
@@ -48,6 +48,10 @@ body {
 .card {
   padding: 1rem;
 }
+.contentNew {
+  border-bottom: 1px solid var(--color-light);
+  margin-bottom: 2rem;
+}
 
 
 /* Titles */
@@ -55,6 +59,7 @@ h1.title {
   font-size: 2em;
   font-family: var(--font-title);
   color: var(--color-secondary);
+  margin-bottom: 1rem;
 }
 h2.title {
   font-size: 1.5em;
@@ -76,6 +81,10 @@ h3.title {
   border-radius: 8px;
   font-family: var(--font-main);
   font-size: 1em !important;
+  transition: all 0.2s ease-in-out;
+}
+.btnPrimary:hover {
+  opacity: 0.8;
 }
 .btnSecondary {
   background-color: var(--color-secondary);
@@ -84,6 +93,10 @@ h3.title {
   border-radius: 8px;
   font-family: var(--font-main);
   font-size: 1em !important;
+  transition: all 0.2s ease-in-out;
+}
+.btnSecondary:hover {
+  opacity: 0.8;
 }
 .btnTertiary {
   background-color: var(--color-tertiary);
@@ -92,26 +105,30 @@ h3.title {
   border-radius: 8px;
   font-family: var(--font-main);
   font-size: 1em !important;
+  transition: all 0.2s ease-in-out;
+}
+.btnTertiary:hover {
+  opacity: 0.8;
 }
 
 /* Ant Menu */
-.ant-menu {
+.ant-menu-root {
   background: transparent !important;
   width: -webkit-fill-available;
   justify-content: center;
   align-items: center;
 }
-.ant-menu > ul > li {
-  
-  margin: 0 30px;
+.ant-menu-root > ul > li {
+  margin: 0 2rem;
   font-family: var(--font-main);
   transition: all 0.2s ease-in-out;
 }
-.ant-menu .ant-menu-title-content {
+.ant-menu-root > li > span.ant-menu-title-content,
+.ant-menu-root > li > div > span.ant-menu-title-content {
   text-transform: uppercase !important;
   color: var(--color-light) !important;
-  font-size: 1.1em;
+  font-size: 1.2em;
   text-transform: uppercase;
   font-family: var(--font-title);
-}
+} 
 
