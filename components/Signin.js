@@ -1,69 +1,86 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
+import { Modal, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../reducers/user";
-import Image from "next/image";
-import styles from "../styles/SignIn.module.css";
 
-function SignIn() {
+const Signup = ({closeModal}) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(true);
+  const [signUpFirstName, setSignUpFirstname] = useState("");
+  const [signUpUsername, setSignUpUsername] = useState("");
+  const [signUpPassword, setSignUpPassword] = useState("");
 
-  const handleSubmit = () => {
-    fetch("http://localhost:3000/users/signin", {
+  const handleSignup = () => {
+    fetch("http://localhost:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({
+        firstname: signUpFirstName,
+        username: signUpUsername,
+        password: signUpPassword,
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Réponse de la BDD:", data);
         if (data.result) {
-          data.result &&
-            dispatch(
-              login({
-                token: data.token,
-                firstName: data.firstName,
-                email: data.email,
-              })
-            );
-          console.log("Connexion réussie", data.token);
-        } else {
-          console.log("Connexion échouée");
+          dispatch(
+            login({
+              firstname: signUpFirstName,
+              username: signUpUsername,
+              token: data.token,
+            })
+          );
+          setSignUpUsername("");
+          setSignUpFirstname("");
+          setSignUpPassword("");
+          // setIsModalVisible(false);
+          closeModal();
+          console.log("Tu es bien inscrit à Twitter");
         }
       });
   };
-  const router = useRouter();
-    if (user.token) {
-      router.push("/");
-    }
 
   return (
-    <div className={styles.container}>
-      <Image src="/logo.png" alt="Logo" width={50} height={50} />
-      <h3 className={styles.title}>Bienvenue sur les Disques du Marais</h3>
+    <>
+      <img
+        src="/twitter_logo.jpg"
+        alt="Hackatweet Logo"
+        style={{ display: "block", marginBottom: "10px" }}
+      />
+      <title>Create your Hackatweet account</title>
       <input
         type="text"
-        className={styles.input}
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-        placeholder="Email"
+        placeholder="Firstname"
+        id="signUpFirstname"
+        onChange={(e) => setSignUpFirstname(e.target.value)}
+        value={signUpFirstName}
+        style={{ display: "block", marginBottom: "10px" }}
+      />
+      <input
+        type="text"
+        placeholder="Username"
+        id="signUpUsername"
+        onChange={(e) => setSignUpUsername(e.target.value)}
+        value={signUpUsername}
+        style={{ display: "block", marginBottom: "10px" }}
       />
       <input
         type="password"
-        className={styles.input}
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        placeholder="Mot de passe"
+        placeholder="Password"
+        id="signUpPassword"
+        onChange={(e) => setSignUpPassword(e.target.value)}
+        value={signUpPassword}
+        style={{ display: "block", marginBottom: "10px" }}
       />
-      <button className={styles.button} onClick={() => handleSubmit()}>
-        Connexion
+      <button
+        id="register"
+        onClick={handleSignup}
+        style={{ display: "block", marginTop: "10px" }}
+      >
+        Sign Up
       </button>
-    </div>
+    </>
   );
-}
+};
 
-export default SignIn;
+export default Signup;
