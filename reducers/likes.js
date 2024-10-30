@@ -13,10 +13,6 @@ export const likesSlice = createSlice({
         state.value.push(action.payload);
     },
     removeLike:(state,action)=> {
-<<<<<<< HEAD
-=======
-      console.log('action payload remove',action.payload);
->>>>>>> main
         state.value=state.value.filter(item=>item !== action.payload)
     },
   },

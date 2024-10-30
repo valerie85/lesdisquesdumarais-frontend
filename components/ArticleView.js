@@ -5,11 +5,8 @@ import styles from '../styles/ArticleView.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { addLike, removeLike } from '../reducers/likes';
-<<<<<<< HEAD
 import { addToCart, removeFromCart } from '../reducers/cart';
 
-=======
->>>>>>> main
 import { useRouter } from 'next/router';
 
 function ArticleView() {
@@ -19,7 +16,6 @@ function ArticleView() {
 
   const [articleData, setArticleData] = useState({});
   const [articlePicture, setArticlePicture] = useState({ src: "/no_img.jpg", alt: "Image indisponible" });
-<<<<<<< HEAD
   //const user = { token: "mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S", email: "valerie.deviers@gmail.com" };
   const user= useSelector((state)=> state.user.value);
   const likes = useSelector((state) => state.likes.value);
@@ -29,14 +25,6 @@ function ArticleView() {
   const [isInCart, setIsInCart] = useState(false);
   const [bttnCart, setBttnCart] = useState({ message: "Ajouter au panier", cartBttnStyle: { 'backgroundColor': 'var(--color-primary)' } });
 
-=======
-  const [isLiked, setIsLiked] = useState(false);
-  const user = useSelector((state) => state.user.value);
-  const likes = useSelector((state) => state.likes.value);
-  const cart = useSelector((state) => state.cart.value);
-
-  let likeStyle = {};
->>>>>>> main
 
   useEffect(() => {
     if (!article) {
@@ -80,7 +68,6 @@ function ArticleView() {
               };
             });
         }
-<<<<<<< HEAD
       
       });
   }, [article]);
@@ -125,67 +112,6 @@ function ArticleView() {
     dispatch(addToCart(articleData._id));
     setIsInCart(true);
     setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
-=======
-        console.log("articleData", articleData);
-      });  
-  }, [article]);
-
- /* if (user.token) {
-    fetch(`http://localhost:3000/users/${user.token}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (!data.userData.favorites.includes(articleData._id)) {
-          setIsLiked(true);
-          likeStyle = { 'color': '#f91980' };
-        }
-      });
-  }
- */
-
-  console.log('articleData après useEffect', articleData);
-  console.log('user', user);
-  console.log('likes', likes);
-  dispatch(addLike());
-  
-  const handleLikeClick = () => {
-    if (!user.token) {
-     if (!likes.includes(articleData._id)) {
-        dispatch(addLike());
-        likeStyle = { 'color': '#f91980' };
-      } else {
-        dispatch(removeLike());
-        likeStyle = { 'color': 'black' };
-      };
-    } else {
-      if (!isLiked) {
-        fetch('http://localhost:3000/users/like', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: user.token, articleId: articleData._id }),
-        }).then(response => response.json())
-          .then(data => {
-            if (data.result && data.message === 'favorite added') {
-              dispatch(addLike());
-              likeStyle = { 'color': '#f91980' };
-            }
-          });
-      } else {
-        fetch('http://localhost:3000/users/like', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: user.token, articleId: articleData._id }),
-        }).then(response => response.json())
-          .then(data => {
-            if (data.result && data.message === 'favorite removed') {
-              dispatch(removeLike());
-              setIsLiked(false);
-              likeStyle = { 'color': 'black' };
-            }
-          });
-      }
-    }
->>>>>>> main
   };
 
   return (
@@ -212,13 +138,8 @@ function ArticleView() {
                 <FontAwesomeIcon
                   icon={faHeart}
                   className={styles.likeIcon}
-<<<<<<< HEAD
                   style={isLiked.likeStyle}
                   onClick={() => handleLikeClick()} />
-=======
-                  style={likeStyle}
-                  onClick={()=>handleLikeClick()} />
->>>>>>> main
               </div>
 
               <h1 className={styles.title}>{articleData.title}</h1>
