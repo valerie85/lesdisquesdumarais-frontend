@@ -9,6 +9,7 @@ function Profile() {
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
+    const [imageUrl,setImageUrl] = useState('')
 
     // recup les infos via le token et recup le isAdmin
     useEffect(() => {
@@ -62,6 +63,29 @@ function Profile() {
     }, [userId, token])
 
 
+    const handleImageSubmit = async (e) =>{
+        e.preventDefault();
+try {
+    const response = await fetch('http://localhost:3000/articles/images',{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${token}`,
+        },
+        body:JSON.stringify({url: imageUrl})
+    });
+    if (response.ok) {
+        console.log('Image enregister avec succes');
+        setImageUrl('')
+    }else{
+        console.error("Erreur lors de l'enregistrement de l'image");
+    }
+} catch (error) {
+    console.error("Erreur", error.message);
+}
+
+    }
+
     return (
         <div className={styles.profile}>
             <h2>{isAdmin ? 'Tableau de Bord Administrateur' : 'Profil Utilisateur'}</h2>
@@ -69,6 +93,17 @@ function Profile() {
             {isAdmin ? (
                 <div>
                     <p>Bienvenue sur le tableau de bord d'administration !</p>
+                    <form onSubmit={handleImageSubmit} className={styles.imageForm}>
+                        <label>
+                            URL de l'image:
+                            <input
+                            type='text'
+                            value={imageUrl}
+                            onChange={(e)=> setImageUrl(e.target.value)}
+                            placeholder='Entrez votre photo'/>
+                        </label>
+                        <button type='submit'> Enregister votre image </button>
+                    </form>
                 </div>
             ) : (
                 <div>
