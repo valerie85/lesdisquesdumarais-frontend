@@ -4,8 +4,7 @@ import styles from '../styles/Profile.module.css';
 
 
 function Profile() {
-  //  const token = useSelector((state) => state.user.value.token);
-    const token = 'mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S';
+    const token = useSelector((state) => state.user.value.token);
     const [userId, setUserId] = useState(null);
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState('');
@@ -22,7 +21,7 @@ function Profile() {
             try {
                 const response = await fetch('http://localhost:3000/users/id', {
                     method: 'GET',
-                    headers: { Authorization: `mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S` },
+                    headers: { Authorization: `bearer ${token}` },
                 })
                 if (!response.ok) {
                     console.error('erreur lors de la récuperation des donnees');
