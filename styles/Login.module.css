@@ -1,32 +1,34 @@
-@font-face {
+/* /* /* @font-face {
   font-family: "Mont";
   src: url("/fonts/Mont-Heavy.otf");
 }
 
 .container {
-  height: 100vh;
-  width: 100vw;
   display: flex;
 }
 
-.leftSection {
+.containerLogin {
   display: flex;
+  background-color: aqua;
+  height: 80vh;
+} */
+
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.titleConnexion {
+  background-color: rgb(232, 224, 224);
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 50vw;
-  background-image: url('../public/background.webp');
+  display: flex;
+  font-size: large;
 }
 
-.rightSection {
-  height: 100vh;
-  width: 50vw;
-  padding: 30px;
-  background-color: #15202b;
-  font-family: "Mont";
-}
-
-.signUp {
+/* .signUp {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,8 +67,8 @@
 
 .signUpText {
   color: white;
-}
+} */
 
-.title {
+/* .title {
   margin-top: 50px;
-}
+} */  
