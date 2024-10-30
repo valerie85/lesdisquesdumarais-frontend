@@ -118,7 +118,7 @@ function Profile() {
         }
         try {
             const response = await fetch(`http://localhost:3000/articles/${selectedArticle}`, {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
