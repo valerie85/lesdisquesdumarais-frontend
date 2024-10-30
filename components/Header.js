@@ -116,11 +116,14 @@ function Header() {
             <FontAwesomeIcon
               icon={faCartShopping}
               className={styles.cartIcon}
+              onClick={() => router.push('/cart')}
             />
             <FontAwesomeIcon
               icon={faPowerOff}
               className={styles.cartIcon}
-              onClick={() => showLogoutModal() }
+              onClick={() => {
+                showLogoutModal();  
+              }}
             />
           </div>
         </div>

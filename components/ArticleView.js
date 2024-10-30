@@ -110,7 +110,7 @@ function ArticleView() {
     if (isInCart) {
       return;
     }
-    dispatch(addToCart(articleData._id));
+    dispatch(addToCart(articleData));
     setIsInCart(true);
     setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
   };
