@@ -8,6 +8,71 @@
     margin-top: 20px;
     margin: 30px;
     padding-bottom: 10px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #172A3A;
+}
 
+.option{
+text-align: center;
+}
+
+.imageForm{
+    display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.select{
+    margin-left: 40px;
+    border: 1px solid #172A3A;
+    border-radius: 50px;
+    height: 30px;
+    margin:30px;
+}
+
+.admin{
+width: 100vw;
+}
+
+.h2Admin{
+text-align: center;
+margin: 90px;
+}
+
+.inputUrl{
+    width: 40vw;
+    border: #172A3A solid 1px;
+    border-radius: 50px;
+    text-align: center;
+    margin: 10px;
+}
+.optionCondi{
+text-align: center;
+}
+.btn{
+    margin-top: 2.5vh; 
+    background-color:#508991;
+    border: 1px solid #172A3A;
+    color: white;
+    width: 15vw;
+    height: 4vh;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: background-color 1s ease, transform 1s ease;
+    transform: scale(1);
+    cursor: pointer;
+    font-weight: 800;
+}
+.btn:hover{
+    background-color: #09BC8A;
+    color: white;
+    border: 1px solid white;
+    transform: scale(1);
+}
+
+.textUrl{
+    margin-top: 50px;
+}
+
+.radio{
+    margin-left: 10px;
 }

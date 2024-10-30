@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { addLike, removeLike } from '../reducers/likes';
 import { addToCart, removeFromCart } from '../reducers/cart';
-
 import { useRouter } from 'next/router';
 
 function ArticleView() {
@@ -138,7 +137,7 @@ function ArticleView() {
                 <p className={styles.artist}>{articleData.artist}</p>
                 <FontAwesomeIcon
                   icon={faHeart}
-                  className={styles.likeIcon}
+                  size={25} className={styles.likeIcon}
                   style={isLiked.likeStyle}
                   onClick={() => handleLikeClick()} />
               </div>

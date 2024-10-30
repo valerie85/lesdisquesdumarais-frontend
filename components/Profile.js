@@ -4,8 +4,7 @@ import styles from '../styles/Profile.module.css';
 
 
 function Profile() {
-  //  const token = useSelector((state) => state.user.value.token);
-    const token = 'mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S';
+    const token = useSelector((state) => state.user.value.token);
     const [userId, setUserId] = useState(null);
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState('');
@@ -13,6 +12,8 @@ function Profile() {
     const [imageUrl, setImageUrl] = useState('');
     const [articles, setarticles] = useState([]);
     const [selectedArticle, setSelectedArticle] = useState('');
+    const [isArchived, setIsArchived] = useState(false);
+    const [sellingDate, setSellingDate] = useState('');
 
 
     // recup les infos via le token et recup le isAdmin
@@ -22,7 +23,7 @@ function Profile() {
             try {
                 const response = await fetch('http://localhost:3000/users/id', {
                     method: 'GET',
-                    headers: { Authorization: `mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S` },
+                    headers: { Authorization: `${token}` },
                 })
                 if (!response.ok) {
                     console.error('erreur lors de la récuperation des donnees');
@@ -46,7 +47,7 @@ function Profile() {
             try {
                 const response = await fetch(`http://localhost:3000/orders/${userId}`, {
                     method: 'GET',
-                    headers: { Authorization: `bearer ${token}` },
+                    headers: { Authorization: `${token}` },
                 });
                 if (!response.ok) {
                     console.error('erreur lors de la récuperation des donnees',);
@@ -86,7 +87,7 @@ function Profile() {
     const handleImageSubmit = async (e) => {
         e.preventDefault();
         if (!selectedArticle) {
-            console.log("veuillez selectionner un article.");
+            alert('Veuillez selectionner un article.')
             return;
         }
         try {
@@ -109,34 +110,92 @@ function Profile() {
 
     }
 
+    const handleUpdateSubmit = async (e) => {
+        e.preventDefault();
+        if (!selectedArticle) {
+            alert('Veuillez sélectionner un article.');
+            return;
+        }
+        try {
+            const response = await fetch(`http://localhost:3000/articles/${selectedArticle}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    isArchived: isArchived,
+                    selling_Date: sellingDate,
+                })
+            });
+            if (response.ok) {
+                console.log('Article mis à jour avec succes');
+            } else {
+                console.error("Erreur lors de la mise à jour de l'article");
+            }
+        } catch (error) {
+            console.error("Erreur", error.message);
+        }
+    };
+
     return (
         <div className={styles.profile}>
-            <h2>{isAdmin ? 'Tableau de Bord Administrateur' : 'Profil Utilisateur'}</h2>
+            <h2 className={styles.h2Admin}>{isAdmin ? 'Tableau de Bord Administrateur' : 'Profil Utilisateur'}</h2>
             {/* Affichage conditionnel soit admin ou user selon la DB */}
             {isAdmin ? (
-                <div>
-                    <p>Bienvenue sur le tableau de bord d'administration !</p>
+                <div className={styles.admin}>
+                    <p className={styles.h2Admin}>Bienvenue sur le tableau de bord d'administration !</p>
+                    <label className={styles.imageForm}>
+                        Selectionner un article:
+                        <select value={selectedArticle} onChange={(e) => setSelectedArticle(e.target.value)} className={styles.select}>
+                            <option value='' className={styles.option}>--Choisir un article--</option>
+                            {articles.map((article) => (
+                                <option key={article._id} value={article._id} className={styles.optionCondi}>
+                                    {article.title}&nbsp;&nbsp; • &nbsp;&nbsp;{article.release_id}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
                     <form onSubmit={handleImageSubmit} className={styles.imageForm}>
-                        <label>
-                            Selectionner un article:
-                            <select value={selectedArticle} onChange={(e) => setSelectedArticle(e.target.value)}>
-                                <option value=''>--Choisir un article--</option>
-                                {articles.map((article) => (
-                                    <option key={article._id} value={article._id}>
-                                        {article.title}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
                         <label>
                             URL de l'image:
                             <input
                                 type='text'
                                 value={imageUrl}
                                 onChange={(e) => setImageUrl(e.target.value)}
-                                placeholder='Entrez votre photo' />
+                                placeholder='Entrez votre photo' className={styles.inputUrl} />
                         </label>
-                        <button type='submit'> Enregister votre image </button>
+                        <button type='submit'
+                            className={styles.btn}
+                        > Enregister votre image </button>
+                    </form>
+                    <form onSubmit={handleUpdateSubmit} className={styles.imageForm}>
+                        <label>
+                            Archiver l'article:
+                            <input
+                                type="radio"
+                                value="true"
+                                checked={isArchived === true}
+                                onChange={() => setIsArchived(true)}
+                                className={styles.radio}
+                            /> Oui
+                            <input
+                                type="radio"
+                                value="false"
+                                checked={isArchived === false}
+                                onChange={() => setIsArchived(false)}
+                                className={styles.radio}
+                            /> Non
+                        </label>
+                        <label>
+                            Date de mise en vente:
+                            <input
+                                type="datetime-local"
+                                value={sellingDate}
+                                onChange={(e) => setSellingDate(e.target.value)}
+                                className={styles.inputDate}
+                            />
+                        </label>
+                        <button type="submit" className={styles.btn}>Enregistrer les mises à jour</button>
                     </form>
                 </div>
             ) : (

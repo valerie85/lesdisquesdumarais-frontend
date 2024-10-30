@@ -34,7 +34,7 @@ function Article(props) {
     let conditionMedia = displayCondition(props.media_condition);
 
     return (
-        <div className="basis-full md:basis-1/3 xl:basis-1/4  card">
+        <div className="basis-full md:basis-1/3 xl:basis-1/4 2xl:basis-1/5 card">
             <Link href={`/article/${props.release_id}`}>
             <div className={styles.box}>
                 <div className={styles.image}>

@@ -1,46 +1,55 @@
 import styles from "../styles/Menu.module.css";
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 import { Menu } from "antd";
 import Link from "next/link";
 
-const items = [
-  {
-    key: 'alipay',
-    label: (
-      <Link href="/">
-        Nouveaux arrivages
-      </Link>
-    ),
-  },
-  {
-    label: 'Genres',
-    key: 'SubMenu',
-    children: [
-      {
-        type: 'group',
-        label: 'Item 1',
-        children: [
-          {
-            label: 'Option 1',
-            key: 'setting:1',
-          },
-          {
-            label: 'Option 2',
-            key: 'setting:2',
-          },
-        ],
-      },
-    ],
-  },
-  
-];
 
 function MenuHeader() {
-  const [current, setCurrent] = useState('mail');
+  const [current, setCurrent] = useState('');
+
   const onClick = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
   };
+
+  const [genresData, setGenresData] = useState([]);
+
+  useEffect(() => {
+      fetch('http://localhost:3000/genres')
+        .then(response => response.json())
+        .then(data => {
+          //console.log("data",data);
+          setGenresData(data.allGenres.filter((data, i) => i >= 0));
+        });
+    }, []);
+
+    const items = [
+      {
+        key: 'new',
+        label: (
+          <Link href="/">
+            Nouveaux arrivages
+          </Link>
+        ),
+      },
+      {
+        label: 'Genres',
+        key: 'genres',
+        children: [],
+      },
+    ];
+
+    const genres = genresData.map((data, i) => {
+      //console.log(data);
+      let name = data.name.replace(/\//g, '_');
+      let link = "/genre/"+name;
+      let label = <Link href={link}>{data.name}</Link>
+      items[1].children.push({key: i, label: label})
+    });
+
+    
+    
+
   return <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />;
 };
 

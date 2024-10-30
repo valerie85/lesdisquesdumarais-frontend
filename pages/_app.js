@@ -7,6 +7,7 @@ import user from '../reducers/user';
 import likes from '../reducers/likes';
 import cart from '../reducers/cart';
 import { configureStore } from '@reduxjs/toolkit';
+import { ConfigProvider } from "antd";
 
 const store = configureStore({
   reducer: { user, likes, cart },
@@ -15,12 +16,24 @@ const store = configureStore({
 function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <Head>
-        <title>Les Disques du Marais</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-      </Head>
-      <Component {...pageProps} />
-      </Provider>
+      <ConfigProvider
+        theme={{
+          token: { colorPrimary: '#172A3A' },   
+          components: {
+            Menu: {
+              itemSelectedBg: '#09BC8A',
+              itemSelectedColor: '#FFFFFF',
+            },
+          },  
+        }}
+      >
+        <Head>
+          <title>Les Disques du Marais</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        </Head>
+        <Component {...pageProps} />
+      </ConfigProvider>
+    </Provider>
   );
 }
 
