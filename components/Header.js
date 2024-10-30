@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../reducers/user';
 import MenuHeader from '../components/MenuHeader';
-import { Modal } from "antd";
+import { Modal, Button } from "antd";
 import Login from "./Login";
 
 function Header() {
@@ -23,32 +23,42 @@ function Header() {
   const [keyword, setKeyword] = useState("");
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [logoutModalVisible, setLogOutModalVisible] = useState(false)
 
   const showLoginModalVisible = () => {
+    if (!user.token) {
+      console.log("L'utilisateur est déjà connecté")
     setLoginModalVisible(true);
+    } else {
+      setLoginModalVisible(false)
+    }
   };
 
   const handleCancelLogin = () => {
     setLoginModalVisible(false);
   };
 
-  const logout = () => {
+  const showLogoutModal = () => {
     if(user.token) {
-
+    setLogOutModalVisible(true)
     }
+  }
+
+  const handleLogout = () => {
+    if(user.token) {
     dispatch(logout())
-    router.push('/')
-  }
+    setLogOutModalVisible(false);
+    console.log("L'utilisateur est bien déconnecté")
+    router.push('/');
+    } else {
+      message.error("Vous êtes déjà déconnecté")
+    }
+  };
 
-  const router = useRouter();
-  if (user.token) {
-    router.push("/");
-  }
-
-  
+  console.log("the user:", user)
 
   return (
     <>
@@ -91,7 +101,14 @@ function Header() {
                 className={styles.searchIcon}
               />
             </div>
-            <div className={styles.icons}>
+  
+          {/* <Message de bienvenue à l'utilisateur /> */}
+          <div className={styles.icons}>
+            {/* { user.email ? (<span>Bonjour {user.email}</span>) : (<spans>Bienvenue</spans>)} */}
+            { user.firstName ? (<span>Bonjour {user.firstName}</span>) : (<spans>Bienvenue</spans>)}
+          </div>
+
+          <div className={styles.icons}>
               <FontAwesomeIcon
                 icon={faUser}
                 className={styles.userIcon}
@@ -105,7 +122,7 @@ function Header() {
               <FontAwesomeIcon
                 icon={faPowerOff}
                 className={styles.cartIcon}
-                onClick={() => setLogOutModalVisible()}
+                onClick={() => showLogoutModal() }
               />
             </div>
           </div>
@@ -122,12 +139,27 @@ function Header() {
 
       <Modal
         width={1100}
+        open={loginModalVisible}
         onCancel={() => handleCancelLogin()}
-        visible={loginModalVisible}
         footer={null}
       >
-        <Login />
+        <Login handleCancelLogin={handleCancelLogin} />
       </Modal>
+
+      {/* <Modal pour se déconnecter /> */}
+      <Modal
+        title="Vous souhaitez vous déconnecter ?"
+        open={logoutModalVisible}
+        onCancel={() => setLogOutModalVisible(false)}
+        footer= {[
+          <Button key="logout" type='primary' danger onClick={handleLogout}>Se déconnecter</Button>,
+          <Button key="cancel" onClick={() => setLogOutModalVisible(false)}>Annuler</Button>,
+        ]}
+      >
+      </Modal>
+
+
+
     </>
   );
 }
