@@ -1,17 +1,17 @@
-import ArticleView from '../components/ArticleView';
+import Profile from '../components/Profile';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-function Article() {
+function Index() {
   return (
     <div className="layout">
       <Header />
       <div className="container">
-        <ArticleView />
+        <Profile />
       </div>
       <Footer />
     </div>
   );
 }
 
-export default Article;
+export default Index;

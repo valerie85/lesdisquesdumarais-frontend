@@ -1,48 +1,59 @@
-.articleContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 4rem 0;
-  }
-  
-  .chemin {
-    line-height: 1.15;
-    font-size: 1 rem;
-  }
-
-  .photosContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: left;
-    min-height: 50vh;
-
-  }
-
-  .detailsContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-  }
-
-  .artist {
-    font-size: 3 rem;
-  }
-
-  .title {
-    font-size: 1 rem;
-  }
- .articleInfos {
-  font-size: 1 rem;
+ .breadcrumb {
+  line-height: 1.15;
+  font-size: 0.9em;
 }
-
-  .title a {
-    color: #0070f3;
-    text-decoration: none;
-  }
+.infos {
+  padding: 1rem;
   
-  .title a:hover, .title a:focus, .title a:active {
-    text-decoration: underline;
-  }
+}
+.photos {
+  padding: 1rem;
+  padding-right: 60px;
+}
+.photos * {
+  width: 100% !important;
+  height: auto !important;
+  min-height: auto !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.artist {
+  font-size: 2em;
+  font-family: var(--font-title);
+  color: var(--color-primary); 
+}
+.title {
+  font-size: 1.5em;
+  font-family: var(--font-title);
+  color: var(--color-primary);
+  margin-bottom: 15px; 
+}
+.likeIcon {
+  cursor: pointer;
+}
+.conditionSleeve {
+  background-color: var(--color-tertiary); 
+  color: var(--color-light); 
+  font-size: 0.9em;
+  padding: 5px 15px;
+  margin-top: 15px;
+}
+.conditionMedia {
+  background-color: var(--color-tertiary); 
+  color: var(--color-light); 
+  margin-left: 10px;
+  font-size: 0.9em;
+  padding: 5px 15px;
+  margin-top: 15px;
+}
+.price {
+  color: var(--color-tertiary); 
+  font-size: 1.5em;
+  margin: 15px 0 30px;
+}
+.details {
+  margin: 0 0 30px 0;
+}
+.description {
+  margin-bottom: 30px;
+}

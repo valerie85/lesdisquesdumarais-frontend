@@ -4,20 +4,17 @@ import Link from 'next/link';
 
 function Article(props) {
 
-    let linkArticle = "/article?id="+props.release_id;
-
     let ImgSrc = "";  
     let ImgAlt = "";  
     if(props.pictures.length>0) {
         ImgSrc = props.pictures[0];
-        ImgAlt = styles.title;
+        ImgAlt = props.title;
     } else {
         ImgSrc = "/no_img.jpg";
         ImgAlt = "Image indisponible";
     }
 
     const displayCondition = (arg) => {
-        console.log(arg);
         switch (arg) {
             case 'Mint (M)':
                 return "M";
@@ -37,8 +34,8 @@ function Article(props) {
     let conditionMedia = displayCondition(props.media_condition);
 
     return (
-        <div className={styles.card}>
-            <Link href={linkArticle}>
+        <div className="basis-full md:basis-1/3 xl:basis-1/4  card">
+            <Link href={`/article/${props.release_id}`}>
             <div className={styles.box}>
                 <div className={styles.image}>
                     <Image src={ImgSrc} alt={ImgAlt} width={300} height={300} />

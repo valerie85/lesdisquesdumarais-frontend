@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+<<<<<<< HEAD
   value: { token: null, firstName: null, likes:[]},
+=======
+  value: { token: null, email: null},
+>>>>>>> main
 };
 
 export const userSlice = createSlice({
@@ -14,16 +18,10 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.value.token = null;
-      state.value.username = null;
-    },
-    addLike:(state,action)=> {
-        state.value.likes.push(action.payload);
-    },
-    removeLike:(state,action)=> {
-        state.value.likes=state.value.likes.filter(item=>item.release_id !== action.payload.release_id)
+      state.value.email = null;
     },
   },
 });
 
-export const { login, logout, addLike, removeLike } = userSlice.actions;
+export const { login, logout } = userSlice.actions;
 export default userSlice.reducer;

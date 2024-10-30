@@ -6,7 +6,7 @@ function Home() {
 
   const [articlesData, setArticlesData] = useState([]);
 
-  useEffect(() => {
+useEffect(() => {
     fetch('http://localhost:3000/articles')
       .then(response => response.json())
       .then(data => {
@@ -15,31 +15,36 @@ function Home() {
       });
   }, []);
 
+  //test tri des articles par date de creation
+  //const sortedArticles = Object.entries(articlesData).sort(([,a],[,b])=> a.createdAt-b.createdAt);
+  //console.log(sortedArticles);
+
+  //création de la liste à afficher
   const articles = articlesData.map((data, i) => {
       return <Article key={i} {...data} />;
   });
 
   return (
-    <div>
+    <>
       <main className={styles.main}>
 
-        <div className="row">
+        <div className="container">
           <h1 className="title">
             Nouveaux arrivages       
           </h1>     
         </div>
 
-        <div className="row">
+        <div className="container">
           <h2 className="title">
             Liste des articles
           </h2>
-          <div className='articlesList'>
+          <div className='flex flex-wrap'>
             {articles}
           </div>          
         </div>
         
       </main>
-    </div>
+    </>
   );
 }
 

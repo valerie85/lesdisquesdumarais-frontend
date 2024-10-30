@@ -1,0 +1,13 @@
+.ordersList{
+    margin: 30px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.orderItem{
+    margin-top: 20px;
+    margin: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+
+}

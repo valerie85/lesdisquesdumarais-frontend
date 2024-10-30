@@ -9,6 +9,7 @@
   --color-tertiary: #508991;
   --color-light: #FFFFFF;
   --color-dark: #000000;
+  --color-grey: #eeeeee;
   --font-main: "Radio Canada", sans-serif;
   --font-title: "Radio Canada Big", sans-serif;
 }
@@ -33,9 +34,8 @@ body {
   justify-content: space-between;
   min-height: 100vh;
 }
-.container {
+.content {
   display: flex;
-  max-width: 1400px;
   width: 100%;
   margin: auto;
   flex-direction: column;
@@ -45,13 +45,8 @@ body {
   width: 100%;
   margin-bottom: 2rem;
 }
-
-.articlesList {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: space-around;
-  flex-wrap: wrap;
+.card {
+  padding: 1rem;
 }
 
 
@@ -65,6 +60,11 @@ h2.title {
   font-size: 1.5em;
   font-family: var(--font-title);
   color: var(--color-tertiary);
+}
+h3.title {
+  font-size: 1.2em;
+  font-family: var(--font-title);
+  font-weight: 500;
 }
 
 
@@ -92,5 +92,26 @@ h2.title {
   border-radius: 8px;
   font-family: var(--font-main);
   font-size: 1em !important;
+}
+
+/* Ant Menu */
+.ant-menu {
+  background: transparent !important;
+  width: -webkit-fill-available;
+  justify-content: center;
+  align-items: center;
+}
+.ant-menu > ul > li {
+  
+  margin: 0 30px;
+  font-family: var(--font-main);
+  transition: all 0.2s ease-in-out;
+}
+.ant-menu .ant-menu-title-content {
+  text-transform: uppercase !important;
+  color: var(--color-light) !important;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  font-family: var(--font-title);
 }
 
