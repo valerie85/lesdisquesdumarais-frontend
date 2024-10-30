@@ -27,8 +27,12 @@ function Signup() {
       body: JSON.stringify({ firstName, lastName, email, password }),
     }).then(response => response.json())
       .then(data => {
-        data.result && dispatch(login({ token: data.token, lastName, email, firstName }));
-        console.log("L'inscription a réussi")
+        if(data.result) {
+          data.result && dispatch(login({ token: data.token, lastName, email, firstName }));
+          console.log("L'inscription a réussi")
+        } else {
+          console.log("L'inscription a échoué")
+        }
       });
   };
 

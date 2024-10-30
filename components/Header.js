@@ -6,6 +6,7 @@ import {
   faUser,
   faHeart,
   faCartShopping,
+  faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useState } from "react";
@@ -14,12 +15,33 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../reducers/user';
 import MenuHeader from '../components/MenuHeader';
+import { Modal } from "antd";
+import Login from "./Login";
 
 function Header() {
   // useState for search
   const [keyword, setKeyword] = useState("");
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [logoutModalVisible, setLogOutModalVisible] = useState(false)
+
+  const showLoginModalVisible = () => {
+    setLoginModalVisible(true);
+  };
+
+  const handleCancelLogin = () => {
+    setLoginModalVisible(false);
+  };
+
+  const logout = () => {
+    if(user.token) {
+
+    }
+    dispatch(logout())
+    router.push('/')
+  }
 
   const router = useRouter();
   if (user.token) {
@@ -71,15 +93,17 @@ function Header() {
             <FontAwesomeIcon
               icon={faUser}
               className={styles.userIcon}
-              onClick={() => {
-                router.push("/login");
-                dispatch(logout());
-              }}
+              onClick={() => showLoginModalVisible()}
             />
             <FontAwesomeIcon icon={faHeart} className={styles.favIcon} />
             <FontAwesomeIcon
               icon={faCartShopping}
               className={styles.cartIcon}
+            />
+            <FontAwesomeIcon
+              icon={faPowerOff}
+              className={styles.cartIcon}
+              onClick={() => setLogOutModalVisible()}
             />
           </div>
         </div>
@@ -88,6 +112,15 @@ function Header() {
           <Link href="/">Nouveaux arrivages</Link> <Link href="/">Genres</Link>
         </div>
       </div>
+
+      <Modal
+        width={1100}
+        onCancel={() => handleCancelLogin()}
+        visible={loginModalVisible}
+        footer={null}
+      >
+        <Login />
+      </Modal>
     </>
   );
 }
