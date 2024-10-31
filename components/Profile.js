@@ -15,6 +15,7 @@ function Profile() {
     const [isArchived, setIsArchived] = useState(false);
     const [sellingDate, setSellingDate] = useState('');
     const [comments, setComments] = useState('');
+    const [favorites, setFavorites] = useState([]);
 
 
     // recup les infos via le token et recup le isAdmin
@@ -33,6 +34,8 @@ function Profile() {
                 const data = await response.json();
                 setUserId(data._id);
                 setIsAdmin(data.isAdmin);
+                setFavorites(data.favorites);
+
             } catch (error) {
                 console.error(error.message);
                 setError(error.message);
@@ -141,7 +144,7 @@ function Profile() {
 
     return (
         <div className={styles.profile}>
-            <h2 className={styles.h2Admin}>{isAdmin ? 'Tableau de Bord Administrateur' : 'Profil Utilisateur'}</h2>
+            <h2 className={styles.h2Admin}>{isAdmin ? 'Tableau de Bord Administrateur:' : 'Profil Utilisateur:'}</h2>
             {/* Affichage conditionnel soit admin ou user selon la DB */}
             {isAdmin ? (
                 <div className={styles.admin}>
@@ -173,7 +176,7 @@ function Profile() {
                     <form onSubmit={handleUpdateSubmit} className={styles.imageForm}>
 
                         <label className={styles.imageForm}>
-                        Votre commentaire:
+                            Votre commentaire:
                             <input
                                 type='text'
                                 value={comments}
@@ -210,7 +213,24 @@ function Profile() {
                     </form>
                 </div>
             ) : (
-                <div>
+                <div className={styles.containerUser}>
+                    <div className={styles.containerFavoris}>
+                        <h3>Mes Favoris</h3>
+                        {favorites.length === 0 ? (
+                            <p>Vous n'avez pas encore de favoris.</p>
+                        ) : (
+                            <ul className={styles.favoritesList}>
+                                {favorites.map((favorite) => (
+                                    <li key={favorite._id} className={styles.favoriteItem}>
+                                        <h4>{favorite.title}</h4>
+                                        <p>Artiste : {favorite.artist}</p>
+                                        <p>Prix : {favorite.price} €</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                    <h3>Mes Commandes:</h3>
                     {orders.length === 0 ? (
                         <p>Aucune commande trouvée.</p>
                     ) : (
