@@ -6,11 +6,12 @@ import { Provider } from 'react-redux';
 import user from '../reducers/user';
 import likes from '../reducers/likes';
 import cart from '../reducers/cart';
+import search from '../reducers/search';
 import { configureStore } from '@reduxjs/toolkit';
 import { ConfigProvider } from "antd";
 
 const store = configureStore({
-  reducer: { user, likes, cart },
+  reducer: { user, likes, cart, search },
 });
 
 function App({ Component, pageProps }) {
