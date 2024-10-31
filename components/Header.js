@@ -30,10 +30,12 @@ function Header() {
 
   const showLoginModalVisible = () => {
     if (!user.token) {
-      console.log("L'utilisateur est déjà connecté")
-    setLoginModalVisible(true);
+   //   console.log("L'utilisateur est déjà connecté")
+      setLoginModalVisible(true);
     } else {
-      setLoginModalVisible(false)
+      console.log("L'utilisateur est déjà connecté")
+      setLoginModalVisible(false);
+      router.push("/profile");
     }
   };
 
@@ -105,16 +107,16 @@ function Header() {
           {/* <Message de bienvenue à l'utilisateur /> */}
           <div className={styles.icons}>
             {/* { user.email ? (<span>Bonjour {user.email}</span>) : (<spans>Bienvenue</spans>)} */}
-            { user.firstName ? (<span>Bonjour {user.firstName}</span>) : (<spans>Bienvenue</spans>)}
+            { user.firstName ? (<span>Bonjour {user.firstName}</span>) : (<span></span>)}
           </div>
 
           <div className={styles.icons}>
+              <FontAwesomeIcon icon={faHeart} className={styles.favIcon} />   
               <FontAwesomeIcon
                 icon={faUser}
                 className={styles.userIcon}
                 onClick={() => showLoginModalVisible()}
               />
-              <FontAwesomeIcon icon={faHeart} className={styles.favIcon} />
               <FontAwesomeIcon
                 icon={faCartShopping}
                 className={styles.cartIcon}
