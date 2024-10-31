@@ -26,7 +26,7 @@
     color: var(--color-dark); 
 }
 .artist {
-    font-size: 1.1em;
+    font-size: 1em;
     line-height: 1.2;
     min-height: 45px;
     margin-bottom: 5px;
@@ -35,7 +35,7 @@
     align-content: space-evenly;
 }
 .title {
-    font-size: 0.9em;
+    font-size: 0.8em;
     line-height: 1.2;
     min-height: 35px;
     align-content: space-evenly;

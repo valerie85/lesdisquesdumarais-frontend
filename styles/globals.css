@@ -72,6 +72,11 @@ h3.title {
   font-weight: 500;
 }
 
+/* Text */
+.introduction {
+  margin-bottom: 2rem;
+}
+
 
 /* Buttons Styles */
 .btnPrimary {

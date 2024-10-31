@@ -7,6 +7,7 @@ import {
   faHeart,
   faCartShopping,
   faPowerOff,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useState } from "react";
@@ -14,19 +15,25 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../reducers/user';
+import { basicSearch } from '../reducers/search';
 import MenuHeader from '../components/MenuHeader';
 import { Modal, Button } from "antd";
 import Login from "./Login";
 
 function Header() {
   // useState for search
-  const [keyword, setKeyword] = useState("");
+  const search = useSelector((state) => state.search.value.keyword);
+  const [keyword, setKeyword] = useState(search);
   const user = useSelector((state) => state.user.value);
+ 
   const dispatch = useDispatch();
   const router = useRouter();
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [logoutModalVisible, setLogOutModalVisible] = useState(false)
+
+  let resetStyle = { 'display': 'none' };
+  let submitStyle = { 'display': 'none' };
 
   const showLoginModalVisible = () => {
     if (!user.token) {
@@ -62,6 +69,26 @@ function Header() {
 
   console.log("the user:", user)
 
+  const handleSubmitKeyword = () => {
+    if(keyword) {
+      console.log("keyword",keyword);
+      dispatch(basicSearch({keyword: keyword}));
+    }
+    router.push('/search');
+  };
+  const resetKeyword = () => {
+    setKeyword('');
+    resetStyle = { 'display': 'none' };
+    submitStyle = { 'display': 'none' };
+    dispatch(basicSearch({keyword: ''}));
+  };
+
+  if(keyword) {
+    resetStyle = { 'display': 'block' };
+    submitStyle = { 'display': 'block' };
+  }
+  
+
   return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -95,12 +122,25 @@ function Header() {
                 type="text"
                 placeholder="Rechercher un disque, un artiste"
                 id="keyword"
+                autocomplete="keyword" 
                 onChange={(e) => setKeyword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter")
+                    handleSubmitKeyword()
+                  }}
                 value={keyword}
               />
               <FontAwesomeIcon
+                icon={faXmark}
+                className={styles.searchResetIcon}
+                style={resetStyle}
+                onClick={() => resetKeyword()}
+              />
+              <FontAwesomeIcon
                 icon={faArrowRight}
-                className={styles.searchIcon}
+                className={styles.searchSubmitIcon}
+                style={submitStyle}
+                onClick={() => handleSubmitKeyword()}
               />
             </div>
   
