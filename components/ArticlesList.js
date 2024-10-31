@@ -7,6 +7,7 @@ function ArticlesList() {
     const { genre } = router.query;
 
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [articlesData, setArticlesData] = useState([]);
     const [message, setMessage] = useState('');
 
@@ -20,19 +21,35 @@ function ArticlesList() {
           console.log("genre", genre);
           let genreName = genre.replace(/_/g, '/');
           setTitle(genreName);
+          setDescription("");
           setMessage("");
           setArticlesData([]);
           if(data.allGenres.some((element) => element.name == genreName)) {
+
+            // On récupère les infos du genre
             fetch(`http://localhost:3000/articles/bygenre/${genre}`)
             .then(response => response.json())
             .then(data => { 
+
+              let genreName = genre.replace(/_/g, '/');
+              fetch(`http://localhost:3000/genres/${genre}`)
+              .then(response => response.json())
+              .then(data => { 
+                setDescription(data.description);
+              });
+
               setArticlesData(data.genreArticles.filter((data, i) => i >= 0));
-              if(data.genreArticles.length==0) {
+              
+              if(data.genreArticles.length>1) {
+                setMessage(data.genreArticles.length+" articles disponibles");
+              } else if(data.genreArticles.length===1) {
+                setMessage(data.genreArticles.length+" article disponible");
+              } else {
                 setMessage("Aucun article...");
               }
             });
           } else {
-            window.location.assign("/");
+            router.push('/');
           }
         });
 
@@ -50,15 +67,18 @@ function ArticlesList() {
           <div className="container mx-auto">
             <h1 className="title">
               {title}
-            </h1>     
+            </h1>  
+            <p className="introduction">
+              {description}
+            </p>   
           </div>
 
           <div className="container mx-auto">
             <h2 className="title">
               Liste des articles
             </h2>
+            <div>{message}</div>
             <div className='flex flex-wrap'>
-              {message}
               {articles}              
             </div>          
           </div>
