@@ -15,6 +15,7 @@ function ArticleView() {
   const { article } = router.query;
 
   const [articleData, setArticleData] = useState({});
+  const [tracklist, setTracklist]=useState(); 
   const [articlePicture, setArticlePicture] = useState({ src: "/no_img.jpg", alt: "Image indisponible" });
   //const user = { token: "mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S", email: "valerie.deviers@gmail.com" };
   const user= useSelector((state)=> state.user.value);
@@ -41,6 +42,12 @@ function ArticleView() {
           if (data.article.pictures.length > 0) {
             setArticlePicture({ src: data.article.pictures[0], alt: data.article.title });
           }
+          const tracks= data.article.tracklist.map((track, i)=> {
+            return (
+              <li key={i}> {track}</li>
+              )
+            });
+            setTracklist(tracks);
 
         if (!user.token) {
           //récupération des infos dans les reducers likes et cart si le user n'est pas connecté
@@ -123,7 +130,7 @@ function ArticleView() {
       <div className="container mx-auto">
 
         <div className="flex">
-          <p className={styles.breadcrumb}><Link href="/">Accueil</Link> / <Link href={breadcrumbLink}>{genre}</Link></p>
+          <p className={styles.breadcrumb}><Link href="/">Accueil</Link> / <Link href={breadcrumbLink}>{genre}</Link> / {articleData.artist} - {articleData.title}</p>
         </div>
 
         <div className='flex flex-wrap'>
@@ -181,9 +188,7 @@ function ArticleView() {
           </div>
           <div className={styles.tracklist}>
             <h3 className="title">Tracklist</h3>
-            <ul>
-
-            </ul>
+            <ol>{tracklist}</ol> 
           </div>
         </div>
       </div>
