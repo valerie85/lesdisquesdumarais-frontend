@@ -14,6 +14,7 @@ function Profile() {
     const [selectedArticle, setSelectedArticle] = useState('');
     const [isArchived, setIsArchived] = useState(false);
     const [sellingDate, setSellingDate] = useState('');
+    const [comments, setComments] = useState('');
 
 
     // recup les infos via le token et recup le isAdmin
@@ -125,6 +126,7 @@ function Profile() {
                 body: JSON.stringify({
                     isArchived: isArchived,
                     selling_Date: sellingDate,
+                    comments: comments,
                 })
             });
             if (response.ok) {
@@ -169,6 +171,15 @@ function Profile() {
                         > Enregister votre image </button>
                     </form>
                     <form onSubmit={handleUpdateSubmit} className={styles.imageForm}>
+
+                        <label className={styles.imageForm}>
+                        Votre commentaire:
+                            <input
+                                type='text'
+                                value={comments}
+                                onChange={(e) => setComments(e.target.value)}
+                                placeholder='Entrez votre commentaire' className={styles.inputUrl} />
+                        </label>
                         <label>
                             Archiver l'article:
                             <input
