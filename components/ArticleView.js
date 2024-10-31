@@ -24,7 +24,8 @@ function ArticleView() {
   const [isLiked, setIsLiked] = useState({ result: false, likeStyle: { 'color': 'black' } });
   const [isInCart, setIsInCart] = useState(false);
   const [bttnCart, setBttnCart] = useState({ message: "Ajouter au panier", cartBttnStyle: { 'backgroundColor': 'var(--color-primary)' } });
-
+  const [genre, setGenre] = useState("");
+  const [breadcrumbLink, setBreadcrumbLink] = useState("");
 
   useEffect(() => {
     if (!article) {
@@ -35,6 +36,8 @@ function ArticleView() {
       .then(response => response.json())
       .then(data => {
         setArticleData(data.article);
+        setGenre(data.article.genre[0]);
+        setBreadcrumbLink(`../genre/${data.article.genre[0]}`);
           if (data.article.pictures.length > 0) {
             setArticlePicture({ src: data.article.pictures[0], alt: data.article.title });
           }
@@ -114,23 +117,24 @@ function ArticleView() {
     setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
   };
 
+  
   return (
     <>
       <div className="container mx-auto">
 
         <div className="flex">
-          <p className={styles.breadcrumb}><Link href="/">Accueil</Link> / </p>
+          <p className={styles.breadcrumb}><Link href="/">Accueil</Link> / <Link href={breadcrumbLink}>{genre}</Link></p>
         </div>
 
         <div className='flex flex-wrap'>
 
-          <div className="basis-1/2">
+          <div className="basis-full md:basis-1/2">
             <div className={styles.photos}>
               <Image src={articlePicture.src} alt={articlePicture.alt} width={300} height={300}></Image>
             </div>
           </div>
 
-          <div className="basis-1/2">
+          <div className="basis-full md:basis-1/2">
             <div className={styles.infos}>
 
               <div className='flex flex-wrap justify-between'>
