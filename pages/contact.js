@@ -1,17 +1,17 @@
-import GeneralConditions from '../components/GeneralConditions';
+import Contact from '../components/Contact';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-function DisplayCGV() {
+function DisplayContact() {
   return (
     <div className="layout">
       <Header />
       <div className="container">
-        <GeneralConditions />
+        <Contact />
       </div>
       <Footer />
     </div>
   );
 }
 
-export default DisplayCGV;
+export default DisplayContact;

@@ -1,22 +1,22 @@
-import ArticleView from '../../components/ArticleView';
+import ArticlesList from '../../components/ArticlesList';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-function Article() {
+function Genre() {
   const router = useRouter();
-  const { article } = router.query;
+  const { genre } = router.query;
 
   return (
     <>
       <Head>
-          <title>Release n°{article}</title>
+          <title>{genre}</title>
       </Head>
       <div className="layout">
         <Header />
         <div className="content">
-          <ArticleView />
+          <ArticlesList />
         </div>
         <Footer />
       </div>
@@ -24,4 +24,4 @@ function Article() {
   );
 }
 
-export default Article;
+export default Genre;

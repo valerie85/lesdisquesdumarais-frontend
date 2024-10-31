@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { addLike, removeLike } from '../reducers/likes';
 import { addToCart, removeFromCart } from '../reducers/cart';
-
 import { useRouter } from 'next/router';
 
 function ArticleView() {
@@ -16,6 +15,7 @@ function ArticleView() {
   const { article } = router.query;
 
   const [articleData, setArticleData] = useState({});
+  const [tracklist, setTracklist]=useState(); 
   const [articlePicture, setArticlePicture] = useState({ src: "/no_img.jpg", alt: "Image indisponible" });
   //const user = { token: "mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S", email: "valerie.deviers@gmail.com" };
   const user= useSelector((state)=> state.user.value);
@@ -25,7 +25,8 @@ function ArticleView() {
   const [isLiked, setIsLiked] = useState({ result: false, likeStyle: { 'color': 'black' } });
   const [isInCart, setIsInCart] = useState(false);
   const [bttnCart, setBttnCart] = useState({ message: "Ajouter au panier", cartBttnStyle: { 'backgroundColor': 'var(--color-primary)' } });
-
+  const [genre, setGenre] = useState("");
+  const [breadcrumbLink, setBreadcrumbLink] = useState("");
 
   useEffect(() => {
     if (!article) {
@@ -36,9 +37,17 @@ function ArticleView() {
       .then(response => response.json())
       .then(data => {
         setArticleData(data.article);
+        setGenre(data.article.genre[0]);
+        setBreadcrumbLink(`../genre/${data.article.genre[0]}`);
           if (data.article.pictures.length > 0) {
             setArticlePicture({ src: data.article.pictures[0], alt: data.article.title });
           }
+          const tracks= data.article.tracklist.map((track, i)=> {
+            return (
+              <li key={i}> {track}</li>
+              )
+            });
+            setTracklist(tracks);
 
         if (!user.token) {
           //récupération des infos dans les reducers likes et cart si le user n'est pas connecté
@@ -115,30 +124,31 @@ function ArticleView() {
     setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
   };
 
+  
   return (
     <>
       <div className="container mx-auto">
 
         <div className="flex">
-          <p className={styles.breadcrumb}><Link href="/">Accueil</Link> / </p>
+          <p className={styles.breadcrumb}><Link href="/">Accueil</Link> / <Link href={breadcrumbLink}>{genre}</Link> / {articleData.artist} - {articleData.title}</p>
         </div>
 
         <div className='flex flex-wrap'>
 
-          <div className="basis-1/2">
+          <div className="basis-full md:basis-1/2">
             <div className={styles.photos}>
               <Image src={articlePicture.src} alt={articlePicture.alt} width={300} height={300}></Image>
             </div>
           </div>
 
-          <div className="basis-1/2">
+          <div className="basis-full md:basis-1/2">
             <div className={styles.infos}>
 
               <div className='flex flex-wrap justify-between'>
                 <p className={styles.artist}>{articleData.artist}</p>
                 <FontAwesomeIcon
                   icon={faHeart}
-                  className={styles.likeIcon}
+                  size={25} className={styles.likeIcon}
                   style={isLiked.likeStyle}
                   onClick={() => handleLikeClick()} />
               </div>
@@ -178,9 +188,7 @@ function ArticleView() {
           </div>
           <div className={styles.tracklist}>
             <h3 className="title">Tracklist</h3>
-            <ul>
-
-            </ul>
+            <ol>{tracklist}</ol> 
           </div>
         </div>
       </div>
