@@ -1,44 +1,17 @@
-.footer {
-    flex-direction: row;
-    justify-content :space-around;
-    align-items: center;
-    padding: 10px;
-    height :160px;
-    width:100%;
-}
 .staticInfos {
-    flex-direction: column;
-    justify-content :space-between;
-    align-items: center;
     background-color:white;
     color:var(--color-primary); 
-    height:50%;
-    width:100%;
+    margin-bottom: 1rem;
+    padding: 0 4rem;
 }
-.paypalIcon {
-    height:25px;
-    width:25px; 
+.icon {
+    height:40px;
+    width:40px; 
+    margin-right: 1rem;
     color:var(--color-tertiary); 
 }
-
-.truckIcon {
-    height:25px;
-    width:25px; 
-    color:var(--color-tertiary); 
-}
-.heartIcon {
-    height:25px;
-    width:25px; 
-    color:var(--color-tertiary);  
-}
-
-
 .dynamicInfos {
-    flex-direction: column;
-    justify-content :space-between;
-    align-items: center;
     background-color: var(--color-primary);;
     color:var(--color-light);
-    height:50%;
-    width:100%;
+    padding: 1rem;
 }
