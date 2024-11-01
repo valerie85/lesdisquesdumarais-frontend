@@ -1,0 +1,104 @@
+.globalContainer {
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items :center;
+    width:100%;
+    margin:10px;
+    padding:10px;
+
+}
+.rightContainer {
+    display :flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items: center;
+    background-color: aqua;
+    width:50%;
+}
+.articlesContainer {
+    display :flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items: center;
+    height :50%;
+    background-color: aquamarine;
+    margin-top:10px;
+    margin-bottom:20px;
+}
+.orderInfosContainer {
+    display :flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    height :50%;
+    background-color: rgb(255, 127, 200);
+    margin-top:10px;
+    margin-bottom:20px;
+
+}
+.centerContainer {
+    background-color:black;
+    width: 3px;
+    color:black;
+
+}
+.leftContainer {
+    display :flex;
+    flex-direction :column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    background-color: chartreuse;
+    width:50%;
+    height:100%;
+}
+.addressContainer {
+    display :flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    height :40%;
+    background-color: rgb(223, 255, 127);
+    margin-top:10px;
+    margin-bottom:20px;
+}
+.deliveryContainer {
+    display :flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    height :30%;
+    background-color: rgb(174, 127, 255);
+    margin-top:10px;
+    margin-bottom:20px;
+}
+.paymentContainer {
+    display :flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    height :30%;
+    background-color: rgb(127, 195, 255);
+    margin-top:10px;
+    margin-bottom:20px;
+}
+.validationOrderInfos {
+    background-color: rgb(167, 172, 176);
+
+}
+.validationInfosBttnStyle {
+    background-color: rgb(255, 127, 127);
+}
+.h2 {
+    font-size: 2em;
+    font-family: var(--font-title);
+    color: var(--color-primary);
+    margin-bottom: 15px; 
+  }
+
+.h3 {
+    font-size: 1.5em;
+    font-family: var(--font-title);
+    color: var(--color-primary);
+    margin-bottom: 15px; 
+  }
