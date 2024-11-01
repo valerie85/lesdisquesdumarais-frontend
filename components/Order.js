@@ -42,7 +42,7 @@ function Order() {
                   console.log('adresses',addressesList)
                 }
             })
-    }, [formState]);
+    }, []);
 
     const handleClearAddress = () => {
         setFormState({});

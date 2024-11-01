@@ -71,7 +71,7 @@ function ArticleView() {
           if (likes.some(e => e === data.article._id)) {
             setIsLiked({ result: true, likeStyle: { 'color': 'var(--color-red)' } });
           };
-          if (cart.some(e => e === data.article._id)) {
+          if (cart.some(e => e._id === data.article._id)) {
             setIsInCart(true);
             setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
           }else {
@@ -86,7 +86,7 @@ function ArticleView() {
               if (user.userData.favorites.some(e => e === data.article._id)) {
                 setIsLiked({ result: true, likeStyle: { 'color': 'var(--color-red)' } });
               }
-              if (cart.some(e => e ===data.article._id)) {
+              if (cart.some(e => e._id ===data.article._id)) {
                 setIsInCart(true);
                 setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
                } else {
