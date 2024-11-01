@@ -1,4 +1,3 @@
-import styles from '../styles/Home.module.css';
 import Article from '../components/Article';
 import { useEffect, useState } from 'react';
 import Link from "next/link";
@@ -70,7 +69,7 @@ function Home() {
 
   return (
     <>
-      <main className={styles.main}>
+      <main className="main">
 
         <div className="container mx-auto">
           <h1 className="title">

@@ -1,9 +1,9 @@
 .main {
     background-color: var(--color-primary);
-    height: 190px;
+    height: 170px;
 }
 .content {
-    height: 140px;
+    height: 120px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -11,9 +11,10 @@
     margin: auto;
 }
 .logo {
-    height: 120px;
+    max-height: 120px;
     width: 200px;
     cursor: pointer;
+    margin-right: 15px;
 }
 .search {
     border-bottom: 1px solid var(--color-light);
@@ -57,23 +58,33 @@
 .searchInput::placeholder {
     color: var(--color-light) !important;
 }
+.rightContent {
+
+}
 .icons {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     width: 200px;
 }
 .icons > * {
     color: var(--color-light);
     max-width: 30px;
     max-height: 30px;
-    margin: 0 15px;
+    margin: 0 10px;
     transition: all 0.2s ease-in-out;
 }
 .icons > *:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+.userMessage {
+    color: var(--color-light);
+    text-align: center;
+    font-size: 0.8em;
+    width: 200px;
+    margin-top: 10px;
 }
 .menu {
     background-color: var(--color-secondary);

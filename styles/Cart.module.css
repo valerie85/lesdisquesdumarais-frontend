@@ -188,3 +188,8 @@
   font-size: 18px;
   transition: background-color 0.3s ease;
 }
+
+.breadcrumb {
+    line-height: 1.15;
+    font-size: 0.9em;
+  }

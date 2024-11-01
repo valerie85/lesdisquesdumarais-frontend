@@ -11,7 +11,7 @@ function Article() {
   return (
     <>
       <Head>
-          <title>Release n°{article}</title>
+          <title>Les Disques du Marais - Release #{article}</title>
       </Head>
       <div className="layout">
         <Header />

@@ -13,6 +13,10 @@ module.exports = {
         light: 'var(--color-light)',
         dark: 'var(--color-dark)',
       },
+      fontFamily: {
+        main: ['var(--font-main)', 'sans-serif'],
+        title: ['var(--font-title)', 'sans-serif'],
+      },
     },
     container: {
       padding: '2rem',

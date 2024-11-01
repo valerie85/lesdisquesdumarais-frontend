@@ -25,7 +25,7 @@ function Header() {
   const search = useSelector((state) => state.search.value.keyword);
   const [keyword, setKeyword] = useState(search);
   const user = useSelector((state) => state.user.value);
- 
+
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -37,7 +37,7 @@ function Header() {
 
   const showLoginModalVisible = () => {
     if (!user.token) {
-   //   console.log("L'utilisateur est déjà connecté")
+      //   console.log("L'utilisateur est déjà connecté")
       setLoginModalVisible(true);
     } else {
       console.log("L'utilisateur est déjà connecté")
@@ -51,28 +51,25 @@ function Header() {
   };
 
   const showLogoutModal = () => {
-    if(user.token) {
-    setLogOutModalVisible(true)
+    if (user.token) {
+      setLogOutModalVisible(true)
     }
   }
 
   const handleLogout = () => {
-    if(user.token) {
-    dispatch(logout())
-    setLogOutModalVisible(false);
-    console.log("L'utilisateur est bien déconnecté")
-    router.push('/');
+    if (user.token) {
+      dispatch(logout())
+      setLogOutModalVisible(false);
+        router.push('/');
     } else {
       message.error("Vous êtes déjà déconnecté")
     }
   };
 
-  console.log("the user:", user)
-
   const handleSubmitKeyword = () => {
-    if(keyword) {
-      console.log("keyword",keyword);
-      dispatch(basicSearch({keyword: keyword}));
+    if (keyword) {
+      console.log("keyword", keyword);
+      dispatch(basicSearch({ keyword: keyword }));
     }
     router.push('/search');
   };
@@ -80,10 +77,10 @@ function Header() {
     setKeyword('');
     resetStyle = { 'display': 'none' };
     submitStyle = { 'display': 'none' };
-    dispatch(basicSearch({keyword: ''}));
+    dispatch(basicSearch({ keyword: '' }));
   };
 
-  if(keyword) {
+  if (keyword) {
     resetStyle = { 'display': 'block' };
     submitStyle = { 'display': 'block' };
   }
@@ -92,6 +89,7 @@ function Header() {
     router.push('/favoris');
   };
   
+
 
   return (
     <>
@@ -103,7 +101,7 @@ function Header() {
       ></link>
 
       <div className={styles.main}>
-        
+
         <div className="container mx-auto">
           <div className={styles.content}>
             <div className={styles.logo}>
@@ -131,7 +129,7 @@ function Header() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter")
                     handleSubmitKeyword()
-                  }}
+                }}
                 value={keyword}
               />
               <FontAwesomeIcon
@@ -147,31 +145,30 @@ function Header() {
                 onClick={() => handleSubmitKeyword()}
               />
             </div>
-  
-          {/* <Message de bienvenue à l'utilisateur /> */}
-          <div className={styles.icons}>
-            {/* { user.email ? (<span>Bonjour {user.email}</span>) : (<spans>Bienvenue</spans>)} */}
-            { user.firstName ? (<span>Bonjour {user.firstName}</span>) : (<span></span>)}
-          </div>
 
-          <div className={styles.icons}>
-              <FontAwesomeIcon icon={faHeart} className={styles.favIcon} onClick={handleFavoritesClick} 
-               />   
-              <FontAwesomeIcon
-                icon={faUser}
-                className={styles.userIcon}
-                onClick={() => showLoginModalVisible()}
-              />
-              <FontAwesomeIcon
-                icon={faCartShopping}
-                className={styles.cartIcon}
-                onClick={() => router.push('/cart')}
-              />
-              <FontAwesomeIcon
-                icon={faPowerOff}
-                className={styles.cartIcon}
-                onClick={() => showLogoutModal() }
-              />
+            <div className={styles.rightContent}>
+              <div className={styles.icons}>
+                <FontAwesomeIcon icon={faHeart} className={styles.favIcon} onClick={handleFavoritesClick} 
+               />
+                <FontAwesomeIcon
+                  icon={faCartShopping}
+                  className={styles.cartIcon}
+                  onClick={() => router.push('/cart')}
+                />
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className={styles.userIcon}
+                  onClick={() => showLoginModalVisible()}
+                />
+                {user.token && (
+                  <FontAwesomeIcon
+                    icon={faPowerOff}
+                    className={styles.cartIcon}
+                    onClick={() => showLogoutModal()}
+                  />
+                )}
+              </div>           
+              {user.firstName ? (<div className={styles.userMessage}>Bonjour {user.firstName} !</div>) : ""}           
             </div>
           </div>
         </div>
@@ -182,7 +179,7 @@ function Header() {
           </div>
           {/* <Link href="/">Nouveaux arrivages</Link> <Link href="/">Genres</Link> */}
         </div>
-        
+
       </div>
 
       <Modal
@@ -199,9 +196,9 @@ function Header() {
         title="Vous souhaitez vous déconnecter ?"
         open={logoutModalVisible}
         onCancel={() => setLogOutModalVisible(false)}
-        footer= {[
-          <Button key="logout" type='primary' danger onClick={handleLogout}>Se déconnecter</Button>,
-          <Button key="cancel" onClick={() => setLogOutModalVisible(false)}>Annuler</Button>,
+        footer={[
+          <Button key="logout" type='primary' danger onClick={handleLogout} className="btnPrimary">Se déconnecter</Button>,
+          <Button key="cancel" onClick={() => setLogOutModalVisible(false)} className="btnTertiary">Annuler</Button>,
         ]}
       >
       </Modal>
