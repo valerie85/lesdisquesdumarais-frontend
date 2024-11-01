@@ -84,7 +84,7 @@ function Home() {
         <div className="container mx-auto contentNew">
           <div className='flex flex-wrap gap-5 items-center'>
             <h2 className="title">Rock</h2>
-            <Link href="/genre/Rock"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size={20} /></button></Link>
+            <Link href="/genre/Rock"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size="lg" /></button></Link>
           </div>
           <div className='flex flex-wrap'>
             {articlesRock}
@@ -94,7 +94,7 @@ function Home() {
         <div className="container mx-auto contentNew">
           <div className='flex flex-wrap gap-5 items-center'>
             <h2 className="title">Electronic</h2>
-            <Link href="/genre/Electronic"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size={20} /></button></Link>
+            <Link href="/genre/Electronic"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size="lg" /></button></Link>
           </div>
           <div className='flex flex-wrap'>
             {articlesElectronic}
@@ -104,7 +104,7 @@ function Home() {
         <div className="container mx-auto contentNew">
           <div className='flex flex-wrap gap-5 items-center'>
             <h2 className="title">Pop</h2>
-            <Link href="/genre/Pop"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size={20} /></button></Link>
+            <Link href="/genre/Pop"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size="lg" /></button></Link>
           </div>
           <div className='flex flex-wrap'>
             {articlesPop}
@@ -114,7 +114,7 @@ function Home() {
         <div className="container mx-auto contentNew">
           <div className='flex flex-wrap gap-5 items-center'>
             <h2 className="title">Funk / Soul</h2>
-            <Link href="/genre/Funk%20_%20Soul"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size={20} /></button></Link>
+            <Link href="/genre/Funk%20_%20Soul"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size="lg" /></button></Link>
           </div>
           <div className='flex flex-wrap'>
             {articlesFunk}
@@ -124,7 +124,7 @@ function Home() {
         <div className="container mx-auto contentNew">
           <div className='flex flex-wrap gap-5 items-center'>
             <h2 className="title">Jazz</h2>
-            <Link href="/genre/Jazz"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size={20} /></button></Link>
+            <Link href="/genre/Jazz"><button className="btnPrimary">Voir tous les articles <FontAwesomeIcon icon={faArrowRight} size="lg" /></button></Link>
           </div>
           <div className='flex flex-wrap'>
             {articlesJazz}

@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from '../styles/Profile.module.css';
 
-
 function Profile() {
     const token = useSelector((state) => state.user.value.token);
     const [userId, setUserId] = useState(null);
     const [orders, setOrders] = useState([]);
     const [orderExp, setOrderExp] = useState([]);
-    const [error, setError] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const [articles, setarticles] = useState([]);
@@ -42,7 +40,6 @@ function Profile() {
 
             } catch (error) {
                 console.error(error.message);
-                setError(error.message);
             }
         };
         fetchUser()
@@ -65,17 +62,14 @@ function Profile() {
                 if (data.result) {
                     setOrders(data.orders);
                 } else {
-                    setError('Aucune commande trouver');
+                    console.error('Aucune commande trouver');
                 }
             } catch (error) {
                 console.error('erreur:', error.message);
-                setError(error.message);
             }
         }
         fetchOrders()
     }, [userId, token, isAdmin])
-
-
 
     useEffect(() => {
         if (!isAdmin) return;
@@ -86,7 +80,6 @@ function Profile() {
                 setarticles(data.allArticles)
             } catch (error) {
                 console.error('Erreur lors de la recup des articles');
-                setError(error.message);
             }
         }
         fetchArticles();
@@ -101,7 +94,6 @@ function Profile() {
                 setOrderExp(data.orders)
             } catch (error) {
                 console.error('Erreur lors de la recup des articles');
-                setError(error.message);
             }
         }
         fetchOrderExp();
@@ -111,8 +103,7 @@ function Profile() {
         e.preventDefault();
         if (!selectedArticle) {
             alert('Veuillez selectionner un article.')
-            return;
-        }
+            return;}
         try {
             const response = await fetch(`http://localhost:3000/articles/${selectedArticle}/images`, {
                 method: 'POST',
@@ -137,19 +128,14 @@ function Profile() {
         e.preventDefault();
         if (!selectedArticle) {
             alert('Veuillez sélectionner un article.');
-            return;
-        }
+            return;}
         try {
             const response = await fetch(`http://localhost:3000/articles/${selectedArticle}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    isArchived: isArchived,
-                    selling_Date: sellingDate,
-                    comments: comments,
-                })
+                body: JSON.stringify({ isArchived: isArchived, selling_Date: sellingDate, comments: comments,})
             });
             if (response.ok) {
                 console.log('Article mis à jour avec succes');
@@ -173,10 +159,7 @@ function Profile() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    order_status: status,
-                    tracking_number: tracking,
-                }),
+                body: JSON.stringify({ order_status: status, tracking_number: tracking,}),
             });
             const data = await response.json();
             if (data.result) {
@@ -260,22 +243,14 @@ function Profile() {
                     <form onSubmit={updateOrderStatus} className={styles.imageForm}>
                         <label>
                             Archiver l'article:
-                            <input
-                                type="radio"
-                                value="Pending"
-                                checked={status === "Pending"}
-                                onChange={() => setStatus("Pending")}
+                            <input type="radio" value="Pending"
+                                checked={status === "Pending"} onChange={() => setStatus("Pending")}
                             /> Pending
-                            <input
-                                type="radio"
-                                value="Shipped"
-                                checked={status === "Shipped"}
-                                onChange={() => setStatus("Shipped")}
-                            />
-                            Shipped
+                            <input type="radio" value="Shipped"
+                                checked={status === "Shipped"} onChange={() => setStatus("Shipped")}
+                            /> Shipped
                         </label>
-                        <label>
-                            N° du tracking_number:
+                        <label> N° du tracking_number:
                             <input
                                 type="String" value={tracking} placeholder='  Numero de tracking'
                                 onChange={(e) => setTracking(e.target.value)} className={styles.inputTracking}
@@ -339,5 +314,4 @@ function Profile() {
         </div>
     );
 }
-
 export default Profile;
