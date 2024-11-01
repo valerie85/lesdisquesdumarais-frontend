@@ -1,5 +1,5 @@
 import styles from '../styles/Favoris.module.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLike, removeLike } from '../reducers/likes';
 
@@ -13,11 +13,9 @@ function Favoris() {
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      try {
-        // Si l'utilisateur n'est pas connecté, utiliser les likes du reducer pour récupérer les articles
-        const favoriteIds = token ? [] : likes;
-        if (token) {
-          // Utilisateur connecté, récupérer les favoris depuis la base
+      const favoriteIds = token ? [] : likes;
+      if (token) {
+        try {
           const userResponse = await fetch(`${BACKEND}/users/id`, {
             method: 'GET',
             headers: { Authorization: `${token}` },
@@ -27,59 +25,68 @@ function Favoris() {
             const userData = await userResponse.json();
             favoriteIds.push(...userData.favorites);
           }
+        } catch (error) {
+          console.error('Erreur lors de la recup des donnees user:', error.message);
+          return;
         }
+      }
 
-        // Récupérer les articles favoris correspondants aux IDs (soit depuis la base, soit depuis le reducer)
-        const articlesResponse = await fetch(`${BACKEND}/articles/favorites`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ids: favoriteIds }),
-        });
-
-        const articlesData = await articlesResponse.json();
-        if (articlesData.result) {
-          setFavorites(articlesData.articles);
-        } else {
-          console.error("Erreur lors de la récupération des articles favoris");
+      if (favoriteIds.length > 0) {
+        try {
+          const articlesResponse = await fetch(`${BACKEND}/articles/favorites`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: favoriteIds }),
+          });
+          const articlesData = await articlesResponse.json();
+          if (articlesData.result) {
+            setFavorites(articlesData.articles);
+          } else {
+            console.error("Erreur lors de la recup des articles favoris");
+          }
+        } catch (error) {
+          console.error('Erreur lors de la recup des articles favoris:', error.message);
         }
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error.message);
       }
     };
-
     fetchFavorites();
   }, [token, likes]);
 
-  const handleLikeClick = (articleId) => {
+  const handleLikeClick = useCallback((articleId) => {
+    const isLiked = likes.includes(articleId);
+
     if (!token) {
-      if (!likes.includes(articleId)) {
+      if (!isLiked) {
         dispatch(addLike(articleId));
-        setFavorites(prevFavorites => [
+        setFavorites((prevFavorites) => [
           ...prevFavorites,
-          { _id: articleId } // On ajoute l'article temporairement, il sera remplacé au prochain rendu
+          { _id: articleId, title, price, pictures },
         ]);
       } else {
         dispatch(removeLike(articleId));
-        setFavorites(prevFavorites => prevFavorites.filter(fav => fav._id !== articleId));
+        setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav._id !== articleId));
       }
-    } else {
-      fetch(`${BACKEND}/users/like`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, articleId }),
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.result && data.message === 'favorite added') {
-            dispatch(addLike(articleId));
-          } else if (data.result && data.message === 'favorite removed') {
-            dispatch(removeLike(articleId));
-            setFavorites(prevFavorites => prevFavorites.filter(fav => fav._id !== articleId));
-          }
-        })
-        .catch(error => console.error('Erreur lors de la mise à jour des favoris:', error));
+      return;
     }
-  };
+
+    fetch(`${BACKEND}/users/like`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, articleId }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          if (data.message === 'favorite added') {
+            dispatch(addLike(articleId));
+          } else if (data.message === 'favorite removed') {
+            dispatch(removeLike(articleId));
+            setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav._id !== articleId));
+          }
+        }
+      })
+      .catch((error) => console.error('Erreur lors de la mise à jour des favoris:', error.message));
+  }, [token, likes, dispatch, BACKEND]);
 
   return (
     <div className={styles.containerFav}>
