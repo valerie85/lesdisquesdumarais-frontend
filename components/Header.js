@@ -60,14 +60,11 @@ function Header() {
     if (user.token) {
       dispatch(logout())
       setLogOutModalVisible(false);
-      console.log("L'utilisateur est bien déconnecté")
-      router.push('/');
+        router.push('/');
     } else {
       message.error("Vous êtes déjà déconnecté")
     }
   };
-
-  console.log("the user:", user)
 
   const handleSubmitKeyword = () => {
     if (keyword) {
@@ -144,9 +141,6 @@ function Header() {
               />
             </div>
 
-
-
-
             <div className={styles.rightContent}>
               <div className={styles.icons}>
                 <FontAwesomeIcon icon={faHeart} className={styles.favIcon} />
@@ -160,13 +154,15 @@ function Header() {
                   className={styles.userIcon}
                   onClick={() => showLoginModalVisible()}
                 />
-                <FontAwesomeIcon
-                  icon={faPowerOff}
-                  className={styles.cartIcon}
-                  onClick={() => showLogoutModal()}
-                />
+                {user.token && (
+                  <FontAwesomeIcon
+                    icon={faPowerOff}
+                    className={styles.cartIcon}
+                    onClick={() => showLogoutModal()}
+                  />
+                )}
               </div>           
-                {user.firstName ? (<div className={styles.userMessage}>Bonjour {user.firstName} !</div>) : ""}           
+              {user.firstName ? (<div className={styles.userMessage}>Bonjour {user.firstName} !</div>) : ""}           
             </div>
           </div>
         </div>
