@@ -60,14 +60,11 @@ function Header() {
     if(user.token) {
     dispatch(logout())
     setLogOutModalVisible(false);
-    console.log("L'utilisateur est bien déconnecté")
     router.push('/');
     } else {
       message.error("Vous êtes déjà déconnecté")
     }
   };
-
-  console.log("the user:", user)
 
   const handleSubmitKeyword = () => {
     if(keyword) {
@@ -162,11 +159,13 @@ function Header() {
                 className={styles.cartIcon}
                 onClick={() => router.push('/cart')}
               />
+              {user.token && (
               <FontAwesomeIcon
                 icon={faPowerOff}
                 className={styles.cartIcon}
                 onClick={() => showLogoutModal() }
               />
+            )}
             </div>
           </div>
         </div>
