@@ -12,31 +12,35 @@ function Favoris() {
   const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
 
   useEffect(() => {
-    if (!token) return;
-
     const fetchFavorites = async () => {
       try {
-        const userResponse = await fetch(`${BACKEND}/users/id`, {
-          method: 'GET',
-          headers: { Authorization: `${token}` },
-        });
-
-        if (userResponse.ok) {
-          const userData = await userResponse.json();
-          const favoriteIds = userData.favorites;
-
-          const articlesResponse = await fetch(`${BACKEND}/articles/favorites`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ids: favoriteIds })
+        // Si l'utilisateur n'est pas connecté, utiliser les likes du reducer pour récupérer les articles
+        const favoriteIds = token ? [] : likes;
+        if (token) {
+          // Utilisateur connecté, récupérer les favoris depuis la base
+          const userResponse = await fetch(`${BACKEND}/users/id`, {
+            method: 'GET',
+            headers: { Authorization: `${token}` },
           });
 
-          const articlesData = await articlesResponse.json();
-          if (articlesData.result) {
-            setFavorites(articlesData.articles);
-          } else {
-            console.error("Erreur lors de la récupération des articles favoris");
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
+            favoriteIds.push(...userData.favorites);
           }
+        }
+
+        // Récupérer les articles favoris correspondants aux IDs (soit depuis la base, soit depuis le reducer)
+        const articlesResponse = await fetch(`${BACKEND}/articles/favorites`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ids: favoriteIds }),
+        });
+
+        const articlesData = await articlesResponse.json();
+        if (articlesData.result) {
+          setFavorites(articlesData.articles);
+        } else {
+          console.error("Erreur lors de la récupération des articles favoris");
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error.message);
@@ -44,15 +48,15 @@ function Favoris() {
     };
 
     fetchFavorites();
-  }, [token]);
+  }, [token, likes]);
 
   const handleLikeClick = (articleId) => {
     if (!token) {
       if (!likes.includes(articleId)) {
         dispatch(addLike(articleId));
         setFavorites(prevFavorites => [
-          ...prevFavorites, 
-          { _id: articleId, title: "Titre temporaire", artist: "Artiste temporaire", price: "Prix temporaire", pictures: ["/no_img.jpg"] }
+          ...prevFavorites,
+          { _id: articleId } // On ajoute l'article temporairement, il sera remplacé au prochain rendu
         ]);
       } else {
         dispatch(removeLike(articleId));
@@ -68,7 +72,6 @@ function Favoris() {
         .then(data => {
           if (data.result && data.message === 'favorite added') {
             dispatch(addLike(articleId));
-            setFavorites(prevFavorites => [...prevFavorites, data.article]); 
           } else if (data.result && data.message === 'favorite removed') {
             dispatch(removeLike(articleId));
             setFavorites(prevFavorites => prevFavorites.filter(fav => fav._id !== articleId));
