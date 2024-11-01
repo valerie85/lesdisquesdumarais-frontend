@@ -4,13 +4,18 @@ import Footer from '../components/Footer';
 
 function DisplayContact() {
   return (
-    <div className="layout">
-      <Header />
-      <div className="container">
-        <Contact />
+    <>
+      <Head>
+        <title>Les Disques du Marais - Contact</title>
+      </Head>
+      <div className="layout">
+        <Header />
+        <div className="content">
+          <Contact />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~react-image-gallery/styles/css/image-gallery.css";
 
 /* Variables */
 :root {
@@ -10,6 +11,8 @@
   --color-light: #FFFFFF;
   --color-dark: #000000;
   --color-grey: #eeeeee;
+  --color-red: #ff0034;
+  --color-green: #14ff00;
   --font-main: "Radio Canada", sans-serif;
   --font-title: "Radio Canada Big", sans-serif;
 }
@@ -41,9 +44,11 @@ body {
   flex-direction: column;
   padding: 2rem 0;
 }
-.row {
-  width: 100%;
-  margin-bottom: 2rem;
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .card {
   padding: 1rem;
@@ -73,6 +78,11 @@ h3.title {
 }
 
 /* Text */
+.breadcrumb {
+  line-height: 1.15;
+  font-size: 0.9em;
+  margin-bottom: 1rem;
+}
 .introduction {
   margin-bottom: 2rem;
 }
@@ -137,3 +147,19 @@ h3.title {
   font-family: var(--font-title);
 } 
 
+/* Gallery */
+.image-gallery-thumbnails-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.image-gallery-content:not(.fullscreen) .image-gallery-slide .image-gallery-image {
+  min-height: 350px !important;
+  max-height: 350px !important;
+}
+.image-gallery-thumbnail:hover {
+  border: 4px solid var(--color-tertiary) !important;
+}
+.image-gallery-thumbnail.active, .image-gallery-thumbnail:focus {
+  border: 4px solid var(--color-secondary) !important;
+}

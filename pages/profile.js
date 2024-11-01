@@ -6,7 +6,7 @@ function profile() {
   return (
     <div className="layout">
       <Header />
-      <div className="container">
+      <div className="content">
         <Profile />
       </div>
       <Footer />
