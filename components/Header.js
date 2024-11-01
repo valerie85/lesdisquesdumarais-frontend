@@ -87,6 +87,10 @@ function Header() {
     resetStyle = { 'display': 'block' };
     submitStyle = { 'display': 'block' };
   }
+
+  const handleFavoritesClick = () => {
+    router.push('/favoris');
+  };
   
 
   return (
@@ -122,7 +126,7 @@ function Header() {
                 type="text"
                 placeholder="Rechercher un disque, un artiste"
                 id="keyword"
-                autocomplete="keyword" 
+                autoComplete="keyword" 
                 onChange={(e) => setKeyword(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter")
@@ -151,7 +155,8 @@ function Header() {
           </div>
 
           <div className={styles.icons}>
-              <FontAwesomeIcon icon={faHeart} className={styles.favIcon} />   
+              <FontAwesomeIcon icon={faHeart} className={styles.favIcon} onClick={handleFavoritesClick} 
+               />   
               <FontAwesomeIcon
                 icon={faUser}
                 className={styles.userIcon}

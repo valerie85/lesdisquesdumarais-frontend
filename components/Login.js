@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Image from "next/image";
 import { Form, Input, Button, Checkbox, message, Row, Col, Modal } from "antd";
 import styles from "../styles/Login.module.css";
 import { login } from "../reducers/user";

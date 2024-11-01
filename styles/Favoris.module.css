@@ -1,0 +1,21 @@
+.favoriteImage{
+width: 100px;
+height: 100px;
+}
+
+.favoriteList{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 50px;
+}
+
+.containerFav{
+width: 100vw;
+}
+
+.favoriteItem{
+    padding-right: 50px;
+    padding-left: 50px;
+    border-right: 1px solid #172A3A;
+}
