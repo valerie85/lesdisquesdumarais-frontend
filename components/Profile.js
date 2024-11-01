@@ -4,256 +4,217 @@ import styles from '../styles/Profile.module.css';
 
 function Profile() {
     const token = useSelector((state) => state.user.value.token);
-    const [userId, setUserId] = useState(null);
+    const [userData, setUserData] = useState({ userId: null, isAdmin: false, favorites: [] });
     const [orders, setOrders] = useState([]);
     const [orderExp, setOrderExp] = useState([]);
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
-    const [articles, setarticles] = useState([]);
-    const [selectedArticle, setSelectedArticle] = useState('');
-    const [isArchived, setIsArchived] = useState(false);
-    const [sellingDate, setSellingDate] = useState('');
-    const [comments, setComments] = useState('');
-    const [favorites, setFavorites] = useState([]);
-    const [status, setStatus] = useState("Pending");
-    const [tracking, setTracking] = useState('');
-    const [selectedOrderId, setSelectedOrderId] = useState('');
+    const [articles, setArticles] = useState([]);
+    const [formState, setFormState] = useState({
+        selectedArticle: '', imageUrl: '', isArchived: false, sellingDate: '',
+        comments: '', selectedOrderId: '', status: 'Pending', tracking: ''
+    });
+
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
 
 
-    // recup les infos via le token et recup le isAdmin
     useEffect(() => {
-        const fetchUser = async () => {
-            if (!token) return;
+        if (!token) return;
+        const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/users/id', {
-                    method: 'GET',
-                    headers: { Authorization: `${token}` },
-                })
-                if (!response.ok) {
-                    console.error('erreur lors de la récuperation des donnees');
-                    return;
-                }
-                const data = await response.json();
-                setUserId(data._id);
-                setIsAdmin(data.isAdmin);
-                setFavorites(data.favorites);
-
-            } catch (error) {
-                console.error(error.message);
-            }
-        };
-        fetchUser()
-    }, [token]);
-
-    //  recup les orders via le userId
-    useEffect(() => {
-        const fetchOrders = async () => {
-            if (isAdmin || !userId) return;
-            try {
-                const response = await fetch(`http://localhost:3000/orders/${userId}`, {
+                const userResponse = await fetch(`${BACKEND}/users/id`, {
                     method: 'GET',
                     headers: { Authorization: `${token}` },
                 });
-                if (!response.ok) {
-                    console.error('erreur lors de la récuperation des donnees',);
-                    return;
-                }
-                const data = await response.json();
-                if (data.result) {
-                    setOrders(data.orders);
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    setUserData({
+                        userId: userData._id,
+                        isAdmin: userData.isAdmin,
+                        favorites: userData.favorites
+                    });
+
+                    if (userData.isAdmin) {
+                        const [articlesResponse, ordersExpResponse] = await Promise.all([
+                            fetch(`${BACKEND}/articles`),
+                            fetch(`${BACKEND}/orders/expedition`)
+                        ]);
+                        setArticles((await articlesResponse.json()).allArticles || []);
+                        setOrderExp((await ordersExpResponse.json()).orders || []);
+                    } else {
+                        const ordersResponse = await fetch(`${BACKEND}/orders/${userData._id}`, {
+                            method: 'GET',
+                            headers: { Authorization: `${token}` },
+                        });
+                        const ordersData = await ordersResponse.json();
+                        setOrders(ordersData.orders || []);
+                    }
                 } else {
-                    console.error('Aucune commande trouver');
+                    console.error('Erreur lors de la récupération des données utilisateur.');
                 }
             } catch (error) {
-                console.error('erreur:', error.message);
+                console.error('Erreur lors de la récupération des données:', error.message);
             }
-        }
-        fetchOrders()
-    }, [userId, token, isAdmin])
+        };
+        fetchData();
+    }, [token]);
 
-    useEffect(() => {
-        if (!isAdmin) return;
-        const fetchArticles = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/articles');
-                const data = await response.json();
-                setarticles(data.allArticles)
-            } catch (error) {
-                console.error('Erreur lors de la recup des articles');
-            }
-        }
-        fetchArticles();
-    }, [isAdmin])
-
-    useEffect(() => {
-        if (!isAdmin) return;
-        const fetchOrderExp = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/orders/expedition');
-                const data = await response.json();
-                setOrderExp(data.orders)
-            } catch (error) {
-                console.error('Erreur lors de la recup des articles');
-            }
-        }
-        fetchOrderExp();
-    }, [isAdmin])
+    const handleFormChange = (e) => {
+        const { name, value } = e.target;
+        setFormState((prev) => ({ ...prev, [name]: value }));
+    };
 
     const handleImageSubmit = async (e) => {
         e.preventDefault();
-        if (!selectedArticle) {
-            alert('Veuillez selectionner un article.')
-            return;}
+        if (!formState.selectedArticle) return alert('Veuillez sélectionner un article.');
         try {
-            const response = await fetch(`http://localhost:3000/articles/${selectedArticle}/images`, {
+            const response = await fetch(`${BACKEND}/articles/${formState.selectedArticle}/images`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ url: imageUrl })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: formState.imageUrl })
             });
             if (response.ok) {
-                console.log('Image enregister avec succes');
-                setImageUrl('')
+                console.log('Image enregistrée avec succès');
+                setFormState((prev) => ({ ...prev, imageUrl: '' }));
             } else {
                 console.error("Erreur lors de l'enregistrement de l'image");
             }
         } catch (error) {
-            console.error("Erreur", error.message);
+            console.error("Erreur lors de l'enregistrement de l'image:", error.message);
         }
-
-    }
+    };
 
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
-        if (!selectedArticle) {
-            alert('Veuillez sélectionner un article.');
-            return;}
+        if (!formState.selectedArticle) return alert('Veuillez sélectionner un article.');
         try {
-            const response = await fetch(`http://localhost:3000/articles/${selectedArticle}`, {
+            const response = await fetch(`${BACKEND}/articles/${formState.selectedArticle}`, {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ isArchived: isArchived, selling_Date: sellingDate, comments: comments,})
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    isArchived: formState.isArchived,
+                    selling_Date: formState.sellingDate,
+                    comments: formState.comments
+                })
             });
             if (response.ok) {
-                console.log('Article mis à jour avec succes');
+                console.log('Article mis à jour avec succès');
             } else {
                 console.error("Erreur lors de la mise à jour de l'article");
             }
         } catch (error) {
-            console.error("Erreur", error.message);
+            console.error("Erreur lors de la mise à jour de l'article:", error.message);
         }
     };
 
     const updateOrderStatus = async (e) => {
         e.preventDefault();
-        if (!selectedOrderId) {
-            alert('Veuillez sélectionner une commande.');
-            return;
-        }
+        if (!formState.selectedOrderId) return alert('Veuillez sélectionner une commande.');
         try {
-            const response = await fetch(`http://localhost:3000/orders/${selectedOrderId}`, {
+            const response = await fetch(`${BACKEND}/orders/${formState.selectedOrderId}`, {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ order_status: status, tracking_number: tracking,}),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    order_status: formState.status,
+                    tracking_number: formState.tracking
+                })
             });
-            const data = await response.json();
-            if (data.result) {
-                console.log("Statut de la commande mis à jour avec succes !");
+            if (response.ok) {
+                console.log("Statut de la commande mis à jour avec succès !");
             } else {
-                console.error("Echec de la mise à jour du statut de la commande");
+                console.error("Erreur lors de la mise à jour du statut de la commande");
             }
         } catch (error) {
-            console.error("Erreur :", error);
+            console.error("Erreur lors de la mise à jour du statut de la commande:", error.message);
         }
     };
 
-
     return (
         <div className={styles.profile}>
-            <h2 className={styles.h2Admin}>{isAdmin ? 'Tableau de Bord Administrateur:' : 'Profil Utilisateur:'}</h2>
-            {/* Affichage conditionnel soit admin ou user selon la DB */}
-            {isAdmin ? (
+            <h2 className={styles.form}>{userData.isAdmin ? 'Tableau de Bord Administrateur:' : 'Profil Utilisateur:'}</h2>
+            {userData.isAdmin ? (
                 <div className={styles.admin}>
                     <p className={styles.h2Admin}>Bienvenue sur le tableau de bord d'administration !</p>
-                    <label className={styles.imageForm}>
-                        Selectionner un article:
-                        <select value={selectedArticle} onChange={(e) => setSelectedArticle(e.target.value)} className={styles.select}>
-                            <option value='' className={styles.option}>-- Choisir un article --</option>
+                    <label className={styles.form}>
+                        Sélectionner un article :
+                        <select name="selectedArticle" value={formState.selectedArticle} onChange={handleFormChange} className={styles.select}>
+                            <option className={styles.option} value="">-- Choisir un article --</option>
                             {articles.map((article) => (
-                                <option key={article._id} value={article._id} className={styles.optionCondi}>
-                                    {article.title}&nbsp;&nbsp; • &nbsp;&nbsp;{article.release_id}
+                                <option key={article._id} value={article._id}>
+                                    {article.title} • {article.release_id}
                                 </option>
                             ))}
                         </select>
                     </label>
-                    <form onSubmit={handleImageSubmit} className={styles.imageForm}>
+                    <form onSubmit={handleImageSubmit} className={styles.form}>
                         <label>
-                            URL de l'image:
+                            URL de l'image :
                             <input
-                                type='text' value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}
-                                placeholder='Entrez votre photo' className={styles.inputUrl} />
+                                type="text" name="imageUrl" value={formState.imageUrl} className={styles.inputUrl}
+                                onChange={handleFormChange} placeholder="Entrez l'URL de l'image"
+                            />
                         </label>
-                        <button type='submit' className={styles.btn}> Enregister votre image </button>
+                        <button type="submit" className={styles.btn}>Enregistrer l'image</button>
                     </form>
-                    <form onSubmit={handleUpdateSubmit} className={styles.imageForm}>
-
-                        <label className={styles.imageForm}>
-                            Votre commentaire:
+                    <form onSubmit={handleUpdateSubmit} className={styles.form}>
+                        <label>
+                            Commentaire :
                             <input
-                                type='text' value={comments} onChange={(e) => setComments(e.target.value)}
-                                placeholder='Entrez votre commentaire' className={styles.inputUrl} />
+                                type="text" name="comments" value={formState.comments} className={styles.inputUrl}
+                                onChange={handleFormChange} placeholder="Entrez votre commentaire"
+                            />
                         </label>
                         <label>
-                            Archiver l'article:
+                            Archiver l'article :
                             <input
-                                type="radio" value="true" checked={isArchived === true}
-                                onChange={() => setIsArchived(true)} className={styles.radio}
+                                type="radio" name="isArchived" value="true"
+                                checked={formState.isArchived === true} className={styles.radio}
+                                onChange={() => setFormState((prev) => ({ ...prev, isArchived: true }))}
                             /> Oui
                             <input
-                                type="radio" value="false" checked={isArchived === false}
-                                onChange={() => setIsArchived(false)} className={styles.radio}
+                                type="radio" name="isArchived" value="false"
+                                checked={formState.isArchived === false} className={styles.radio}
+                                onChange={() => setFormState((prev) => ({ ...prev, isArchived: false }))}
                             /> Non
                         </label>
                         <label>
-                            Date de mise en vente:
+                            Date de mise en vente :
                             <input
-                                type="datetime-local" value={sellingDate}
-                                onChange={(e) => setSellingDate(e.target.value)} className={styles.inputDate}
+                                type="datetime-local" name="sellingDate" className={styles.radio}
+                                value={formState.sellingDate} onChange={handleFormChange}
                             />
                         </label>
                         <button type="submit" className={styles.btn}>Enregistrer les mises à jour</button>
                     </form>
-                    <label className={styles.imageForm}>
-                        Selectionner une commande:
-                        <select value={selectedOrderId} onChange={(e) => setSelectedOrderId(e.target.value)} className={styles.select}>
-                            <option value='' className={styles.option}>-- Choisir une commande -- </option>
+                    <label className={styles.form}>
+                        Sélectionner une commande :
+                        <select name="selectedOrderId" value={formState.selectedOrderId} onChange={handleFormChange} className={styles.select}>
+                            <option className={styles.option} value="">-- Choisir une commande --</option>
                             {orderExp.map((order) => (
-                                <option key={order._id} value={order._id} className={styles.optionCondi}>
-                                    {order.order_status}&nbsp;&nbsp; • &nbsp;&nbsp;{order._id}
+                                <option key={order._id} value={order._id}>
+                                    {order.order_status} • {order._id}
                                 </option>
                             ))}
                         </select>
                     </label>
-
-                    <form onSubmit={updateOrderStatus} className={styles.imageForm}>
+                    <form onSubmit={updateOrderStatus} className={styles.form}>
                         <label>
-                            Archiver l'article:
-                            <input type="radio" value="Pending"
-                                checked={status === "Pending"} onChange={() => setStatus("Pending")}
+                            Statut de la commande :
+                            <input
+                                type="radio" name="status" value="Pending"
+                                checked={formState.status === "Pending"} className={styles.radio}
+                                onChange={() => setFormState((prev) => ({ ...prev, status: "Pending" }))}
                             /> Pending
-                            <input type="radio" value="Shipped"
-                                checked={status === "Shipped"} onChange={() => setStatus("Shipped")}
+                            <input
+                                type="radio" name="status" value="Shipped"
+                                checked={formState.status === "Shipped"} className={styles.radio}
+                                onChange={() => setFormState((prev) => ({ ...prev, status: "Shipped" }))}
                             /> Shipped
                         </label>
-                        <label> N° du tracking_number:
+                        <label>
+                            Numéro de tracking :
                             <input
-                                type="String" value={tracking} placeholder='  Numero de tracking'
-                                onChange={(e) => setTracking(e.target.value)} className={styles.inputTracking}
+                                type="text" name="tracking" value={formState.tracking}
+                                onChange={handleFormChange} className={styles.radio}
+                                placeholder="Numéro de tracking"
                             />
                         </label>
                         <button type="submit" className={styles.btn}>Enregistrer les mises à jour de la commande</button>
@@ -261,50 +222,26 @@ function Profile() {
                 </div>
             ) : (
                 <div className={styles.containerUser}>
-                    <div className={styles.containerFavoris}>
-                        <h3>Mes Favoris</h3>
-                        {favorites.length === 0 ? (
-                            <p>Vous n'avez pas encore de favoris.</p>
-                        ) : (
-                            <ul className={styles.favoritesList}>
-                                {favorites.map((favorite) => (
-                                    <li key={favorite._id} className={styles.favoriteItem}>
-                                        <h4>{favorite.title}</h4>
-                                        <p>Artiste : {favorite.artist}</p>
-                                        <p>Prix : {favorite.price} €</p>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                    <h3>Mes Commandes:</h3>
+                    <h3>Mes Favoris</h3>
+                    {userData.favorites.length === 0 ? (
+                        <p>Vous n'avez pas encore de favoris.</p>
+                    ) : (
+                        <ul>
+                            {userData.favorites.map((favorite) => (
+                                <li key={favorite._id}>
+                                    {favorite.title} - {favorite.artist} - {favorite.price} €
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                    <h3>Mes Commandes</h3>
                     {orders.length === 0 ? (
                         <p>Aucune commande trouvée.</p>
                     ) : (
-                        <ul className={styles.ordersList}>
-                            {/* affiche les commandes du user */}
+                        <ul>
                             {orders.map((order) => (
-                                <li key={order._id} className={styles.orderItem}>
-                                    <p>Commande #{order._id}</p>
-                                    <p>Date de commande : {new Date(order.order_date).toLocaleDateString()}</p>
-                                    <p>Statut : {order.order_status}</p>
-                                    <p>Total : {order.total} €</p>
-                                    <p>Opérateur d'expédition : {order.shipment_operator}</p>
-                                    <p>Frais de livraison : {order.shipment_price} €</p>
-                                    <p>Adresse de livraison : {order.shipping_adresse}</p>
-                                    <p>Moyen de paiement : {order.payment_media}</p>
-                                    <p>Expédition : {order.expedition_date ? new Date(order.expedition_date).toLocaleDateString() : 'Non expédié'}</p>
-                                    <p>Numéro de suivi : {order.tracking_number || 'Pas encore disponible'}</p>
-                                    <p>Payé : {order.isPaid ? 'Oui' : 'Non'}</p>
-                                    {/*  Les articles correspondant aux commandes */}
-                                    <h4>Articles :</h4>
-                                    <ul className={styles.itemsList}>
-                                        {order.articles.map((item) => (
-                                            <li key={item._id} className={styles.item}>
-                                                Nom du produit : {item.artist} - {item.title} - Prix : {item.price} €
-                                            </li>
-                                        ))}
-                                    </ul>
+                                <li key={order._id}>
+                                    Commande #{order._id}, Total : {order.total} €, Statut : {order.order_status}
                                 </li>
                             ))}
                         </ul>
@@ -314,4 +251,5 @@ function Profile() {
         </div>
     );
 }
+
 export default Profile;
