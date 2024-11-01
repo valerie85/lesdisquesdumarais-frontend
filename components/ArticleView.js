@@ -8,6 +8,7 @@ import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-sv
 import { addLike, removeLike } from '../reducers/likes';
 import { addToCart, removeFromCart } from '../reducers/cart';
 import { useRouter } from 'next/router';
+import ImageGallery from "react-image-gallery";
 
 function ArticleView() {
   const dispatch = useDispatch();
@@ -16,32 +17,48 @@ function ArticleView() {
 
   const [articleData, setArticleData] = useState({});
   const [tracklist, setTracklist]=useState(); 
-  const [articlePicture, setArticlePicture] = useState({ src: "/no_img.jpg", alt: "Image indisponible" });
+  const [gallery, setGallery] = useState('');
+  const [articlePictures, setArticlePictures] = useState([]);
   //const user = { token: "mU2gi1Jq0tFY_FDhzqRrOtqJ-tPn1D1S", email: "valerie.deviers@gmail.com" };
   const user= useSelector((state)=> state.user.value);
   const likes = useSelector((state) => state.likes.value);
   const cart = useSelector((state) => state.cart.value);
 
-  const [isLiked, setIsLiked] = useState({ result: false, likeStyle: { 'color': 'black' } });
+  const [isLiked, setIsLiked] = useState({ result: false, likeStyle: { 'color': 'var(--color-primary)' } });
   const [isInCart, setIsInCart] = useState(false);
   const [bttnCart, setBttnCart] = useState({ message: "Ajouter au panier", cartBttnStyle: { 'backgroundColor': 'var(--color-primary)' } });
   const [genre, setGenre] = useState("");
   const [breadcrumbLink, setBreadcrumbLink] = useState("");
 
+  // Paramètres pour la galerie dynamique
+  const galleryParams = {
+    showNav: false,
+    showPlayButton: false,
+    onErrorImageURL: '/no_img.jpg',
+  }
+
   useEffect(() => {
     if (!article) {
       return;
     }
+    
     //Récupération des données de l'article en BDD
     fetch(`http://localhost:3000/articles/byrelease/${article}`)
       .then(response => response.json())
       .then(data => {
+        setArticlePictures([]);
+        setGallery('');
         setArticleData(data.article);
         setGenre(data.article.genre[0]);
         setBreadcrumbLink(`../genre/${data.article.genre[0]}`);
-          if (data.article.pictures.length > 0) {
-            setArticlePicture({ src: data.article.pictures[0], alt: data.article.title });
-          }
+          //récupération les images pour la galerie
+          const pictures = data.article.pictures.map((data, i) => {
+            console.log("img n°", i, data);
+            setArticlePictures( articlePictures => [...articlePictures, { original: data, thumbnail: data, }]);
+          });
+
+
+          //récupération de la tracklist
           const tracks= data.article.tracklist.map((track, i)=> {
             return (
               <li key={i}> {track}</li>
@@ -52,7 +69,7 @@ function ArticleView() {
         if (!user.token) {
           //récupération des infos dans les reducers likes et cart si le user n'est pas connecté
           if (likes.some(e => e === data.article._id)) {
-            setIsLiked({ result: true, likeStyle: { 'color': 'red' } });
+            setIsLiked({ result: true, likeStyle: { 'color': 'var(--color-red)' } });
           };
           if (cart.some(e => e === data.article._id)) {
             setIsInCart(true);
@@ -67,7 +84,7 @@ function ArticleView() {
             .then(response => response.json())
             .then(user => {
               if (user.userData.favorites.some(e => e === data.article._id)) {
-                setIsLiked({ result: true, likeStyle: { 'color': 'red' } });
+                setIsLiked({ result: true, likeStyle: { 'color': 'var(--color-red)' } });
               }
               if (cart.some(e => e ===data.article._id)) {
                 setIsInCart(true);
@@ -90,10 +107,10 @@ function ArticleView() {
     if (!user.token) {
        if (!likes.some(e => e === articleData._id)) {
         dispatch(addLike(articleData._id));
-        setIsLiked({ result: true, likeStyle: { 'color': 'red' } });
+        setIsLiked({ result: true, likeStyle: { 'color': 'var(--color-red)' } });
       } else {
         dispatch(removeLike(articleData._id));
-        setIsLiked({ result: false, likeStyle: { 'color': 'black' } });
+        setIsLiked({ result: false, likeStyle: { 'color': 'var(--color-primary)' } });
       };
     } else {
       //traitement si le user est connecté via la BDD et la récupération des likes existants
@@ -105,10 +122,10 @@ function ArticleView() {
         .then(data => {
           if (data.result && data.message === 'favorite added') {
             dispatch(addLike(articleData._id));
-            setIsLiked({ result: true, likeStyle: { 'color': 'red' } });
+            setIsLiked({ result: true, likeStyle: { 'color': 'var(--color-red)' } });
           } else if (data.result && data.message === 'favorite removed') {
             dispatch(removeLike(articleData._id));
-            setIsLiked({ result: false, likeStyle: { 'color': 'black' } });
+            setIsLiked({ result: false, likeStyle: { 'color': 'var(--color-primary)' } });
           }
         });
     }
@@ -124,21 +141,31 @@ function ArticleView() {
     setBttnCart({ message: "Dans votre panier", cartBttnStyle: { 'backgroundColor': 'var(--color-tertiary)' } });
   };
 
-  
+  //Création de la galerie photos
+  useEffect(() => {
+    console.log("articlePictures", articlePictures);
+    if (articlePictures.length > 0) {
+      setGallery(<ImageGallery items={articlePictures} showNav={galleryParams.showNav} showPlayButton={galleryParams.showPlayButton} />);
+    } else {
+      setGallery(<Image src="/no_img.jpg" alt="Image indisponible" width={400} height={400} className={styles.noPhoto}></Image>);
+    }
+  }, [articlePictures]);
+
+ 
   return (
     <>
       <div className="container mx-auto">
 
         <div className="flex">
-          <p className={styles.breadcrumb}><Link href="/">Accueil</Link> / <Link href={breadcrumbLink}>{genre}</Link> / {articleData.artist} - {articleData.title}</p>
+          <p className="breadcrumb"><Link href="/">Accueil</Link> / <Link href={breadcrumbLink}>{genre}</Link> / {articleData.artist} - {articleData.title}</p>
         </div>
 
         <div className='flex flex-wrap'>
 
           <div className="basis-full md:basis-1/2">
-            <div className={styles.photos}>
-              <Image src={articlePicture.src} alt={articlePicture.alt} width={300} height={300}></Image>
-            </div>
+            <div className={styles.pictures}>
+              {gallery}
+            </div>           
           </div>
 
           <div className="basis-full md:basis-1/2">
@@ -148,7 +175,7 @@ function ArticleView() {
                 <p className={styles.artist}>{articleData.artist}</p>
                 <FontAwesomeIcon
                   icon={faHeart}
-                  size={25} className={styles.likeIcon}
+                  size='2x' className={styles.likeIcon}
                   style={isLiked.likeStyle}
                   onClick={() => handleLikeClick()} />
               </div>
@@ -160,11 +187,11 @@ function ArticleView() {
 
               <div className='flex flex-wrap'>
                 <div className={styles.conditionSleeve}>
-                  <small><i>Sleeve</i>  <FontAwesomeIcon icon={faFolderOpen} /></small><br />
+                  <small><FontAwesomeIcon icon={faFolderOpen} />  <i>Sleeve</i></small><br />
                   {articleData.sleeve_condition}
                 </div>
                 <div className={styles.conditionMedia}>
-                  <small><i>Media</i>  <FontAwesomeIcon icon={faRecordVinyl} /></small><br />
+                  <small><FontAwesomeIcon icon={faRecordVinyl} />  <i>Media</i></small><br />
                   {articleData.media_condition}
                 </div>
               </div>

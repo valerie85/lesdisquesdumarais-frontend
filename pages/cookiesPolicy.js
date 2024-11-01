@@ -4,13 +4,18 @@ import Footer from '../components/Footer';
 
 function DisplayCookiesPolicy() {
   return (
-    <div className="layout">
-      <Header />
-      <div className="container">
-        <CookiesPolicy />
+    <>
+      <Head>
+        <title>Les Disques du Marais - Politiques des Cookies</title>
+      </Head>
+      <div className="layout">
+        <Header />
+        <div className="content">
+          <CookiesPolicy />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
 

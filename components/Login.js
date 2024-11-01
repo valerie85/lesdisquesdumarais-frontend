@@ -1,182 +1,149 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Image from "next/image";
-import { Form, Input, Button, Checkbox, message, Row, Col, Modal } from "antd";
-import styles from "../styles/Login.module.css";
+import { Form, Input, Button, Checkbox, message, Row, Col } from "antd";
 import { login } from "../reducers/user";
 
 function Login({ handleCancelLogin }) {
-  
   const user = useSelector((state) => state.user.value);
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [form] = Form.useForm();
-  
-
   const dispatch = useDispatch();
-  console.log("email:", email)
 
   const handleSubmitSignIn = (values) => {
-    console.log(values)
-    if(!user.token){
-    fetch("http://localhost:3000/users/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: values.email, password: values.password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("LA DATA SIGNIN:", data);
-        if (data.result) {
-          data.result &&
-            dispatch(
-              login({
-                token: data.token,
-                email: data.email,
-                firstName: data.firstName,
-              })
-            );
-          message.success("Connexion réussie!");
-          // setEmail("");
-          // setPassword("");
-          form.resetFields();
-          handleCancelLogin();
-        } else {
-          message.error("Utilisateur introuvable, veuillez vérifier vos identifiants.");
-        }
+    if (!user.token) {
+      fetch("http://localhost:3000/users/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: values.email, password: values.password }),
       })
-      .catch((error) =>
-        message.error("Une erreur est survenue pendant la connexion.")
-      );
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            dispatch(login({
+              token: data.token,
+              email: data.email,
+              firstName: data.firstName,
+            }));
+            message.success("Connexion réussie!");
+            form.resetFields();
+            handleCancelLogin();
+          } else {
+            message.error("Utilisateur introuvable, veuillez vérifier vos identifiants.");
+          }
+        })
+        .catch(() => message.error("Une erreur est survenue pendant la connexion."));
     }
   };
 
   const handleSubmitSignUp = (values) => {
-    console.log(values)
-    if(!user.token) {
-    fetch("http://localhost:3000/users/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.result) {
-          dispatch(
-            login({
+    if (!user.token) {
+      fetch("http://localhost:3000/users/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if (data.result) {
+            dispatch(login({
               token: data.token,
               lastName: data.lastName,
               email: data.email,
               firstName: data.firstName,
-            })
-          );
-          message.success("Inscription réussie!");
-          form.resetFields();
-          handleCancelLogin();
-          // setFirstName("");
-          // setLastName(""); 
-          // setEmail(""); 
-          // setPassword(""); 
-        } else {
-          message.error("Échec de l'inscription. Veuillez réessayer.");
-        }
-      })
-      .catch((error) =>
-        message.error("Une erreur est survenue pendant l'inscription.")
-      );
+            }));
+            message.success("Inscription réussie!");
+            form.resetFields();
+            handleCancelLogin();
+          } else {
+            message.error(data.error || "Échec de l'inscription. Veuillez réessayer.");
+          }
+        })
+        .catch(() => message.error("Une erreur est survenue pendant l'inscription."));
     }
   };
 
   return (
-    <Row
-      gutter={32}
-      justify="center"
-      style={{ maxWidth: 1200, margin: "0 auto" }}
-    >
-      <Col span={12} justify="center" className={styles.section}>
-        <h2 className={styles.titleConnexion}>Connexion</h2>
+    <Row justify="center" className="max-w-5xl m-6 items-center">
+      {/* Formulaire de Connexion */}
+      <Col span={12} className="flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-4 text-center">Connexion</h2>
         <Form
           name="signin"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          layout="vertical"
           initialValues={{ remember: true }}
           onFinish={handleSubmitSignIn}
           autoComplete="off"
           form={form}
-
+          className="w-full items-center"
         >
           <Form.Item
             label="Email"
             name="email"
-            rules={[
-              {
-                required: true,
-                message: "Veuillez entrer votre email",
-              },
-            ]}
+            rules={[{ required: true, message: "Veuillez entrer votre email" }]}
           >
-            {/* <Input onChange={(e) => setEmail(e.target.value)} placeholder="email" value={email} /> */}
-            <Input placeholder="email"/>
+            <Input placeholder="email" className="w-3/4 mx-auto" />
           </Form.Item>
 
           <Form.Item
             label="Mot de Passe"
             name="password"
-            rules={[
-              {
-                required: true,
-                message: "Veuillez entrer votre mot de passe",
-              },
-            ]}
+            rules={[{ required: true, message: "Veuillez entrer votre mot de passe" }]}
           >
-            {/* <Input.Password
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              placeholder="Mot de Passe"
-            /> */}
-            <Input.Password
-              placeholder="Mot de Passe"
-            />
+            <Input.Password placeholder="Mot de Passe" className="w-3/4 " />
           </Form.Item>
 
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{ offset: 8, span: 16 }}
-          >
+          <Form.Item name="remember" valuePropName="checked" className="mb-4">
             <Checkbox>Se souvenir de moi</Checkbox>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="w-1/2 btnSecondary">
               Connexion
             </Button>
           </Form.Item>
         </Form>
       </Col>
 
-      <Col span={12} justify="center" className={styles.section}>
-        <h2 className={styles.titleConnexion}>Inscription</h2>
-        <Form layout="vertical" onFinish={handleSubmitSignUp}>
-          <Form.Item label="Prénom" name="firstName" required>
-            <Input/>
+      {/* Formulaire d'Inscription */}
+      <Col span={12} className="flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-4 text-center">Inscription</h2>
+        <Form layout="vertical" onFinish={handleSubmitSignUp} className="w-full">
+          <Form.Item
+            label="Prénom"
+            name="firstName"
+            rules={[{ required: true }]}
+            className="items-center"
+          >
+            <Input className="w-3/4 mx-auto items-center" />
           </Form.Item>
-          <Form.Item label="Nom" name="lastName" required>
-            <Input onChange={(e) => setLastName(e.target.value)} />
+          <Form.Item
+            label="Nom"
+            name="lastName"
+            rules={[{ required: true }]}
+          >
+            <Input className="w-3/4" />
           </Form.Item>
-          <Form.Item label="Email" name="email" required>
-            <Input type="email" />
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true }]}
+          >
+            <Input type="email" className="w-3/4" />
           </Form.Item>
-          <Form.Item label="Mot de passe" name="password" required>
-            <Input.Password/>
+          <Form.Item
+            label="Mot de passe"
+            name="password"
+            rules={[{ required: true }]}
+          >
+            <Input.Password className="w-3/4" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" className="w-1/2 btnSecondary">
               Inscription
             </Button>
           </Form.Item>

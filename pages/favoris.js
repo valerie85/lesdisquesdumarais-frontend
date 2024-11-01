@@ -1,4 +1,4 @@
-import Profile from '../components/Profile';
+import Favoris from '../components/Favoris';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -6,7 +6,7 @@ function profile() {
   return (
     <div className="layout">
       <Header />
-      <div className="content">
+      <div className="container">
         <Profile />
       </div>
       <Footer />

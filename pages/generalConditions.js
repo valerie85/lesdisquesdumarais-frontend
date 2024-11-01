@@ -4,13 +4,18 @@ import Footer from '../components/Footer';
 
 function DisplayCGV() {
   return (
-    <div className="layout">
-      <Header />
-      <div className="container">
-        <GeneralConditions />
+    <>
+      <Head>
+        <title>Les Disques du Marais - Conditions Générales de Vente</title>
+      </Head>
+      <div className="layout">
+        <Header />
+        <div className="content">
+          <GeneralConditions />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
 

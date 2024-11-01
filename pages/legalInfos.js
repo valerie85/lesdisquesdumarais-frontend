@@ -4,13 +4,18 @@ import Footer from '../components/Footer';
 
 function DisplayLegalInfos() {
   return (
-    <div className="layout">
-      <Header />
-      <div className="container">
-        <LegalInfos/>
+    <>
+      <Head>
+        <title>Les Disques du Marais - Informations légales</title>
+      </Head>
+      <div className="layout">
+        <Header />
+        <div className="content">
+          <LegalInfos/>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
 
