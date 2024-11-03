@@ -1,6 +1,7 @@
 import CookiesPolicy from '../components/CookiesPolicy';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Head from 'next/head';
 
 function DisplayCookiesPolicy() {
   return (
