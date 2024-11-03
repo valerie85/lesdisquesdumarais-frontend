@@ -85,6 +85,11 @@ function Header() {
     submitStyle = { 'display': 'block' };
   }
 
+  const handleFavoritesClick = () => {
+    router.push('/favoris');
+  };
+  
+
 
   return (
     <>
@@ -119,7 +124,7 @@ function Header() {
                 type="text"
                 placeholder="Rechercher un disque, un artiste"
                 id="keyword"
-                autoComplete="keyword"
+                autoComplete="keyword" 
                 onChange={(e) => setKeyword(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter")
@@ -143,7 +148,8 @@ function Header() {
 
             <div className={styles.rightContent}>
               <div className={styles.icons}>
-                <FontAwesomeIcon icon={faHeart} className={styles.favIcon} />
+                <FontAwesomeIcon icon={faHeart} className={styles.favIcon} onClick={handleFavoritesClick} 
+               />
                 <FontAwesomeIcon
                   icon={faCartShopping}
                   className={styles.cartIcon}

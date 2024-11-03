@@ -2,16 +2,16 @@ import Favoris from '../components/Favoris';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-function profile() {
+function favoris() {
   return (
     <div className="layout">
       <Header />
       <div className="container">
-        <Profile />
+        <Favoris />
       </div>
       <Footer />
     </div>
   );
 }
 
-export default profile;
+export default favoris;
