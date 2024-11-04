@@ -11,7 +11,7 @@ function favoris() {
       </Head>
       <div className="layout">
         <Header />
-        <div className="container">
+        <div className="content">
           <Favoris />
         </div>
         <Footer />

@@ -53,12 +53,12 @@ function Article(props) {
         fetch(`http://localhost:3000/users/${user.token}`)
             .then(response => response.json())
                 .then(user => {
-                if (user.userData.favorites.some(e => e === props._id)) {
+                if (user.userData.favorites.some(e => e === props._id)) {                   
                     setIsLiked({ result: true, likeStyle: { 'color': 'var(--color-red)' } });
                 }
             });
         }
-    }, []);
+    }, [user]);
 
     //Click sur l'icone Heart pour le like
     const handleLikeClick = () => {

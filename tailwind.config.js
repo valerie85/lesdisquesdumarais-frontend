@@ -12,6 +12,7 @@ module.exports = {
         tertiary: 'var(--color-tertiary)',
         light: 'var(--color-light)',
         dark: 'var(--color-dark)',
+        grey: 'var(--color-grey)',
       },
       fontFamily: {
         main: ['var(--font-main)', 'sans-serif'],
