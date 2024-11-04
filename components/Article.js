@@ -99,7 +99,7 @@ function Article(props) {
                     </Link>
                     <FontAwesomeIcon
                     icon={faHeart}
-                    size={25} className={styles.likeIcon}
+                    size={'lg'} className={styles.likeIcon}
                     style={isLiked.likeStyle}
                     onClick={() => handleLikeClick()} />
                 </div>
