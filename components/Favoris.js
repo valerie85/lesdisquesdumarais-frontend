@@ -2,6 +2,7 @@ import styles from '../styles/Favoris.module.css';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLike, removeLike } from '../reducers/likes';
+import Article from './Article';
 
 function Favoris() {
   const token = useSelector((state) => state.user.value.token);
@@ -95,25 +96,24 @@ function Favoris() {
         <p>Vous n'avez pas encore de favoris.</p>
       ) : (
         <ul className={styles.favoriteList}>
-          {favorites.map((favorite) => (
-            <li key={favorite._id} className={styles.favoriteItem}>
-              <div>
-                <img 
-                  src={favorite.pictures && favorite.pictures.length > 0 ? favorite.pictures[0] : "/no_img.jpg"} 
-                  alt={favorite.pictures && favorite.pictures.length > 0 ? favorite.title : "Image indisponible"} 
-                  className={styles.favoriteImage} 
-                />
-                <span>{favorite.title} - {favorite.artist} - {favorite.price} €</span>
-              </div>
-              <button 
-                className={styles.likeButton} 
-                style={{ color: likes.includes(favorite._id) ? 'red' : 'black' }}
-                onClick={() => handleLikeClick(favorite._id)}>
-                {likes.includes(favorite._id) ? '❤️' : '🖤'}
-              </button>
-            </li>
-          ))}
-        </ul>
+        {favorites.map((favorite) => (
+          <li key={favorite._id} className={styles.favoriteItem}>
+            <Article
+              _id={favorite._id}
+              title={favorite.title}
+              artist={favorite.artist}
+              price={favorite.price}
+              pictures={favorite.pictures}
+              sleeve_condition={favorite.sleeve_condition}
+              media_condition={favorite.media_condition}
+              format={favorite.format}
+              label={favorite.label}
+              release_id={favorite.release_id}
+              handleLikeClick={() => handleLikeClick(favorite._id)}
+            />
+          </li>
+        ))}
+      </ul>
       )}
     </div>
   );
