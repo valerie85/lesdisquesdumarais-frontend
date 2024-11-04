@@ -99,7 +99,6 @@ function ArticleView() {
       });
   }, [article]);
 
-
   //Click sur l'icone Heart pour le like
   const handleLikeClick = () => {
 
