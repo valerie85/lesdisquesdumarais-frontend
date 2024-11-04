@@ -16,7 +16,21 @@
     box-shadow: var(--color-grey) 0 0 5px 5px;
 }
 .image {
-    
+    position: relative;
+    background-color: #eeeeee;
+}
+.image * {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+.likeIcon {
+    cursor: pointer;
+    width: 20px !important;
+    height: 20px !important;
+    position: absolute;
+    right: 5px;
+    top: 5px;
 }
 .text {
     display: flex;

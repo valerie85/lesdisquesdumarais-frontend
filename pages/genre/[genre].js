@@ -11,7 +11,7 @@ function Genre() {
   return (
     <>
       <Head>
-          <title>{genre}</title>
+          <title>Les Disques du Marais - {genre}</title>
       </Head>
       <div className="layout">
         <Header />

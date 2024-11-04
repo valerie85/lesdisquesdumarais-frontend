@@ -1,38 +1,52 @@
 import Link from "next/link";
-import styles from '../styles/CookiesPolicy.module.css';
 
 function CookiesPolicy () {
 
     return (
-      <div>
-        <div className="flex">
-          <p className={styles.breadcrumb}><Link href="/">Accueil/Politique des Cookies</Link> / </p>
+      <div className="main">
+
+        <div className="container mx-auto">
+         <div className="flex">
+            <p className="breadcrumb">
+              <Link href="/">Accueil</Link> / Politique des Cookies
+            </p>
+          </div>
         </div>
-        <div classname={styles.title}>
-            <h1>Politique des Cookies</h1>
+
+        <div className="container mx-auto">
+         <div className="flex">
+            <h1 className="title">
+              Politique des Cookies
+            </h1>
+          </div>
         </div>
-        <p>Dernière mise à jour le XX/XX/XXXX</p>
-        <div className={styles.body}>
-            <h2> Définitions </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
-            <h2> 1 Données concernées </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
-            <h2> 2 Finalité des traitements </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
-            <h2> 3 </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
-            <h2>  4 </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
-            <h2>  5 </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
-            <h2>  6 </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
-            <h2>  7 </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
-            <h2>  8 </h2>
-            <h3>  Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.     </h3>
+
+        <div className="container mx-auto">
+          <div className="flex">
+            <div>
+              <h2 className="title">Définitions </h2>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+              <h3 className="title">1. Données concernées </h3>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+              <h3 className="title">2. Finalité des traitements </h3>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+              <h3 className="title">3.</h3>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+              <h3 className="title">4.</h3>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+              <h3 className="title">5.</h3>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+              <h3 className="title">6.</h3>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+              <h3 className="title">7.</h3>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+              <h3 className="title">8.</h3>
+              <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Platea blandit turpis sem suspendisse lacus vestibulum phasellus. Risus suscipit lectus in himenaeos platea eleifend. Ullamcorper tempor sed consectetur nostra nascetur eros commodo. Lacinia varius ac efficitur eros consectetur nisl. Tortor vivamus vitae maecenas cras hac ornare tortor. Faucibus laoreet nec risus tincidunt condimentum himenaeos.</p>
+            </div>
+          </div>        
         </div>
-      </div> 
+
+      </div>
     )
 }
 

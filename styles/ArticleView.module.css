@@ -1,21 +1,12 @@
- .breadcrumb {
-  line-height: 1.15;
-  font-size: 0.9em;
-}
 .infos {
   padding: 1rem;
-  
 }
-.photos {
+.pictures {
+  text-align: center;
   padding: 1rem;
-  padding-right: 60px;
 }
-.photos * {
-  width: 100% !important;
-  height: auto !important;
-  min-height: auto !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+.noPhoto {
+  margin: auto;
 }
 .artist {
   font-size: 2em;
@@ -30,6 +21,8 @@
 }
 .likeIcon {
   cursor: pointer;
+  width: 20px !important;
+  height: 20px !important;
 }
 .conditionSleeve {
   background-color: var(--color-tertiary); 
@@ -52,8 +45,14 @@
   margin: 15px 0 30px;
 }
 .details {
-  margin: 0 0 30px 0;
+  padding: 1rem;
+  margin: 30px 0;
 }
 .description {
   margin-bottom: 30px;
+}
+.tracklist ol {
+  list-style: decimal-leading-zero;
+  padding-left: 40px;
+  font-size: 0.9;
 }
