@@ -132,69 +132,80 @@ function Order() {
     };
 
     return (
-        <div className={styles.globalContainer}>
-            <div className={styles.leftContainer}>
-                <div className={styles.addressContainer}>
-                    <div className={styles.titleAddressContainer}>
-                        <h2>Choix de l'adresse de livraison :</h2>
-                    </div>
-                    <div className={styles.addressContentContainer}>
-                        <div className={styles.registeredAddresses}>
-                            <h3>{addressesList}</h3>
-                        </div>
-                        <div className={styles.newAdressInputs}>
-                            <h3>Saisir une nouvelle adresse : </h3>
-                            <input type="text" placeholder='adresse 1' onChange={(e) => setFormState((prev) => ({ ...prev, line1: e.target.value }))} />
-                            <input type="text" placeholder='adresse 2' onChange={(e) => setFormState((prev) => ({ ...prev, line2: e.target.value }))} />
-                            <input type="text" placeholder='adresse 3' onChange={(e) => setFormState((prev) => ({ ...prev, line3: e.target.value }))} />
-                            <input type="text" placeholder='Code Postal' onChange={(e) => setFormState((prev) => ({ ...prev, zip_code: e.target.value }))} />
-                            <input type="text" placeholder='Ville' onChange={(e) => setFormState((prev) => ({ ...prev, city: e.target.value }))} />
-                            <input type="text" placeholder='Pays' onChange={(e) => setFormState((prev) => ({ ...prev, country: e.target.value }))} />
-                            <input type="text" placeholder='Autres' onChange={(e) => setFormState((prev) => ({ ...prev, infos: e.target.value }))} />
-                            <input type='submit' value='Enregistrer' name='newAdress' onClick={() => handleRegisterAddress()} />
-                            <input type='reset' value='Annuler' name='cancel' onClick={() => handleClearAddress()} />
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.deliveryContainer}>
-                    <div className={styles.titleDeliveryContainer}>
-                        <h2>Choix du mode de livraison : </h2>
-                    </div>
-                    <div className={styles.contentDeliveryContainer}>
-                        <label><input type="radio" name="deliveryRadio" onClick={(e) => setDeliveryChoice(e.target.value)} value="La Poste" />   La Poste</label>
-                        <label><input type="radio" name="deliveryRadio" onClick={(e) => setDeliveryChoice(e.target.value)} value="UPS" />   UPS</label>
-                    </div>
-                </div>
-                <div className={styles.validationOrderInfos}>
-                    <button id='validateOrderInfos' className="btnPrimary" onClick={() => handleValidateOrderInfos()}>Valider</button>
-                </div>
-                <div className={styles.paymentContainer}>
-                    <div className={styles.titlePaymentContainer}>
-                        <h2>Choix du mode de paiement : </h2>
-                    </div>
-                    <div className={styles.contentPaymentContainer}>
-                        <label><input type="radio" name="paymentRadio" onClick={(e) => setPaymentChoice(e.target.value)} value="Paypal" />      <FontAwesomeIcon icon={faCcPaypal} className={styles.icon} size="2x" /></label>
-                        <label><input type="radio" name="paymentRadio" onClick={(e) => setPaymentChoice(e.target.value)} value="CB" />      <FontAwesomeIcon icon={faCcMastercard} className={styles.icon} size="2x" />  / <FontAwesomeIcon icon={faCcVisa} className={styles.icon} size="2x" /></label>
-                    </div>
-                </div>
-
+        <div className="content">
+            
+            <div className="container mx-auto">
+                <h1 className="title">
+                    Récapitulatif
+                </h1>   
             </div>
-            <div className={styles.centerContainer}>
-            </div>
-            <div className={styles.rightContainer}>
-                <p>Votre commande</p>
-                <div className={styles.articlesContainer}>
-                    <CartArticles />
-                </div>
-                <div className={styles.orderInfosContainer}>
-                    <p>orderInfos container</p>
-                    <h3>Total hors frais de livraison : {totalArticles} €</h3>
-                    <h3>Frais de livraison : {shipment_price } €</h3>
-                    <h3>Total commande : {totalOrder} € </h3>
-                </div>
 
-                <div className={styles.validateOrder}>
-                    <button id='validateOrder' className="btnPrimary" onClick={() => handleValidateOrder()}>Terminer la commande </button>
+            <div className="container mx-auto">
+                <div className='flex flex-nowrap  space-x-10'>
+                    <div className="box basis-full md:basis-3/5">
+                        <div className={styles.addressContainer}>
+                            <div className="mb-5">
+                                <h2 className="title">Choix de l'adresse de livraison :</h2>
+                            </div>
+                            <div className={styles.addressContentContainer}>
+                                <div className={styles.registeredAddresses}>
+                                    {addressesList}
+                                </div>
+                                <div className={styles.newAdressInputs}>
+                                    <h3>Saisir une nouvelle adresse : </h3>
+                                    <input type="text" placeholder='adresse 1' onChange={(e) => setFormState((prev) => ({ ...prev, line1: e.target.value }))} />
+                                    <input type="text" placeholder='adresse 2' onChange={(e) => setFormState((prev) => ({ ...prev, line2: e.target.value }))} />
+                                    <input type="text" placeholder='adresse 3' onChange={(e) => setFormState((prev) => ({ ...prev, line3: e.target.value }))} />
+                                    <input type="text" placeholder='Code Postal' onChange={(e) => setFormState((prev) => ({ ...prev, zip_code: e.target.value }))} />
+                                    <input type="text" placeholder='Ville' onChange={(e) => setFormState((prev) => ({ ...prev, city: e.target.value }))} />
+                                    <input type="text" placeholder='Pays' onChange={(e) => setFormState((prev) => ({ ...prev, country: e.target.value }))} />
+                                    <input type="text" placeholder='Autres' onChange={(e) => setFormState((prev) => ({ ...prev, infos: e.target.value }))} />
+                                    <input type='submit' value='Enregistrer' name='newAdress' className="btnPrimary" onClick={() => handleRegisterAddress()} />
+                                    <input type='reset' value='Annuler' name='cancel' className="btnSecondary" onClick={() => handleClearAddress()} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles.deliveryContainer}>
+                            <div className="mb-5">
+                                <h2 className="title">Choix du mode de livraison :</h2>
+                            </div>
+                            <div className="flex flex-col">
+                                <label><input type="radio" name="deliveryRadio" onClick={(e) => setDeliveryChoice(e.target.value)} value="La Poste" />   La Poste</label>
+                                <label><input type="radio" name="deliveryRadio" onClick={(e) => setDeliveryChoice(e.target.value)} value="UPS" />   UPS</label>
+                            </div>
+                        </div>
+                        
+                        <div className={styles.paymentContainer}>
+                            <div className="mb-5">
+                                <h2 className="title">Choix du mode de paiement : </h2>
+                            </div>
+                            <div className="flex flex-col">
+                                <label><input type="radio" name="paymentRadio" onClick={(e) => setPaymentChoice(e.target.value)} value="Paypal" />      <FontAwesomeIcon icon={faCcPaypal} className={styles.icon} size="2x" /></label>
+                                <label><input type="radio" name="paymentRadio" onClick={(e) => setPaymentChoice(e.target.value)} value="CB" />      <FontAwesomeIcon icon={faCcMastercard} className={styles.icon} size="2x" />  / <FontAwesomeIcon icon={faCcVisa} className={styles.icon} size="2x" /></label>
+                            </div>
+                        </div>
+
+                        <div className={styles.validationOrderInfos}>
+                            <button id='validateOrderInfos' className="btnPrimary" onClick={() => handleValidateOrderInfos()}>Valider</button>
+                        </div>
+
+                    </div>
+                    <div className="box basis-full md:basis-2/5">
+                        <h2 className="title">Votre commande</h2>
+                        <div className={styles.articlesContainer}>
+                            <CartArticles />
+                        </div>
+                        <div className={styles.orderInfosContainer}>
+                            <p>orderInfos container</p>
+                            <h3>Total hors frais de livraison : {totalArticles} €</h3>
+                            <h3>Frais de livraison : {shipment_price } €</h3>
+                            <h3>Total commande : {totalOrder} € </h3>
+                        </div>
+
+                        <div className={styles.validateOrder}>
+                            <button id='validateOrder' className="btnPrimary" onClick={() => handleValidateOrder()}>Terminer la commande </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -68,9 +68,9 @@ function Login({ handleCancelLogin }) {
   };
 
   return (
-    <Row justify="center" className="max-w-5xl m-6">
+    <div className='flex flex-wrap'>
       {/* Formulaire de Connexion */}
-      <Col span={12} className="flex flex-col">
+      <div className="basis-full md:basis-1/2 p-5">
         <h2 className="title text-center mb-4">Connexion</h2>
         <Form
           name="signin"
@@ -86,7 +86,7 @@ function Login({ handleCancelLogin }) {
             name="email"
             rules={[{ required: true, message: "Veuillez entrer votre email" }]}
           >
-            <Input placeholder="email" className="w-3/4 mx-auto" />
+            <Input placeholder="email" className="w-full mx-auto" />
           </Form.Item>
 
           <Form.Item
@@ -94,7 +94,7 @@ function Login({ handleCancelLogin }) {
             name="password"
             rules={[{ required: true, message: "Veuillez entrer votre mot de passe" }]}
           >
-            <Input.Password placeholder="Mot de Passe" className="w-3/4 " />
+            <Input.Password placeholder="Mot de Passe" className="w-full" />
           </Form.Item>
 
           <Form.Item name="remember" valuePropName="checked" className="mb-4">
@@ -112,12 +112,11 @@ function Login({ handleCancelLogin }) {
               Mot de passe oublié ?
             </a>
           </div>
-
         </Form>
-      </Col>
+      </div>
 
       {/* Formulaire d'Inscription */}
-      <Col span={12} className="flex flex-col items-center">
+      <div className="basis-full md:basis-1/2 p-5">
         <h2 className="title text-center mb-4">Inscription</h2>
         <Form layout="vertical" onFinish={handleSubmitSignUp} className="w-full">
           <Form.Item
@@ -126,37 +125,37 @@ function Login({ handleCancelLogin }) {
             rules={[{ required: true }]}
             className="items-center"
           >
-            <Input className="w-3/4 mx-auto items-center" />
+            <Input className="w-full mx-auto items-center" />
           </Form.Item>
           <Form.Item
             label="Nom"
             name="lastName"
             rules={[{ required: true }]}
           >
-            <Input className="w-3/4" />
+            <Input className="w-full" />
           </Form.Item>
           <Form.Item
             label="Email"
             name="email"
             rules={[{ required: true }]}
           >
-            <Input type="email" className="w-3/4" />
+            <Input type="email" className="w-full" />
           </Form.Item>
           <Form.Item
             label="Mot de passe"
             name="password"
             rules={[{ required: true }]}
           >
-            <Input.Password className="w-3/4" />
+            <Input.Password className="w-full" />
           </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" className="w-1/2 btnSecondary">
+          <Form.Item className="text-center">
+            <Button type="primary" htmlType="submit" className="w-1/2 mt-4 btnSecondary">
               Inscription
             </Button>
           </Form.Item>
         </Form>
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 }
 

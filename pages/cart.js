@@ -19,29 +19,42 @@ function Cart() {
   const cartItems = useSelector((state) => state.cart.value);
 
   return (
-    <div className="layout min-h-screen bg-gray-100">
-      <Header />
-      <div className="container mx-auto py-6 px-2">
-        <h1 className="text-4xl font-medium mb-8 text-center">Récapitulatif de mon panier</h1>
-  
-        {/* Container flex pour le panier et le résumé de commande */}
-        <div className="flex flex-col lg:flex-row lg:space-x-6">
+    <>
+      <Head>
+          <title>Les Disques du Marais - Panier</title>
+      </Head>
+      <div className="layout">
+        <Header />
+        <div className="content">
           
-          {/* Section Articles */}
-          <div className="flex-1 lg:w-2/3 bg-white shadow-md rounded-lg p-6 mb-6 lg:mb-0">
-            <h2 className="text-2xl font-normal mb-4">Mes articles</h2>
-            <CartArticles />
+          <div className="container mx-auto">
+            <h1 className="title">
+              Récapitulatif de mon panier
+            </h1>   
           </div>
-  
-          {/* Section Résumé de commande */}
-          <div className="lg:w-1/3 bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-normal mb-4 text-center">Ma commande</h2>
-            <CartOrder />
+    
+          {/* Container flex pour le panier et le résumé de commande */}
+          <div className="container mx-auto">
+            <div className='flex flex-nowrap space-x-10'>
+            
+              {/* Section Articles */}
+              <div className="box basis-full md:basis-2/3">
+                <h2 className="title">Mes articles</h2>
+                <CartArticles />
+              </div>
+      
+              {/* Section Résumé de commande */}
+              <div className="box basis-full md:basis-1/3">
+                <h2 className="title text-center">Ma commande</h2>
+                <CartOrder />
+              </div>
+
+            </div>
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
   
 }
