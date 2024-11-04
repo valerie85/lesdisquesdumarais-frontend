@@ -37,7 +37,6 @@ function Header() {
 
   const showLoginModalVisible = () => {
     if (!user.token) {
-      //   console.log("L'utilisateur est déjà connecté")
       setLoginModalVisible(true);
     } else {
       console.log("L'utilisateur est déjà connecté")
@@ -177,7 +176,6 @@ function Header() {
           <div className="container mx-auto">
             <MenuHeader />
           </div>
-          {/* <Link href="/">Nouveaux arrivages</Link> <Link href="/">Genres</Link> */}
         </div>
 
       </div>

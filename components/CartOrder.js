@@ -1,8 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart } from "../reducers/cart";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { Modal, Button } from "antd";
+import Login from "./Login";
 
 function CartOrder() {
+  const router = useRouter();
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+
+  const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.value);
 
@@ -31,35 +39,57 @@ function CartOrder() {
 
   const numberOfArticles = cartItems.length;
 
-  return (
-    <div className="bg-white p-6 shadow-lg rounded-lg w-full">
-      <div className="space-y-4 mb-4">
-        <div className="grid grid-cols-2 gap-4 items-center border-b pb-4">
-          <p className="text-gray-700 col-span-1"> {numberOfArticles} {getArticleLabel()}</p>
-          <p className="font-semibold text-gray-800 text-right col-span-1">
-            {totalArticles} €
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-4 items-center border-b pb-4">
-          <p className="text-gray-700 col-span-1"> Frais de livraison</p>
-          <p className="font-thin text-gray-800 text-right col-span-1 italic">
-            Calculés à l'étape suivante
-          </p>
-        </div>
+  const handleClickOrder = () => {
+    if (user.token) {
+      router.push("/order");
+    } else {
+      setLoginModalVisible(true);
+    }
+  };
+  const handleCancelLogin = () => {
+    setLoginModalVisible(false);
+  };
 
-        <div className="grid grid-cols-2 gap-4 items-center border-t pt-4">
-          <p className="text-xl font-semibold col-span-1">Total :</p>
-          <p className="text-xl font-semibold text-secondary text-right col-span-1">
-            {totalArticles} €
-          </p>
+  return (
+    <>
+      <div className="bg-white p-6 shadow-lg rounded-lg w-full">
+        <div className="space-y-4 mb-4">
+          <div className="grid grid-cols-2 gap-4 items-center border-b pb-4">
+            <p className="text-gray-700 col-span-1"> {numberOfArticles} {getArticleLabel()}</p>
+            <p className="font-semibold text-gray-800 text-right col-span-1">
+              {totalArticles} €
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-4 items-center border-b pb-4">
+            <p className="text-gray-700 col-span-1"> Frais de livraison</p>
+            <p className="font-thin text-gray-800 text-right col-span-1 italic">
+              Calculés à l'étape suivante
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 items-center border-t pt-4">
+            <p className="text-xl font-semibold col-span-1">Total :</p>
+            <p className="text-xl font-semibold text-secondary text-right col-span-1">
+              {totalArticles} €
+            </p>
+          </div>
+        </div>
+        <div className="text-center">
+          <button className="w-1/2 btnSecondary" onClick={() => handleClickOrder()}>
+            Passer commande
+          </button>
         </div>
       </div>
-      <div className="text-center">
-        <button className="w-1/2 btnSecondary">
-          Passer commande
-        </button>
-      </div>
-    </div>
+      
+      <Modal
+        width={1100}
+        open={loginModalVisible}
+        onCancel={() => handleCancelLogin()}
+        footer={null}
+      >
+        <Login handleCancelLogin={handleCancelLogin} />
+      </Modal>
+    </>
   );
 }
 

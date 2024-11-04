@@ -1,16 +1,22 @@
 import Favoris from '../components/Favoris';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Head from 'next/head';
 
 function favoris() {
   return (
-    <div className="layout">
-      <Header />
-      <div className="container">
-        <Favoris />
+    <>
+      <Head>
+        <title>Les Disques du Marais - Favoris</title>
+      </Head>
+      <div className="layout">
+        <Header />
+        <div className="content">
+          <Favoris />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
 

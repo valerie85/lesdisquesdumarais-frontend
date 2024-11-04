@@ -1,4 +1,3 @@
-import styles from '../styles/Favoris.module.css';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLike, removeLike } from '../reducers/likes';
@@ -90,32 +89,43 @@ function Favoris() {
   }, [token, likes, dispatch, BACKEND]);
 
   return (
-    <div className={styles.containerFav}>
-      <h3>Mes Favoris</h3>
-      {favorites.length === 0 ? (
-        <p>Vous n'avez pas encore de favoris.</p>
-      ) : (
-        <ul className={styles.favoriteList}>
-        {favorites.map((favorite) => (
-          <li key={favorite._id} className={styles.favoriteItem}>
-            <Article
-              _id={favorite._id}
-              title={favorite.title}
-              artist={favorite.artist}
-              price={favorite.price}
-              pictures={favorite.pictures}
-              sleeve_condition={favorite.sleeve_condition}
-              media_condition={favorite.media_condition}
-              format={favorite.format}
-              label={favorite.label}
-              release_id={favorite.release_id}
-              handleLikeClick={() => handleLikeClick(favorite._id)}
-            />
-          </li>
-        ))}
-      </ul>
-      )}
-    </div>
+    <>
+      <main>
+        <div className="container mx-auto">
+          <h1 className="title">
+            Mes favoris
+          </h1>   
+        </div>
+
+        
+          {favorites.length === 0 ? (
+            <div className="container mx-auto">
+              <h2 className="title">Vous n'avez pas encore de favoris.</h2>
+            </div>
+          ) : (
+            <div className="container mx-auto">
+              <h2 className="title">Liste des articles</h2>
+              <div className='flex flex-wrap'>
+                {favorites.map((favorite) => (
+                    <Article
+                      _id={favorite._id}
+                      title={favorite.title}
+                      artist={favorite.artist}
+                      price={favorite.price}
+                      pictures={favorite.pictures}
+                      sleeve_condition={favorite.sleeve_condition}
+                      media_condition={favorite.media_condition}
+                      format={favorite.format}
+                      label={favorite.label}
+                      release_id={favorite.release_id}
+                      handleLikeClick={() => handleLikeClick(favorite._id)}
+                    />
+                ))}
+              </div>
+            </div>
+          )}
+      </main>
+    </>
   );
 }
 

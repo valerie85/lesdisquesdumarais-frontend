@@ -68,10 +68,10 @@ function Login({ handleCancelLogin }) {
   };
 
   return (
-    <Row justify="center" className="max-w-5xl m-6 items-center">
+    <Row justify="center" className="max-w-5xl m-6">
       {/* Formulaire de Connexion */}
-      <Col span={12} className="flex flex-col items-center">
-        <h2 className="text-2xl font-bold mb-4 text-center">Connexion</h2>
+      <Col span={12} className="flex flex-col">
+        <h2 className="title text-center mb-4">Connexion</h2>
         <Form
           name="signin"
           layout="vertical"
@@ -111,7 +111,7 @@ function Login({ handleCancelLogin }) {
 
       {/* Formulaire d'Inscription */}
       <Col span={12} className="flex flex-col items-center">
-        <h2 className="text-2xl font-bold mb-4 text-center">Inscription</h2>
+        <h2 className="title text-center mb-4">Inscription</h2>
         <Form layout="vertical" onFinish={handleSubmitSignUp} className="w-full">
           <Form.Item
             label="Prénom"
