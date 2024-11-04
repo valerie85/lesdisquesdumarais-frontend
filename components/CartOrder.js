@@ -1,10 +1,19 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart } from "../reducers/cart";
+import router from "../../lesdisquesdumarais-backend/routes/users";
+import Login from "./Login";
 
 function CartOrder() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.value);
+  const user = useSelector((state) => state.user.value);
+  
+  // Pour la navigation de l'utilisateur
+  const router = useRouter();
+
+  // Pour l'ouverture de la modal de connexion
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const totalArticles = cartItems.reduce((total, article) => {
     const articlePrice = Number(article.price);
@@ -31,6 +40,14 @@ function CartOrder() {
 
   const numberOfArticles = cartItems.length;
 
+  handleClickOrderButton = () => {
+    if (user.token) {
+      router.push("/order.js")
+    } else {
+      setLoginModalVisible(true)
+    }
+  };
+
   return (
     <div className="bg-white p-6 shadow-lg rounded-lg w-full">
       <div className="space-y-4 mb-4">
@@ -55,7 +72,7 @@ function CartOrder() {
         </div>
       </div>
       <div className="text-center">
-        <button className="w-1/2 btnSecondary">
+        <button className="w-1/2 btnSecondary" onClick={handleClickOrderButton}>
           Passer commande
         </button>
       </div>
