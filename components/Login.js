@@ -106,6 +106,13 @@ function Login({ handleCancelLogin }) {
               Connexion
             </Button>
           </Form.Item>
+
+          <div className="text-center">
+            <a href="/forgot-password" className="text-blue-500 hover:underline">
+              Mot de passe oublié ?
+            </a>
+          </div>
+
         </Form>
       </Col>
 

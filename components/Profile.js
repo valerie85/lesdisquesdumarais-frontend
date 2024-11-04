@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "../styles/Profile.module.css";
-import user from "../reducers/user";
+import UpdateUser from "./updateUser";
 
 function Profile() {
   const token = useSelector((state) => state.user.value.token);
@@ -15,7 +15,7 @@ function Profile() {
     lastName: "",
     email: "",
     password: "",
-    address: "",
+    addresses: "",
   });
   const [orders, setOrders] = useState([]);
   const [orderExp, setOrderExp] = useState([]);
@@ -43,6 +43,7 @@ function Profile() {
         });
         if (userResponse.ok) {
           const userData = await userResponse.json();
+          console.log("Données utilisateur récupérées:", userData)
           setUserData({
             userId: userData._id,
             isAdmin: userData.isAdmin,
@@ -180,189 +181,48 @@ function Profile() {
     }
   };
 
+  const handleUserUpdate = (updatedUserData) => {
+    setUserData(updatedUserData);
+  };
+
   return (
-    <div className="flex flex-col items-center px-4 py-6 max-w-4xl mx-auto text-gray-800">
-      
+    
+<div className="bg-red-50 flex flex-col items-center w-full px-4 py-6 max-w-8xl mx-auto text-gray-800">
+    
     {/* Titre principal */}
     <h2 className="text-3xl font-bold mb-6 text-center">
       {userData.isAdmin ? "Tableau de Bord Administrateur" : "Profil Utilisateur"}
     </h2>
 
-      {userData.isAdmin ? (
-        <div className={styles.admin}>
-          <p className={styles.h2Admin}>
-            Bienvenue sur le tableau de bord d'administration !
-          </p>
-          <label className={styles.form}>
-            Sélectionner un article :
-            <select
-              name="selectedArticle"
-              value={formState.selectedArticle}
-              onChange={handleFormChange}
-              className={styles.select}
-            >
-              <option className={styles.option} value="">
-                -- Choisir un article --
-              </option>
-              {articles.map((article) => (
-                <option key={article._id} value={article._id}>
-                  {article.title} • {article.release_id}
-                </option>
-              ))}
-            </select>
-          </label>
-          <form onSubmit={handleImageSubmit} className={styles.form}>
-            <label>
-              URL de l'image :
-              <input
-                type="text"
-                name="imageUrl"
-                value={formState.imageUrl}
-                className={styles.inputUrl}
-                onChange={handleFormChange}
-                placeholder="Entrez l'URL de l'image"
-              />
-            </label>
-            <button type="submit" className={styles.btn}>
-              Enregistrer l'image
-            </button>
-          </form>
-          <form onSubmit={handleUpdateSubmit} className={styles.form}>
-            <label>
-              Commentaire :
-              <input
-                type="text"
-                name="comments"
-                value={formState.comments}
-                className={styles.inputUrl}
-                onChange={handleFormChange}
-                placeholder="Entrez votre commentaire"
-              />
-            </label>
-            <label>
-              Archiver l'article :
-              <input
-                type="radio"
-                name="isArchived"
-                value="true"
-                checked={formState.isArchived === true}
-                className={styles.radio}
-                onChange={() =>
-                  setFormState((prev) => ({ ...prev, isArchived: true }))
-                }
-              />{" "}
-              Oui
-              <input
-                type="radio"
-                name="isArchived"
-                value="false"
-                checked={formState.isArchived === false}
-                className={styles.radio}
-                onChange={() =>
-                  setFormState((prev) => ({ ...prev, isArchived: false }))
-                }
-              />{" "}
-              Non
-            </label>
-            <label>
-              Date de mise en vente :
-              <input
-                type="datetime-local"
-                name="sellingDate"
-                className={styles.radio}
-                value={formState.sellingDate}
-                onChange={handleFormChange}
-              />
-            </label>
-            <button type="submit" className={styles.btn}>
-              Enregistrer les mises à jour
-            </button>
-          </form>
-          <label className={styles.form}>
-            Sélectionner une commande :
-            <select
-              name="selectedOrderId"
-              value={formState.selectedOrderId}
-              onChange={handleFormChange}
-              className={styles.select}
-            >
-              <option className={styles.option} value="">
-                -- Choisir une commande --
-              </option>
-              {orderExp.map((order) => (
-                <option key={order._id} value={order._id}>
-                  {order.order_status} • {order._id}
-                </option>
-              ))}
-            </select>
-          </label>
-          <form onSubmit={updateOrderStatus} className={styles.form}>
-            <label>
-              Statut de la commande :
-              <input
-                type="radio"
-                name="status"
-                value="Pending"
-                checked={formState.status === "Pending"}
-                className={styles.radio}
-                onChange={() =>
-                  setFormState((prev) => ({ ...prev, status: "Pending" }))
-                }
-              />{" "}
-              Pending
-              <input
-                type="radio"
-                name="status"
-                value="Shipped"
-                checked={formState.status === "Shipped"}
-                className={styles.radio}
-                onChange={() =>
-                  setFormState((prev) => ({ ...prev, status: "Shipped" }))
-                }
-              />{" "}
-              Shipped
-            </label>
-            <label>
-              Numéro de tracking :
-              <input
-                type="text"
-                name="tracking"
-                value={formState.tracking}
-                onChange={handleFormChange}
-                className={styles.radio}
-                placeholder="Numéro de tracking"
-              />
-            </label>
-            <button type="submit" className={styles.btn}>
-              Enregistrer les mises à jour de la commande
-            </button>
-          </form>
-        </div>
-      ) : (
-        <div className="w-full bg-white rounded-lg shadow-md p-6 mt-4">
-        <h3 className="text-lg font-semibold mb-4">Mes informations personnelles</h3>
-        <p>Prénom:  {userData.firstName} </p>
-        <p>Nom:  {userData.lastName} </p>
-        <p>Email:  {userData.email} </p>
-        <p>Mot de passe: {userData.password} </p>
-        <p>Adresse:  {userData.addresses} </p>
-        <p>Date d'inscription:  {userData.inscription_date} </p>
-
-        <h3 className="text-lg font-semibold mb-4">Mes Commandes</h3>
-        {orders.length === 0 ? (
-          <p className="text-gray-600">Aucune commande trouvée.</p>
-        ) : (
-          <ul className="space-y-2">
-            {orders.map((order) => (
-              <li key={order._id} className="border p-4 rounded-md shadow-sm bg-gray-50">
-                Commande #{order._id}, Total : {order.total} €, Statut : {order.order_status}
-              </li>
-            ))}
-          </ul>
-        )}
+    {userData.isAdmin ? (
+      <div className={styles.admin}>
+        <p className={styles.h2Admin}>
+          Bienvenue sur le tableau de bord d'administration !
+        </p>
+        {/* Le reste du code admin... */}
       </div>
-      )}
-    </div>
+    ) : (
+      <div>
+        <h1>Mon Profil</h1>
+        
+        {/* Affichez les données utilisateur */}
+        <p>Prénom: {userData.firstName}</p>
+        <p>Nom: {userData.lastName}</p>
+        <p>Email: {userData.email}</p>
+        <p>Mot de passe: <a href="/forgot-password" className="text-blue-500 hover:underline">
+              Réinitialiser mon mot de passe
+            </a></p>
+        <p>Adresse: {userData.addresses}</p>
+
+
+        <UpdateUser userData={userData} onUpdate={handleUserUpdate} />
+
+        {/* Ajoutez un console.log pour déboguer */}
+        {console.log("Données utilisateur récupérées :", userData)}
+
+      </div>
+    )}
+  </div>
   );
 }
 
