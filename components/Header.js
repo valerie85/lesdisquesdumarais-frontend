@@ -143,10 +143,9 @@ function Header() {
   
           {/* <Message de bienvenue à l'utilisateur /> */}
           <div className={styles.icons}>
-            {/* { user.email ? (<span>Bonjour {user.email}</span>) : (<spans>Bienvenue</spans>)} */}
             { user.firstName ? (<span>Bonjour {user.firstName}</span>) : (<span></span>)}
           </div>
-
+          
           <div className={styles.icons}>
               <FontAwesomeIcon icon={faHeart} className={styles.favIcon} />   
               <FontAwesomeIcon

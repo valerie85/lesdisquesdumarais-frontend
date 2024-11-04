@@ -43,7 +43,7 @@ function CartOrder() {
         <div className="grid grid-cols-2 gap-4 items-center border-b pb-4">
           <p className="text-gray-700 col-span-1"> Frais de livraison</p>
           <p className="font-thin text-gray-800 text-right col-span-1 italic">
-            A l'étape suivante
+            Calculés à l'étape suivante
           </p>
         </div>
 
