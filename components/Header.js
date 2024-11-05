@@ -112,7 +112,7 @@ function Header() {
 
       <div className={styles.main}>
 
-        <div className="container mx-auto">
+        <div className="container mx-auto px-0 max-w-full md:px-8 md:max-w-screen-2xl">
           <div className={styles.content}>
             <div className={styles.logo}>
               <Link href="/">
