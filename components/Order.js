@@ -237,9 +237,11 @@ function Order() {
                             <button id='validateOrder' className="btnPrimary" onClick={() => handleValidateOrder()}>Terminer la commande </button>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+      
     );
 }
 

@@ -6,7 +6,6 @@ import user from "../reducers/user";
 
 function Profile() {
   const token = useSelector((state) => state.user.value.token);
-  const user = useSelector((state) => state.user.value)
 
   const [userData, setUserData] = useState({
     userId: null,
@@ -16,6 +15,7 @@ function Profile() {
     lastName: "",
     email: "",
     password: "",
+    addresses: "",
     addresses: "",
   });
   const [orders, setOrders] = useState([]);
@@ -44,6 +44,7 @@ function Profile() {
         });
         if (userResponse.ok) {
           const userData = await userResponse.json();
+          console.log("Données utilisateur récupérées:", userData)
           console.log("Données utilisateur récupérées:", userData)
           setUserData({
             userId: userData._id,
@@ -186,7 +187,14 @@ function Profile() {
     setUserData(updatedUserData);
   };
 
+  const handleUserUpdate = (updatedUserData) => {
+    setUserData(updatedUserData);
+  };
+
   return (
+    
+<div className="bg-red-50 flex flex-col items-center w-full px-4 py-6 max-w-8xl mx-auto text-gray-800">
+    
     
 <div className="bg-red-50 flex flex-col items-center w-full px-4 py-6 max-w-8xl mx-auto text-gray-800">
     
@@ -195,6 +203,7 @@ function Profile() {
       {userData.isAdmin ? "Tableau de Bord Administrateur" : "Profil Utilisateur"}
     </h2>
 
+    {userData.isAdmin ? (
     {userData.isAdmin ? (
         <div className={styles.admin}>
           <p className={styles.h2Admin}>
@@ -365,6 +374,8 @@ function Profile() {
         {console.log("Données utilisateur récupérées :", userData)}
 
       </div>
+    )}
+  </div>
     )}
   </div>
   );
