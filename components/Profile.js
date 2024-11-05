@@ -6,7 +6,6 @@ import UpdateUser from "./updateUser";
 
 function Profile() {
   const token = useSelector((state) => state.user.value.token);
-  const user = useSelector((state) => state.user.value)
 
   const [userData, setUserData] = useState({
     userId: null,
@@ -196,16 +195,170 @@ function Profile() {
     </h2>
 
     {userData.isAdmin ? (
-      <div className={styles.admin}>
-        <p className={styles.h2Admin}>
-          Bienvenue sur le tableau de bord d'administration !
-        </p>
-        {/* Le reste du code admin... */}
-      </div>
-    ) : (
+        <div className={styles.admin}>
+          <p className={styles.h2Admin}>
+            Bienvenue sur le tableau de bord d'administration !
+          </p>
+          <label className={styles.form}>
+            Sélectionner un article :
+            <select
+              name="selectedArticle"
+              value={formState.selectedArticle}
+              onChange={handleFormChange}
+              className={styles.select}
+            >
+              <option className={styles.option} value="">
+                -- Choisir un article --
+              </option>
+              {articles.map((article) => (
+                <option key={article._id} value={article._id}>
+                  {article.title} • {article.release_id}
+                </option>
+              ))}
+            </select>
+          </label>
+          <form onSubmit={handleImageSubmit} className={styles.form}>
+            <label>
+              URL de l'image :
+              <input
+                type="text"
+                name="imageUrl"
+                value={formState.imageUrl}
+                className={styles.inputUrl}
+                onChange={handleFormChange}
+                placeholder="Entrez l'URL de l'image"
+              />
+            </label>
+            <button type="submit" className={styles.btn}>
+              Enregistrer l'image
+            </button>
+          </form>
+          <form onSubmit={handleUpdateSubmit} className={styles.form}>
+            <label>
+              Commentaire :
+              <input
+                type="text"
+                name="comments"
+                value={formState.comments}
+                className={styles.inputUrl}
+                onChange={handleFormChange}
+                placeholder="Entrez votre commentaire"
+              />
+            </label>
+            <label>
+              Archiver l'article :
+              <input
+                type="radio"
+                name="isArchived"
+                value="true"
+                checked={formState.isArchived === true}
+                className={styles.radio}
+                onChange={() =>
+                  setFormState((prev) => ({ ...prev, isArchived: true }))
+                }
+              />{" "}
+              Oui
+              <input
+                type="radio"
+                name="isArchived"
+                value="false"
+                checked={formState.isArchived === false}
+                className={styles.radio}
+                onChange={() =>
+                  setFormState((prev) => ({ ...prev, isArchived: false }))
+                }
+              />{" "}
+              Non
+            </label>
+            <label>
+              Date de mise en vente :
+              <input
+                type="datetime-local"
+                name="sellingDate"
+                className={styles.radio}
+                value={formState.sellingDate}
+                onChange={handleFormChange}
+              />
+            </label>
+            <button type="submit" className={styles.btn}>
+              Enregistrer les mises à jour
+            </button>
+          </form>
+          <label className={styles.form}>
+            Sélectionner une commande :
+            <select
+              name="selectedOrderId"
+              value={formState.selectedOrderId}
+              onChange={handleFormChange}
+              className={styles.select}
+            >
+              <option className={styles.option} value="">
+                -- Choisir une commande --
+              </option>
+              {orderExp.map((order) => (
+                <option key={order._id} value={order._id}>
+                  {order.order_status} • {order._id}
+                </option>
+              ))}
+            </select>
+          </label>
+          <form onSubmit={updateOrderStatus} className={styles.form}>
+            <label>
+              Statut de la commande :
+              <input
+                type="radio"
+                name="status"
+                value="Pending"
+                checked={formState.status === "Pending"}
+                className={styles.radio}
+                onChange={() =>
+                  setFormState((prev) => ({ ...prev, status: "Pending" }))
+                }
+              />{" "}
+              Pending
+              <input
+                type="radio"
+                name="status"
+                value="Shipped"
+                checked={formState.status === "Shipped"}
+                className={styles.radio}
+                onChange={() =>
+                  setFormState((prev) => ({ ...prev, status: "Shipped" }))
+                }
+              />{" "}
+              Shipped
+            </label>
+            <label>
+              Numéro de tracking :
+              <input
+                type="text"
+                name="tracking"
+                value={formState.tracking}
+                onChange={handleFormChange}
+                className={styles.radio}
+                placeholder="Numéro de tracking"
+              />
+            </label>
+            <button type="submit" className={styles.btn}>
+              Enregistrer les mises à jour de la commande
+            </button>
+          </form>
+        </div>
+      ) : (
       <div>
         <h1>Mon Profil</h1>
-        
+        <h3>Mes Commandes</h3>
+                    {orders.length === 0 ? (
+                        <p>Aucune commande trouvée.</p>
+                    ) : (
+                        <ul>
+                            {orders.map((order) => (
+                                <li key={order._id}>
+                                    Commande #{order._id}, Total : {order.total} €, Statut : {order.order_status}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
         {/* Affichez les données utilisateur */}
         <p>Prénom: {userData.firstName}</p>
         <p>Nom: {userData.lastName}</p>
