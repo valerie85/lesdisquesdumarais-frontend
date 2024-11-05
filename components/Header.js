@@ -15,6 +15,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../reducers/user';
+import { removeAllArticlesFromCart} from "../reducers/cart";
+import { removeAllLikes } from "../reducers/likes";
 import { basicSearch } from '../reducers/search';
 import MenuHeader from '../components/MenuHeader';
 import { Modal, Button } from "antd";
@@ -60,7 +62,9 @@ function Header() {
 
   const handleLogout = () => {
     if (user.token) {
-      dispatch(logout())
+      dispatch(logout());
+      dispatch(removeAllArticlesFromCart());
+      dispatch(removeAllLikes());
       setLogOutModalVisible(false);
         router.push('/');
     } else {

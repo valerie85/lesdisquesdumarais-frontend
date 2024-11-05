@@ -99,16 +99,13 @@ function Order() {
                 numberOfLP+=1;
                 setNumberOfLP((numberOfLP ));
             };
-        };
-        console.log('LP sortie de boucle', numberOfLP);
-
+        };        
         //Calculate shipment amount
            fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
              }).then(response => response.json())
                    .then(shipmentData => {
                        if (shipmentData.result) {  
                            for (let item of shipmentData.allShipments) {
-                            console.log('pays trouvé',item.country === shipmentCountry)
                                     if (item.country === shipmentCountry) {
                                         let LP_shipment;
                                         let others_shipment;
@@ -123,10 +120,8 @@ function Order() {
                                             others_shipment=0;  
                                         };
                                                                                                          
-                                    setShipment_price(LP_shipment + others_shipment);
-                                     } else {
-                                        console.log('Pays non desservi');
-                                     };
+                                        setShipment_price(LP_shipment + others_shipment);
+                                     }; 
                                 }
                            }else {
                                console.log('message:', 'Opérateur non trouvé')
