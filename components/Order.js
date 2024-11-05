@@ -11,11 +11,12 @@ import CartArticles from './CartArticles';
 
 function Order() {
     const dispatch = useDispatch();
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
 
     const user = useSelector((state) => state.user.value);
     const [userId, setUserId] = useState('');
     const cartItems = useSelector((state) => state.cart.value);
-    const BACKEND = process.env.NEXT_PUBLIC_BACKEND;    
+       
     const [form] = Form.useForm();
 
     const [formState, setFormState] = useState({ line1: '', line2: '', line3: '', zip_code: '', city: '', country: '', infos: '' });
@@ -44,7 +45,7 @@ function Order() {
                         return (
                             <div className={styles.addressLine}>
                                 <label className='flex'>
-                                    <input key={i} type="radio" name="addressRadio" className='mr-2' onChange={(e) => { setDeliveryIndex(e.target.value); setDeliveryAddress(data.userData.adresses[i]) }} value={i} />
+                                    <input key={i} type="radio" name="addressRadio" className='mr-2' onChange={(e) => { setDeliveryIndex(e.target.value); setDeliveryAddress(data.userData.adresses[i]); setShipmentCountry(data.userData.adresses[i].country) }} value={i} />
                                     <span>
                                         <div>{item.line1}</div>
                                         <div>{item.line2}</div>
@@ -58,10 +59,17 @@ function Order() {
                     });
                     setAddressesList(addressesToDisplay);
                     setNewAddressIsSaved(false);
+                    const totalArticles = cartItems.reduce((total, article) => {
+                     const articlePrice = Number(article.price);
+                     return total + articlePrice;
+                      }, 0);
+
+                    setTotalArticles(totalArticles);
                 }
             })
     }, [newAdressIsSaved]);
 
+    
 
     const handleClearAddress = () => {
         setFormState({});
@@ -83,7 +91,7 @@ function Order() {
     };
 
     const handleValidateOrderInfos = () => {
-        setShipmentCountry(deliveryAddress.country);
+ //       setShipmentCountry(deliveryAddress.country);
         const numberOfArticles = cartItems.length;
         setNumberOfLP(0);
         for (let item of cartItems) {
@@ -102,8 +110,19 @@ function Order() {
                            for (let item of shipmentData.allShipments) {
                             console.log('pays trouvé',item.country === shipmentCountry)
                                     if (item.country === shipmentCountry) {
-                                    const others_shipment = item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price;
-                                    const LP_shipment = item.shipment_price_LP[numberOfLP+1].price;                                  
+                                        let LP_shipment;
+                                        let others_shipment;
+                                        if (numberOfLP>0) {
+                                            LP_shipment=item.shipment_price_LP[numberOfLP-1].price;  
+                                        }else {
+                                            LP_shipment=0; 
+                                        };
+                                        if (numberOfArticles-numberOfLP>0){
+                                           others_shipment=item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price; 
+                                        }else {
+                                            others_shipment=0;  
+                                        };
+                                                                                                         
                                     setShipment_price(LP_shipment + others_shipment);
                                      } else {
                                         console.log('Pays non desservi');
@@ -114,15 +133,9 @@ function Order() {
                            };                 
                    });
                //Calculate order total
-               const totalArticles = cartItems.reduce((total, article) => {
-                   const articlePrice = Number(article.price);
-                   return total + articlePrice;
-               }, 0);
-               setTotalArticles(totalArticles);
                setTotalOrder((totalArticles + shipment_price));
-               setNumberOfLP(0);
-               
-    }
+               setNumberOfLP(0);        
+    };
 
     const handleValidateOrder = () => {
        //préparation des infos à envoyer pour les articles
@@ -266,7 +279,6 @@ function Order() {
                             <CartArticles />
                         </div>
                         <div className={styles.orderInfosContainer}>
-                            <p>orderInfos container</p>
                             <h3>Total hors frais de livraison : {totalArticles} €</h3>
                             <h3>Frais de livraison : {shipment_price} €</h3>
                             <h3>Total commande : {totalOrder} € </h3>
