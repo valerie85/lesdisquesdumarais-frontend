@@ -10,6 +10,7 @@ import CartArticles from './CartArticles';
 
 function Order() {
     const dispatch = useDispatch();
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
 
     const user = useSelector((state) => state.user.value);
     const [userId, setUserId] = useState('');
@@ -41,7 +42,7 @@ function Order() {
                     const addressesToDisplay = data.userData.adresses.map((item, i) => {
                         return (
                             <label>
-                                <input key={i} type="radio" name="addressRadio" onChange={(e) => { setDeliveryIndex(e.target.value); setDeliveryAddress(data.userData.adresses[i]) }} value={i} />
+                                <input key={i} type="radio" name="addressRadio" onChange={(e) => { setDeliveryIndex(e.target.value); setDeliveryAddress(data.userData.adresses[i]); setShipmentCountry(data.userData.adresses[i].country) }} value={i} />
                                 <span>
                                     <h3> {item.line1}</h3>
                                     <h3> {item.line2}</h3>
@@ -55,10 +56,17 @@ function Order() {
                     });
                     setAddressesList(addressesToDisplay);
                     setNewAddressIsSaved(false);
+                    const totalArticles = cartItems.reduce((total, article) => {
+                     const articlePrice = Number(article.price);
+                     return total + articlePrice;
+                      }, 0);
+
+                    setTotalArticles(totalArticles);
                 }
             })
     }, [newAdressIsSaved]);
 
+    
 
     const handleClearAddress = () => {
         setFormState({});
@@ -81,7 +89,7 @@ function Order() {
     };
 
     const handleValidateOrderInfos = () => {
-        setShipmentCountry(deliveryAddress.country);
+ //       setShipmentCountry(deliveryAddress.country);
         const numberOfArticles = cartItems.length;
         setNumberOfLP(0);
         for (let item of cartItems) {
@@ -100,8 +108,19 @@ function Order() {
                            for (let item of shipmentData.allShipments) {
                             console.log('pays trouvé',item.country === shipmentCountry)
                                     if (item.country === shipmentCountry) {
-                                    const others_shipment = item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price;
-                                    const LP_shipment = item.shipment_price_LP[numberOfLP+1].price;                                  
+                                        let LP_shipment;
+                                        let others_shipment;
+                                        if (numberOfLP>0) {
+                                            LP_shipment=item.shipment_price_LP[numberOfLP-1].price;  
+                                        }else {
+                                            LP_shipment=0; 
+                                        };
+                                        if (numberOfArticles-numberOfLP>0){
+                                           others_shipment=item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price; 
+                                        }else {
+                                            others_shipment=0;  
+                                        };
+                                                                                                         
                                     setShipment_price(LP_shipment + others_shipment);
                                      } else {
                                         console.log('Pays non desservi');
@@ -112,15 +131,9 @@ function Order() {
                            };                 
                    });
                //Calculate order total
-               const totalArticles = cartItems.reduce((total, article) => {
-                   const articlePrice = Number(article.price);
-                   return total + articlePrice;
-               }, 0);
-               setTotalArticles(totalArticles);
                setTotalOrder((totalArticles + shipment_price));
-               setNumberOfLP(0);
-               
-    }
+               setNumberOfLP(0);        
+    };
 
     const handleValidateOrder = () => {
        //préparation des infos à envoyer pour les articles
@@ -128,20 +141,31 @@ function Order() {
        for (let item of cartItems){
             articlesId.push(item._id);
         };
+        const OrderData={
+            user: userId,                 
+            total: totalOrder,             
+            shipment_operator: deliveryChoice,
+            shipment_price: shipment_price, 
+            shipping_adresse: deliveryAddress,
+            payment_media: paymentChoice,  
+            articles: articlesId,           
+            isPaid: true 
+        };
         
-        //Enregistrement en base de la commande
-        fetch(`http://localhost:3000/orders`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: userId, total: totalOrder, shipment_operator: deliveryChoice, shipment_price: shipment_price, shipping_adresse: deliveryAddress, payment_media: paymentChoice, articles: articlesId, isPaid:true }),
-        }).then(response => response.json())
-            .then(data => {
-                if (data.result) {
-                   console.log('Commande enregistrée')
-                }else{
-                    console.log( "Pb lors de l'enregistrement de la commande")
-                }
-            })
+         //Enregistrement en base de la commande
+    fetch(`${BACKEND}/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(OrderData),
+    }).then(response => response.json())
+        .then(data => {
+            console.log('orderData',OrderData)
+            if (data.result) {
+               console.log('Commande enregistrée')
+            }else{
+                console.log( "Pb lors de l'enregistrement de la commande")
+            }
+        })
     };
 
     return (
@@ -226,7 +250,6 @@ function Order() {
                             <CartArticles />
                         </div>
                         <div className={styles.orderInfosContainer}>
-                            <p>orderInfos container</p>
                             <h3>Total hors frais de livraison : {totalArticles} €</h3>
                             <h3>Frais de livraison : {shipment_price} €</h3>
                             <h3>Total commande : {totalOrder} € </h3>
