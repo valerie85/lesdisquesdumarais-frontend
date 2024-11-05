@@ -85,65 +85,64 @@ function Order() {
 
     const handleValidateOrderInfos = () => {
         setShipmentCountry(deliveryAddress.country);
-        console.log('delivery Address', deliveryAddress)
         const numberOfArticles = cartItems.length;
         setNumberOfLP(0);
         for (let item of cartItems) {
-            console.log('test 2xLP', item.format.includes("2xLP"));
-            console.log('test LP', item.format.includes("LP"));
-            console.log('test 12', item.format.includes("12"));
-            if (item.format.includes("2xLP")) {
-                setNumberOfLP(numberOfLP + 2);
-            } else if (item.format.includes("LP") || item.format.includes("12")) {
-                setNumberOfLP(numberOfLP + 1);
+            if (item.format.includes("LP") || item.format.includes("12")) {
+                numberOfLP+=1;
+                setNumberOfLP((numberOfLP ));
             };
         };
-        console.log('LP', numberOfLP);
+        console.log('LP sortie de boucle', numberOfLP);
 
         //Calculate shipment amount
-        /*       fetch(`http://localhost:3000/shipments`, {
-                   method: 'GET',
-                   headers: { 'Content-Type': 'application/json' },
-                   body: JSON.stringify({ country: deliveryAdress.country, shipment_operator: deliveryChoice })
-               }).then(response => response.json())
+           fetch(`http://localhost:3000/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
+             }).then(response => response.json())
                    .then(shipmentData => {
-                       console.log('shipmentData', shipmentData);
-                       if (shipmentData.result) {
-                           console.log('shipmentInfos', shipmentData);
-                           if (shipmentData.allShipments.shipment_operator === deliveryChoice) {
-                               console.log('LP Shipment', shipmentData.allShipments.shipment_price_LP[numberOfLP].price)
-                               let LP_shipment = shipmentData.allShipments.shipment_price_LP[numberOfLP].price;
-                               let Others_shipment = shipmentData.allShipments.shipment_otherFormats[numberOfArticles - numberOfLP].price;
-                               setShipment_price(LP_shipment + Others_shipment);
-                           } else {
+                       if (shipmentData.result) {  
+                           for (let item of shipmentData.allShipments) {
+                            console.log('pays trouvé',item.country === shipmentCountry)
+                                    if (item.country === shipmentCountry) {
+                                    const others_shipment = item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price;
+                                    const LP_shipment = item.shipment_price_LP[numberOfLP+1].price;                                  
+                                    setShipment_price(LP_shipment + others_shipment);
+                                     } else {
+                                        console.log('Pays non desservi');
+                                     };
+                                }
+                           }else {
                                console.log('message:', 'Opérateur non trouvé')
-                           }
-                       };
-                   })
-       
+                           };                 
+                   });
                //Calculate order total
                const totalArticles = cartItems.reduce((total, article) => {
                    const articlePrice = Number(article.price);
                    return total + articlePrice;
                }, 0);
                setTotalArticles(totalArticles);
-               console.log('total articles', totalArticles)
                setTotalOrder((totalArticles + shipment_price));
-               */
+               setNumberOfLP(0);
+               
     }
 
     const handleValidateOrder = () => {
+       //préparation des infos à envoyer pour les articles
+       let articlesId=[]; 
+       for (let item of cartItems){
+            articlesId.push(item._id);
+        };
+        
         //Enregistrement en base de la commande
         fetch(`http://localhost:3000/orders`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ total: totalOrder, shipment_operator: deliveryChoice, shipment_price: shipment_price, shipping_adresse: deliveryAddress, payment_media: paymentChoice, articles: { CartItems } }),
+            body: JSON.stringify({ user: userId, total: totalOrder, shipment_operator: deliveryChoice, shipment_price: shipment_price, shipping_adresse: deliveryAddress, payment_media: paymentChoice, articles: articlesId, isPaid:true }),
         }).then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    res.json({ result: true, message: 'Commande enregistrée', orderData: data })
-                } else {
-                    res.json({ result: false, message: "Pb lors de l'enregistrement de la commande" })
+                   console.log('Commande enregistrée')
+                }else{
+                    console.log( "Pb lors de l'enregistrement de la commande")
                 }
             })
     };
