@@ -6,7 +6,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 
 function Home() {
-
+  const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
   const [articlesRockData, setArticlesRockData] = useState([]);
   const [articlesElectronicData, setArticlesElectronicData] = useState([]);
   const [articlesPopData, setArticlesPopData] = useState([]);
@@ -17,31 +17,31 @@ function Home() {
   let nbArticlesDisplay = 5;
 
   useEffect(() => {
-    fetch('http://localhost:3000/articles/bygenre/Rock')
+    fetch(`${BACKEND}/articles/bygenre/Rock`)
       .then(response => response.json())
       .then(data => {
         setArticlesRockData(data.genreArticles.filter((data, i) => i >= 0 && i < nbArticlesDisplay));
       });
 
-    fetch('http://localhost:3000/articles/bygenre/Electronic')
+    fetch(`${BACKEND}/articles/bygenre/Electronic`)
       .then(response => response.json())
       .then(data => {
         setArticlesElectronicData(data.genreArticles.filter((data, i) => i >= 0 && i < nbArticlesDisplay));
       });
 
-    fetch('http://localhost:3000/articles/bygenre/Pop')
+    fetch(`${BACKEND}/articles/bygenre/Pop`)
       .then(response => response.json())
       .then(data => {
         setArticlesPopData(data.genreArticles.filter((data, i) => i >= 0 && i < nbArticlesDisplay));
       });
 
-    fetch('http://localhost:3000/articles/bygenre/Funk%20_%20Soul')
+    fetch(`${BACKEND}/articles/bygenre/Funk%20_%20Soul`)
       .then(response => response.json())
       .then(data => {
         setArticlesFunkData(data.genreArticles.filter((data, i) => i >= 0 && i < nbArticlesDisplay));
       });
 
-    fetch('http://localhost:3000/articles/bygenre/Jazz')
+    fetch(`${BACKEND}/articles/bygenre/Jazz`)
       .then(response => response.json())
       .then(data => {
         setArticlesJazzData(data.genreArticles.filter((data, i) => i >= 0 && i < nbArticlesDisplay));
@@ -53,18 +53,23 @@ function Home() {
 
   //création des listes d'articles à afficher dans les 5 premiers genres
   const articlesRock = articlesRockData.map((data, i) => {
+    if (data.isSold) { return null; }
     return <Article key={i} {...data} />;
   });
   const articlesElectronic = articlesElectronicData.map((data, i) => {
+    if (data.isSold) { return null; }
     return <Article key={i} {...data} />;
   });
   const articlesPop = articlesPopData.map((data, i) => {
+    if (data.isSold) { return null; }
     return <Article key={i} {...data} />;
   });
   const articlesFunk = articlesFunkData.map((data, i) => {
+    if (data.isSold) { return null; }
     return <Article key={i} {...data} />;
   });
   const articlesJazz = articlesJazzData.map((data, i) => {
+    if (data.isSold) { return null; }
     return <Article key={i} {...data} />;
   });
 
@@ -83,12 +88,12 @@ function Home() {
             </div>
             <div className="basis-full md:basis-1/4 pb-10 md:pb-0 md:px-10 rounded-s">
               <Image
-                  src="/records-2619354_640.jpg"
-                  alt="Les nouveaux arrivages"
-                  className='rounded-xl'
-                  width={640}
-                  height={427}
-                />
+                src="/records-2619354_640.jpg"
+                alt="Les nouveaux arrivages"
+                className='rounded-xl'
+                width={640}
+                height={427}
+              />
             </div>
           </div>
         </div>

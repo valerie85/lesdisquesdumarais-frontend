@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 function ArticlesList() {
     const router = useRouter();
     const { genre } = router.query;
-
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [articlesData, setArticlesData] = useState([]);
@@ -15,7 +15,7 @@ function ArticlesList() {
       // if (!genre) {
       //   return;
       // }
-      fetch('http://localhost:3000/genres')
+      fetch(`${BACKEND}/genres`)
         .then(response => response.json())
         .then(data => {
           console.log("genre", genre);
@@ -27,12 +27,12 @@ function ArticlesList() {
           if(data.allGenres.some((element) => element.name == genreName)) {
 
             // On récupère les infos du genre
-            fetch(`http://localhost:3000/articles/bygenre/${genre}`)
+            fetch(`${BACKEND}/articles/bygenre/${genre}`)
             .then(response => response.json())
             .then(data => { 
 
               let genreName = genre.replace(/_/g, '/');
-              fetch(`http://localhost:3000/genres/${genre}`)
+              fetch(`${BACKEND}/genres/${genre}`)
               .then(response => response.json())
               .then(data => { 
                 setDescription(data.description);
@@ -58,7 +58,8 @@ function ArticlesList() {
   
     //création de la liste à afficher
     const articles = articlesData.map((data, i) => {
-        return <Article key={i} {...data} />;
+      if (data.isSold) { return null; }
+      return <Article key={i} {...data} />;
     });
   
     return (
