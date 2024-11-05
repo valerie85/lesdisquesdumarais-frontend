@@ -184,8 +184,9 @@ function Profile() {
     setUserData(updatedUserData);
   };
 
+
   return (
-    <div className="bg-red-50 flex flex-col items-center w-full px-4 py-6 max-w-8xl mx-auto text-gray-800">
+    <div className="container mx-auto border-b">
       {/* Titre principal */}
       <h2 className="text-3xl font-bold mb-6 text-center">
         {userData.isAdmin
@@ -344,9 +345,27 @@ function Profile() {
           </form>
         </div>
       ) : (
-        <div>
-          <h1>Mon Profil</h1>
-          <h3>Mes Commandes</h3>
+        <div className="container bg-orange-200 flex justify-end">
+          <div className="container bg-yellow-300">
+            <p>Prénom: {userData.firstName}</p>
+            <p>Nom: {userData.lastName}</p>
+            <p>Email: {userData.email}</p>
+            <p>
+              Mot de passe:{" "}
+              <a
+                href="/forgot-password"
+                className="text-blue-500 hover:underline"
+              >
+                Réinitialiser mon mot de passe
+              </a>
+            </p>
+            <p>Mes adresses: {userData.addresses}</p>
+
+            <UpdateUser userData={userData} onUpdate={handleUserUpdate} />
+          </div>
+
+          <div className="container bg-teal-200">
+          <h3 className="bg-yellow-300 flex justify-center text-2xl mb-4 ">Mes Commandes</h3>
           {orders.length === 0 ? (
             <p>Aucune commande trouvée.</p>
           ) : (
@@ -359,24 +378,7 @@ function Profile() {
               ))}
             </ul>
           )}
-
-          <p>Prénom: {userData.firstName}</p>
-          <p>Nom: {userData.lastName}</p>
-          <p>Email: {userData.email}</p>
-          <p>
-            Mot de passe:{" "}
-            <a
-              href="/forgot-password"
-              className="text-blue-500 hover:underline"
-            >
-              Réinitialiser mon mot de passe
-            </a>
-          </p>
-          <p>Adresse: {userData.addresses}</p>
-
-          <UpdateUser userData={userData} onUpdate={handleUserUpdate} />
-
-          {console.log("Données utilisateur récupérées :", userData)}
+        </div>
         </div>
       )}
     </div>
