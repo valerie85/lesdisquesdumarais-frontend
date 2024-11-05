@@ -147,12 +147,12 @@ function Order() {
                             <div className="mb-5">
                                 <h2 className="title">Choix de l'adresse de livraison :</h2>
                             </div>
-                            <div className={styles.addressContentContainer}>
-                                <div className={styles.registeredAddresses}>
+                            <div className="flex">
+                                <div className="basis-full md:basis-1/2">
                                     {addressesList}
                                 </div>
-                                <div className={styles.newAdressInputs}>
-                                    <h3>Saisir une nouvelle adresse : </h3>
+                                <div className="box basis-full md:basis-1/2">
+                                    <h3 className="title">Saisir une nouvelle adresse :</h3>
                                     <input type="text" placeholder='adresse 1' onChange={(e) => setFormState((prev) => ({ ...prev, line1: e.target.value }))} />
                                     <input type="text" placeholder='adresse 2' onChange={(e) => setFormState((prev) => ({ ...prev, line2: e.target.value }))} />
                                     <input type="text" placeholder='adresse 3' onChange={(e) => setFormState((prev) => ({ ...prev, line3: e.target.value }))} />
@@ -160,8 +160,11 @@ function Order() {
                                     <input type="text" placeholder='Ville' onChange={(e) => setFormState((prev) => ({ ...prev, city: e.target.value }))} />
                                     <input type="text" placeholder='Pays' onChange={(e) => setFormState((prev) => ({ ...prev, country: e.target.value }))} />
                                     <input type="text" placeholder='Autres' onChange={(e) => setFormState((prev) => ({ ...prev, infos: e.target.value }))} />
-                                    <input type='submit' value='Enregistrer' name='newAdress' className="btnPrimary" onClick={() => handleRegisterAddress()} />
-                                    <input type='reset' value='Annuler' name='cancel' className="btnSecondary" onClick={() => handleClearAddress()} />
+                                    <div className="flex gap-5">
+                                        <input type='submit' value='Enregistrer' name='newAdress' className="btnPrimary" onClick={() => handleRegisterAddress()} />
+                                        <input type='reset' value='Annuler' name='cancel' className="btnSecondary" onClick={() => handleClearAddress()} />
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -172,6 +175,9 @@ function Order() {
                             <div className="flex flex-col">
                                 <label><input type="radio" name="deliveryRadio" onClick={(e) => setDeliveryChoice(e.target.value)} value="La Poste" />   La Poste</label>
                                 <label><input type="radio" name="deliveryRadio" onClick={(e) => setDeliveryChoice(e.target.value)} value="UPS" />   UPS</label>
+                            </div>
+                            <div className={styles.validationOrderInfos}>
+                                <button id='validateOrderInfos' className="btnPrimary" onClick={() => handleValidateOrderInfos()}>Valider</button>
                             </div>
                         </div>
                         
@@ -185,9 +191,7 @@ function Order() {
                             </div>
                         </div>
 
-                        <div className={styles.validationOrderInfos}>
-                            <button id='validateOrderInfos' className="btnPrimary" onClick={() => handleValidateOrderInfos()}>Valider</button>
-                        </div>
+                        
 
                     </div>
                     <div className="box basis-full md:basis-2/5">

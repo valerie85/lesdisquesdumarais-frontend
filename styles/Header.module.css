@@ -68,7 +68,10 @@
     justify-content: center;
     width: 200px;
 }
-.icons > * {
+.icons div {
+    position: relative;
+}
+.icons div > * {
     color: var(--color-light);
     max-width: 30px;
     max-height: 30px;
@@ -78,6 +81,21 @@
 .icons > *:hover {
     opacity: 0.8;
     cursor: pointer;
+}
+.nbCartItems {
+    background-color: var(--color-secondary);
+    color: var(--color-light);
+    width: 20px;
+    height: 22px;
+    line-height: 20px;
+    border-radius: 2px 2px 0 0;
+    display: block;
+    text-align: center;
+    font-size: 0.8em;
+    position: absolute;
+    top: -20px;
+    right: -2px;
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
 }
 .userMessage {
     color: var(--color-light);
@@ -94,15 +112,3 @@
     align-items: center;
     justify-content: center;
 }
-/*.menu a {
-    color: var(--color-light);
-    font-size: 1.1em;
-    text-transform: uppercase;
-    margin: 0 30px;
-    font-family: var(--font-main);
-    transition: all 0.2s ease-in-out;
-}
-.menu a:hover {
-    opacity: 0.8;
-    cursor: pointer;
-}*/

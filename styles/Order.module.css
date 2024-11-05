@@ -52,8 +52,8 @@
     padding-left: 1rem;
     padding-right: 1rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid;
-    border-color: var(--color-tertiary); 
+    /* border-bottom: 1px solid;
+    border-color: var(--color-tertiary);  */
 }
 .icon {
     color: var(--color-primary);
@@ -61,8 +61,5 @@
 
 .validationOrderInfos {
     padding-bottom: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    display: flex;
-    justify-content: flex-end;
+    padding-top: 1rem;
 }

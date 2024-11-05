@@ -101,14 +101,14 @@ function Login({ handleCancelLogin }) {
             <Checkbox>Se souvenir de moi</Checkbox>
           </Form.Item>
 
-          <Form.Item>
+          <Form.Item className="text-center">
             <Button type="primary" htmlType="submit" className="w-1/2 btnSecondary">
               Connexion
             </Button>
           </Form.Item>
 
-          <div className="text-center">
-            <a href="/forgot-password" className="text-blue-500 hover:underline">
+          <div className="text-center mt-4">
+            <a href="/forgot-password" className="link">
               Mot de passe oublié ?
             </a>
           </div>
