@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
 function SearchResult() {
-
+  const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
     const search = useSelector((state) => state.search.value.keyword);
     console.log("search", search);
     const [articlesData, setArticlesData] = useState([]);
@@ -11,7 +11,7 @@ function SearchResult() {
 
     useEffect(() => {
       if(search.length>=3) {
-        fetch(`http://localhost:3000/articles/search/${search}`)
+        fetch(`${BACKEND}/articles/search/${search}`)
         .then(response => response.json())
         .then(data => { 
           console.log("data.result", data.result)
@@ -39,6 +39,7 @@ function SearchResult() {
   
     //création de la liste à afficher
     const articles = articlesData.map((data, i) => {
+      if (data.isSold) { return null; }
         return <Article key={i} {...data} />;
     });
   

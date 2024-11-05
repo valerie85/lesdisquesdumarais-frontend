@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function MenuHeader() {
   const [current, setCurrent] = useState('');
-
+  const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
   const onClick = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
@@ -14,7 +14,7 @@ function MenuHeader() {
   const [genresData, setGenresData] = useState([]);
 
   useEffect(() => {
-      fetch('http://localhost:3000/genres')
+      fetch(`${BACKEND}/genres`)
         .then(response => response.json())
         .then(data => {
           //console.log("data",data);
