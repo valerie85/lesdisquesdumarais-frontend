@@ -59,7 +59,7 @@
     color: var(--color-light) !important;
 }
 .rightContent {
-
+    width: 200px;
 }
 .icons {
     display: flex;

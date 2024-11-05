@@ -86,7 +86,7 @@ function Login({ handleCancelLogin }) {
             name="email"
             rules={[{ required: true, message: "Veuillez entrer votre email" }]}
           >
-            <Input placeholder="email" className="w-full mx-auto" />
+            <Input placeholder="Email" className="w-full mx-auto" />
           </Form.Item>
 
           <Form.Item
@@ -122,6 +122,7 @@ function Login({ handleCancelLogin }) {
           <Form.Item
             label="Prénom"
             name="firstName"
+            placeholder="Prénom"
             rules={[{ required: true }]}
             className="items-center"
           >
@@ -130,6 +131,7 @@ function Login({ handleCancelLogin }) {
           <Form.Item
             label="Nom"
             name="lastName"
+            placeholder="Nom"
             rules={[{ required: true }]}
           >
             <Input className="w-full" />
@@ -137,6 +139,7 @@ function Login({ handleCancelLogin }) {
           <Form.Item
             label="Email"
             name="email"
+            placeholder="Email"
             rules={[{ required: true }]}
           >
             <Input type="email" className="w-full" />
@@ -144,6 +147,7 @@ function Login({ handleCancelLogin }) {
           <Form.Item
             label="Mot de passe"
             name="password"
+            placeholder="Mot de passe"
             rules={[{ required: true }]}
           >
             <Input.Password className="w-full" />

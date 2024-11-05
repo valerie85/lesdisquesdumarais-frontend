@@ -16,15 +16,13 @@
 .addressContentContainer {
     margin-bottom:10px;
 }
-.registeredAdresses {
-    display :flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    align-items:flex-start;
-    height :100%;
-    width:70%;
-    margin-bottom:10px;
+.addressLine {
+    border-bottom: 1px solid;
+    border-color: var(--color-grey);
+    padding: 0.5rem;
+    margin-right: 1rem;
 }
+
 .label {
     display: inline-block;
     position: relative;
