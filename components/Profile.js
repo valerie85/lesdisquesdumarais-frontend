@@ -359,7 +359,7 @@ function Profile() {
                 Réinitialiser mon mot de passe
               </a>
             </p>
-            <p>Mes adresses: {userData.addresses}</p>
+            <p>Mes adresses de livraison: {userData.addresses}</p>
 
             <UpdateUser userData={userData} onUpdate={handleUserUpdate} />
           </div>
