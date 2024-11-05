@@ -359,7 +359,7 @@ function Profile() {
                             ))}
                         </ul>
                     )}
-        {/* Affichez les données utilisateur */}
+
         <p>Prénom: {userData.firstName}</p>
         <p>Nom: {userData.lastName}</p>
         <p>Email: {userData.email}</p>
@@ -371,7 +371,6 @@ function Profile() {
 
         <UpdateUser userData={userData} onUpdate={handleUserUpdate} />
 
-        {/* Ajoutez un console.log pour déboguer */}
         {console.log("Données utilisateur récupérées :", userData)}
 
       </div>
