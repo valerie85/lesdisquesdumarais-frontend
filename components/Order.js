@@ -67,7 +67,7 @@ function Order() {
     };
 
     const handleRegisterAddress = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         fetch(`${BACKEND}/users/adresses/${user.token}`, {
             method: 'PUT',
