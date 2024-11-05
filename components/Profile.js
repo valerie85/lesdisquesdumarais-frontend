@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styles from "../styles/Profile.module.css";
 import UpdateUser from "./updateUser";
 
+
 function Profile() {
   const token = useSelector((state) => state.user.value.token);
   const user = useSelector((state) => state.user.value)
