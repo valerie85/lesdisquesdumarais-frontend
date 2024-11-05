@@ -52,7 +52,7 @@ function CartOrder() {
 
   return (
     <>
-      <div className="bg-white p-6 shadow-lg rounded-lg w-full">
+      <div className="bg-white p-6 w-full">
         <div className="space-y-4 mb-4">
           <div className="grid grid-cols-2 gap-4 items-center border-b pb-4">
             <p className="text-gray-700 col-span-1"> {numberOfArticles} {getArticleLabel()}</p>

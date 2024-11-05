@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 function Home() {
 
@@ -71,12 +72,25 @@ function Home() {
     <>
       <main className="main">
 
-        <div className="container mx-auto">
-          <h1 className="title">
-            Nouveaux arrivages
-          </h1>
-          <p className="introduction">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut porta tortor. Nam ac lacus gravida dolor placerat feugiat ac eget est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras consectetur at tortor non placerat. Cras sed rhoncus orci, vel tincidunt erat. Aliquam erat volutpat. Pellentesque eleifend placerat tellus quis semper. Aliquam nisl ex, maximus quis mattis eu, blandit ac nulla. In aliquam dignissim malesuada. Nam euismod tellus odio, a vehicula nisl semper eu. Nunc maximus dapibus lacus, eleifend sodales lacus feugiat vitae. Praesent porttitor molestie nibh. Fusce purus dolor, vestibulum in dui nec, posuere cursus sem.
-          </p>
+        <div className="container mx-auto mb-2">
+          <div className='flex flex-wrap items-center'>
+            <div className="basis-full md:basis-3/4">
+              <h1 className="title">
+                Nouveaux arrivages
+              </h1>
+              <p className="introduction">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut porta tortor. Nam ac lacus gravida dolor placerat feugiat ac eget est. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras consectetur at tortor non placerat. Cras sed rhoncus orci, vel tincidunt erat. Aliquam erat volutpat. Pellentesque eleifend placerat tellus quis semper. Aliquam nisl ex, maximus quis mattis eu, blandit ac nulla. In aliquam dignissim malesuada. Nam euismod tellus odio, a vehicula nisl semper eu. Nunc maximus dapibus lacus, eleifend sodales lacus feugiat vitae. Praesent porttitor molestie nibh. Fusce purus dolor, vestibulum in dui nec, posuere cursus sem.
+              </p>
+            </div>
+            <div className="basis-full md:basis-1/4 pb-10 md:pb-0 md:px-10 rounded-s">
+              <Image
+                  src="/records-2619354_640.jpg"
+                  alt="Les nouveaux arrivages"
+                  className='rounded-xl'
+                  width={640}
+                  height={427}
+                />
+            </div>
+          </div>
         </div>
 
         {/* Arrivages articles Rock */}
