@@ -14,7 +14,7 @@ function Order() {
     const user = useSelector((state) => state.user.value);
     const [userId, setUserId] = useState('');
     const cartItems = useSelector((state) => state.cart.value);
-
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
 
     const [formState, setFormState] = useState({ line1: '', line2: '', line3: '', zip_code: '', city: '', country: '', infos: '' });
     const [addressesList, setAddressesList] = useState();
@@ -33,7 +33,7 @@ function Order() {
         if (!user.token) {
             return;
         }
-        fetch(`http://localhost:3000/users/${user.token}`)
+        fetch(`${BACKEND}/users/${user.token}`)
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
@@ -67,7 +67,7 @@ function Order() {
     const handleRegisterAddress = (e) => {
         e.preventDefault();
 
-        fetch(`http://localhost:3000/users/adresses/${user.token}`, {
+        fetch(`${BACKEND}/users/adresses/${user.token}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token: user.token, formState }),
@@ -93,7 +93,7 @@ function Order() {
         console.log('LP sortie de boucle', numberOfLP);
 
         //Calculate shipment amount
-           fetch(`http://localhost:3000/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
+           fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
              }).then(response => response.json())
                    .then(shipmentData => {
                        if (shipmentData.result) {  
@@ -129,11 +129,22 @@ function Order() {
             articlesId.push(item._id);
         };
         
+        const OrderData={
+            user: userId,                 
+            total: totalOrder,             
+            shipment_operator: deliveryChoice,
+            shipment_price: shipment_price, 
+            shipping_adresse: deliveryAddress,
+            payment_media: paymentChoice,  
+            articles: articlesId,           
+            isPaid: true 
+        }
+
         //Enregistrement en base de la commande
-        fetch(`http://localhost:3000/orders`, {
+        fetch(`${BACKEND}/orders`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: userId, total: totalOrder, shipment_operator: deliveryChoice, shipment_price: shipment_price, shipping_adresse: deliveryAddress, payment_media: paymentChoice, articles: articlesId, isPaid:true }),
+            body: JSON.stringify(OrderData),
         }).then(response => response.json())
             .then(data => {
                 if (data.result) {
