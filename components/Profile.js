@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "../styles/Profile.module.css";
 import UpdateUser from "./updateUser";
-import user from "../reducers/user";
 
 function Profile() {
   const token = useSelector((state) => state.user.value.token);
-  const user = useSelector((state) => state.user.value)
 
   const [userData, setUserData] = useState({
     userId: null,
@@ -44,7 +42,7 @@ function Profile() {
         });
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          console.log("Données utilisateur récupérées:", userData)
+          console.log("Données utilisateur récupérées:", userData);
           setUserData({
             userId: userData._id,
             isAdmin: userData.isAdmin,
@@ -53,10 +51,10 @@ function Profile() {
             lastName: userData.lastName,
             email: userData.email,
             password: userData.password,
-            addresses: userData.adresses
+            addresses: userData.adresses,
           });
 
-          console.log("userData informations: ", userData)
+          console.log("userData informations: ", userData);
 
           if (userData.isAdmin) {
             const [articlesResponse, ordersExpResponse] = await Promise.all([
@@ -187,15 +185,15 @@ function Profile() {
   };
 
   return (
-    
-<div className="bg-red-50 flex flex-col items-center w-full px-4 py-6 max-w-8xl mx-auto text-gray-800">
-    
-    {/* Titre principal */}
-    <h2 className="text-3xl font-bold mb-6 text-center">
-      {userData.isAdmin ? "Tableau de Bord Administrateur" : "Profil Utilisateur"}
-    </h2>
+    <div className="bg-red-50 flex flex-col items-center w-full px-4 py-6 max-w-8xl mx-auto text-gray-800">
+      {/* Titre principal */}
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        {userData.isAdmin
+          ? "Tableau de Bord Administrateur"
+          : "Profil Utilisateur"}
+      </h2>
 
-    {userData.isAdmin ? (
+      {userData.isAdmin ? (
         <div className={styles.admin}>
           <p className={styles.h2Admin}>
             Bienvenue sur le tableau de bord d'administration !
@@ -346,27 +344,42 @@ function Profile() {
           </form>
         </div>
       ) : (
-      <div>
-        <h1>Mon Profil</h1>
-        
-        {/* Affichez les données utilisateur */}
-        <p>Prénom: {userData.firstName}</p>
-        <p>Nom: {userData.lastName}</p>
-        <p>Email: {userData.email}</p>
-        <p>Mot de passe: <a href="/forgot-password" className="text-blue-500 hover:underline">
+        <div>
+          <h1>Mon Profil</h1>
+          <h3>Mes Commandes</h3>
+          {orders.length === 0 ? (
+            <p>Aucune commande trouvée.</p>
+          ) : (
+            <ul>
+              {orders.map((order) => (
+                <li key={order._id}>
+                  Commande #{order._id}, Total : {order.total} €, Statut :{" "}
+                  {order.order_status}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <p>Prénom: {userData.firstName}</p>
+          <p>Nom: {userData.lastName}</p>
+          <p>Email: {userData.email}</p>
+          <p>
+            Mot de passe:{" "}
+            <a
+              href="/forgot-password"
+              className="text-blue-500 hover:underline"
+            >
               Réinitialiser mon mot de passe
-            </a></p>
-        <p>Adresse: {userData.addresses}</p>
+            </a>
+          </p>
+          <p>Adresse: {userData.addresses}</p>
 
+          <UpdateUser userData={userData} onUpdate={handleUserUpdate} />
 
-        <UpdateUser userData={userData} onUpdate={handleUserUpdate} />
-
-        {/* Ajoutez un console.log pour déboguer */}
-        {console.log("Données utilisateur récupérées :", userData)}
-
-      </div>
-    )}
-  </div>
+          {console.log("Données utilisateur récupérées :", userData)}
+        </div>
+      )}
+    </div>
   );
 }
 

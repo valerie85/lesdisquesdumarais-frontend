@@ -23,7 +23,7 @@ function ArticleView() {
   const user= useSelector((state)=> state.user.value);
   const likes = useSelector((state) => state.likes.value);
   const cart = useSelector((state) => state.cart.value);
-
+  const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
   const [isLiked, setIsLiked] = useState({ result: false, likeStyle: { 'color': 'var(--color-primary)' } });
   const [isInCart, setIsInCart] = useState(false);
   const [bttnCart, setBttnCart] = useState({ message: "Ajouter au panier", cartBttnStyle: { 'backgroundColor': 'var(--color-primary)' } });
@@ -43,9 +43,12 @@ function ArticleView() {
     }
     
     //Récupération des données de l'article en BDD
-    fetch(`http://localhost:3000/articles/byrelease/${article}`)
+    fetch(`${BACKEND}/articles/byrelease/${article}`)
       .then(response => response.json())
       .then(data => {
+        if(data.article.isSold){
+          return;
+        }
         setArticlePictures([]);
         setGallery('');
         setArticleData(data.article);
@@ -80,7 +83,7 @@ function ArticleView() {
           };
         } else {
           //Récupération des données de likes du user en BDD s'il est connecté
-          fetch(`http://localhost:3000/users/${user.token}`)
+          fetch(`${BACKEND}/users/${user.token}`)
             .then(response => response.json())
             .then(user => {
               if (user.userData.favorites.some(e => e === data.article._id)) {
@@ -113,7 +116,7 @@ function ArticleView() {
       };
     } else {
       //traitement si le user est connecté via la BDD et la récupération des likes existants
-      fetch('http://localhost:3000/users/like', {
+      fetch(`${BACKEND}/users/like`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: user.token, articleId: articleData._id }),
