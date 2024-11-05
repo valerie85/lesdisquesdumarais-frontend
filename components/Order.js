@@ -101,42 +101,37 @@ function Order() {
                 numberOfLP+=1;
                 setNumberOfLP((numberOfLP ));
             };
-        };
-        console.log('LP sortie de boucle', numberOfLP);
-
+        };        
         //Calculate shipment amount
-        fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
-            }).then(response => response.json())
-                .then(shipmentData => {
-                    if (shipmentData.result) {  
-                        for (let item of shipmentData.allShipments) {
-                        console.log('pays trouvé',item.country === shipmentCountry)
-                                if (item.country === shipmentCountry) {
-                                    let LP_shipment;
-                                    let others_shipment;
-                                    if (numberOfLP>0) {
-                                        LP_shipment=item.shipment_price_LP[numberOfLP-1].price;  
-                                    }else {
-                                        LP_shipment=0; 
-                                    };
-                                    if (numberOfArticles-numberOfLP>0){
-                                        others_shipment=item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price; 
-                                    }else {
-                                        others_shipment=0;  
-                                    };
-                                                                                                        
-                                setShipment_price(LP_shipment + others_shipment);
-                                //Calculate order total
-                                setTotalOrder((totalArticles + LP_shipment + others_shipment));
-                                    } else {
-                                    console.log('Pays non desservi');
-                                    };
-                            }
-                        }else {
-                            console.log('message:', 'Opérateur non trouvé')
-                        };                 
-        });            
-        setNumberOfLP(0);  
+           fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
+             }).then(response => response.json())
+                   .then(shipmentData => {
+                       if (shipmentData.result) {  
+                           for (let item of shipmentData.allShipments) {
+                                    if (item.country === shipmentCountry) {
+                                        let LP_shipment;
+                                        let others_shipment;
+                                        if (numberOfLP>0) {
+                                            LP_shipment=item.shipment_price_LP[numberOfLP-1].price;  
+                                        }else {
+                                            LP_shipment=0; 
+                                        };
+                                        if (numberOfArticles-numberOfLP>0){
+                                           others_shipment=item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price; 
+                                        }else {
+                                            others_shipment=0;  
+                                        };
+                                                                                                         
+                                        setShipment_price(LP_shipment + others_shipment);
+                                        //Calculate order total
+                                        setTotalOrder((totalArticles + LP_shipment + others_shipment));
+                                     }; 
+                                }
+                           }else {
+                               console.log('message:', 'Opérateur non trouvé')
+                           };                 
+                   });
+               setNumberOfLP(0);        
     };
 
     const handleValidateOrder = () => {
