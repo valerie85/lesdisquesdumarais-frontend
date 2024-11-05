@@ -7,10 +7,10 @@ function Login({ handleCancelLogin }) {
   const user = useSelector((state) => state.user.value);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-
+  const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
   const handleSubmitSignIn = (values) => {
     if (!user.token) {
-      fetch("http://localhost:3000/users/signin", {
+      fetch(`${BACKEND}/users/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: values.email, password: values.password }),
@@ -36,7 +36,7 @@ function Login({ handleCancelLogin }) {
 
   const handleSubmitSignUp = (values) => {
     if (!user.token) {
-      fetch("http://localhost:3000/users/signup", {
+      fetch(`${BACKEND}/users/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
