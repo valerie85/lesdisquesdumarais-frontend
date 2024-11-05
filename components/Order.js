@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { Form, Input, Checkbox, message } from "antd";
 import CartArticles from './CartArticles';
 import { useRouter } from "next/router";
-
+import { removeAllArticlesFromCart} from "../reducers/cart";
 
 function Order() {
     const dispatch = useDispatch();
@@ -94,14 +94,16 @@ function Order() {
 
     const handleValidateOrderInfos = () => {
         //setShipmentCountry(deliveryAddress.country);
+        console.log("numberOfLP",numberOfLP);
         const numberOfArticles = cartItems.length;
         setNumberOfLP(0);
         for (let item of cartItems) {
             if (item.format.includes("LP") || item.format.includes("12")) {
-                numberOfLP+=1;
-                setNumberOfLP((numberOfLP ));
+                setNumberOfLP(numberOfLP++);
+                console.log("item.format",item.format);
             };
-        };        
+        }; 
+        console.log("numberOfLP",numberOfLP);       
         //Calculate shipment amount
            fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
              }).then(response => response.json())
@@ -161,11 +163,13 @@ function Order() {
             .then(data => {
                 if (data.result) {
                    console.log('Commande enregistrée')
+                   //On vide le reducer du Panier
+                    dispatch(removeAllArticlesFromCart());
                 }else{
                     console.log( "Pb lors de l'enregistrement de la commande")
                 }
-            })
-        
+            })   
+
         //On renvoie vers la page de confirmation de commande
         router.push("/order-confirmed");
     };
