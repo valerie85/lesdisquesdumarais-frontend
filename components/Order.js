@@ -3,14 +3,17 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCcPaypal, faCcMastercard, faCcVisa } from '@fortawesome/free-brands-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Form, Input, Checkbox, message } from "antd";
 import CartArticles from './CartArticles';
+import { useRouter } from "next/router";
 
 
 function Order() {
     const dispatch = useDispatch();
+    const router = useRouter();
     const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
 
     const user = useSelector((state) => state.user.value);
@@ -31,6 +34,7 @@ function Order() {
     const [totalArticles, setTotalArticles] = useState();
     const [numberOfLP, setNumberOfLP] = useState(0);
     const [shipmentCountry, setShipmentCountry] = useState('');
+    const [btnStyle, setBtnStyle] = useState({ 'display' : 'none' });
 
     useEffect(() => {
         if (!user.token) {
@@ -69,8 +73,6 @@ function Order() {
             })
     }, [newAdressIsSaved]);
 
-    
-
     const handleClearAddress = () => {
         setFormState({});
     };
@@ -91,7 +93,7 @@ function Order() {
     };
 
     const handleValidateOrderInfos = () => {
- //       setShipmentCountry(deliveryAddress.country);
+        //setShipmentCountry(deliveryAddress.country);
         const numberOfArticles = cartItems.length;
         setNumberOfLP(0);
         for (let item of cartItems) {
@@ -103,38 +105,38 @@ function Order() {
         console.log('LP sortie de boucle', numberOfLP);
 
         //Calculate shipment amount
-           fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
-             }).then(response => response.json())
-                   .then(shipmentData => {
-                       if (shipmentData.result) {  
-                           for (let item of shipmentData.allShipments) {
-                            console.log('pays trouvé',item.country === shipmentCountry)
-                                    if (item.country === shipmentCountry) {
-                                        let LP_shipment;
-                                        let others_shipment;
-                                        if (numberOfLP>0) {
-                                            LP_shipment=item.shipment_price_LP[numberOfLP-1].price;  
-                                        }else {
-                                            LP_shipment=0; 
-                                        };
-                                        if (numberOfArticles-numberOfLP>0){
-                                           others_shipment=item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price; 
-                                        }else {
-                                            others_shipment=0;  
-                                        };
-                                                                                                         
-                                    setShipment_price(LP_shipment + others_shipment);
-                                     } else {
-                                        console.log('Pays non desservi');
-                                     };
-                                }
-                           }else {
-                               console.log('message:', 'Opérateur non trouvé')
-                           };                 
-                   });
-               //Calculate order total
-               setTotalOrder((totalArticles + shipment_price));
-               setNumberOfLP(0);        
+        fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
+            }).then(response => response.json())
+                .then(shipmentData => {
+                    if (shipmentData.result) {  
+                        for (let item of shipmentData.allShipments) {
+                        console.log('pays trouvé',item.country === shipmentCountry)
+                                if (item.country === shipmentCountry) {
+                                    let LP_shipment;
+                                    let others_shipment;
+                                    if (numberOfLP>0) {
+                                        LP_shipment=item.shipment_price_LP[numberOfLP-1].price;  
+                                    }else {
+                                        LP_shipment=0; 
+                                    };
+                                    if (numberOfArticles-numberOfLP>0){
+                                        others_shipment=item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price; 
+                                    }else {
+                                        others_shipment=0;  
+                                    };
+                                                                                                        
+                                setShipment_price(LP_shipment + others_shipment);
+                                //Calculate order total
+                                setTotalOrder((totalArticles + LP_shipment + others_shipment));
+                                    } else {
+                                    console.log('Pays non desservi');
+                                    };
+                            }
+                        }else {
+                            console.log('message:', 'Opérateur non trouvé')
+                        };                 
+        });            
+        setNumberOfLP(0);  
     };
 
     const handleValidateOrder = () => {
@@ -168,7 +170,21 @@ function Order() {
                     console.log( "Pb lors de l'enregistrement de la commande")
                 }
             })
+        
+        //On renvoie vers la page de confirmation de commande
+        router.push("/order-confirmed");
     };
+
+    //Affichage du bouton "Terminer la commande" si les informations sont valides
+    useEffect(() => {
+        console.log("totalOrder",totalOrder);
+        console.log("paymentChoice",paymentChoice);
+        if(totalOrder>0 && paymentChoice) {
+            setBtnStyle({ 'display': 'block' });
+        } else {
+            setBtnStyle({ 'display': 'none' });
+        }
+    }, [totalOrder, paymentChoice]);
 
     return (
         <>
@@ -276,7 +292,7 @@ function Order() {
                     <div className="box basis-full md:basis-2/5">
                         <h2 className="title">Votre commande</h2>
                         <div className={styles.articlesContainer}>
-                            <CartArticles />
+                            <CartArticles isDeletable="false" />
                         </div>
                         <div className={styles.orderInfosContainer}>
                             <h3>Total hors frais de livraison : {totalArticles} €</h3>
@@ -285,7 +301,10 @@ function Order() {
                         </div>
 
                         <div className={styles.validateOrder}>
-                            <button id='validateOrder' className="btnPrimary" onClick={() => handleValidateOrder()}>Terminer la commande </button>
+                            <button id='validateOrder' className="btnPrimary" style={btnStyle} onClick={() => handleValidateOrder()}>
+                                <FontAwesomeIcon icon={faCheck} size="1x" />&nbsp;
+                                Terminer la commande
+                            </button>
                         </div>
                     </div>
 

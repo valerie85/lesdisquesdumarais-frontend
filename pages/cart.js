@@ -40,7 +40,7 @@ function Cart() {
               {/* Section Articles */}
               <div className="box basis-full md:basis-2/3">
                 <h2 className="title">Mes articles</h2>
-                <CartArticles />
+                <CartArticles isDeletable="true" />
               </div>
       
               {/* Section Résumé de commande */}

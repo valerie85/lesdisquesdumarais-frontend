@@ -75,7 +75,7 @@ function CartOrder() {
           </div>
         </div>
         <div className="text-center mt-8">
-          <button className="btnSecondary" onClick={() => handleClickOrder()}>
+          <button className="btnPrimary" onClick={() => handleClickOrder()}>
             Passer commande
           </button>
         </div>

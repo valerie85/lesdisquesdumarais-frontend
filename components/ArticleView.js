@@ -164,7 +164,7 @@ function ArticleView() {
 
         <div className='flex flex-wrap'>
 
-          <div className="basis-full md:basis-1/2">
+          <div className="basis-full md:basis-1/2 max-w-2xl">
             <div className={styles.pictures}>
               {gallery}
             </div>           
