@@ -67,15 +67,15 @@ function CartOrder() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 items-center border-t pt-4">
+          <div className="grid grid-cols-2 gap-4 items-center">
             <p className="text-xl font-semibold col-span-1">Total :</p>
             <p className="text-xl font-semibold text-secondary text-right col-span-1">
               {totalArticles} €
             </p>
           </div>
         </div>
-        <div className="text-center">
-          <button className="w-1/2 btnSecondary" onClick={() => handleClickOrder()}>
+        <div className="text-center mt-8">
+          <button className="btnSecondary" onClick={() => handleClickOrder()}>
             Passer commande
           </button>
         </div>
