@@ -84,7 +84,11 @@ function Order() {
         setShipmentCountry(deliveryAddress.country);
         console.log('delivery Address', deliveryAddress)
         const numberOfArticles = cartItems.length;
+        setNumberOfLP(0);
         for (let item of cartItems) {
+            console.log('test 2xLP',item.format.includes("2xLP"));
+            console.log('test LP',item.format.includes("LP"));
+            console.log('test 12', item.format.includes("12"));
             if (item.format.includes("2xLP")) {
                 setNumberOfLP(numberOfLP + 2);
             } else if (item.format.includes("LP") || item.format.includes("12")) {
@@ -92,7 +96,7 @@ function Order() {
             };
         };
         console.log('LP', numberOfLP);
-        console.log('deliveryChoice', deliveryChoice)
+       
         //Calculate shipment amount
  /*       fetch(`http://localhost:3000/shipments`, {
             method: 'GET',
