@@ -10,7 +10,7 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,12 +25,15 @@ function Header() {
   const search = useSelector((state) => state.search.value.keyword);
   const [keyword, setKeyword] = useState(search);
   const user = useSelector((state) => state.user.value);
+  const cartItems = useSelector((state) => state.cart.value);
 
   const dispatch = useDispatch();
   const router = useRouter();
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [logoutModalVisible, setLogOutModalVisible] = useState(false)
+  const [logoutModalVisible, setLogOutModalVisible] = useState(false);
+  const [nbCartItems, setNbCartItems] = useState(0);
+  const [nbCartItemsStyle, setNbCartItemsStyle] = useState({});
 
   let resetStyle = { 'display': 'none' };
   let submitStyle = { 'display': 'none' };
@@ -88,7 +91,15 @@ function Header() {
     router.push('/favoris');
   };
   
-
+  // Nombre d'articles dans le panier
+  useEffect(() => {
+    setNbCartItems(cartItems.length);
+    if(cartItems.length>0) {
+      setNbCartItemsStyle({ 'display': 'block' });
+    } else {
+      setNbCartItemsStyle({ 'display': 'none' });
+    }
+  }, [cartItems]);
 
   return (
     <>
@@ -101,7 +112,7 @@ function Header() {
 
       <div className={styles.main}>
 
-        <div className="container mx-auto">
+        <div className="container mx-auto px-0 max-w-full md:px-8 md:max-w-screen-2xl">
           <div className={styles.content}>
             <div className={styles.logo}>
               <Link href="/">
@@ -147,24 +158,33 @@ function Header() {
 
             <div className={styles.rightContent}>
               <div className={styles.icons}>
-                <FontAwesomeIcon icon={faHeart} className={styles.favIcon} onClick={handleFavoritesClick} 
-               />
-                <FontAwesomeIcon
-                  icon={faCartShopping}
-                  className={styles.cartIcon}
-                  onClick={() => router.push('/cart')}
-                />
-                <FontAwesomeIcon
-                  icon={faUser}
-                  className={styles.userIcon}
-                  onClick={() => showLoginModalVisible()}
-                />
+                <div>
+                  <FontAwesomeIcon icon={faHeart} className={styles.favIcon} onClick={handleFavoritesClick} 
+                  />
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faCartShopping}
+                    className={styles.cartIcon}
+                    onClick={() => router.push('/cart')}
+                  />
+                  <span className={styles.nbCartItems} style={nbCartItemsStyle}>{nbCartItems}</span>
+                </div>
+                <div>
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    className={styles.userIcon}
+                    onClick={() => showLoginModalVisible()}
+                  />
+                </div>
                 {user.token && (
+                  <div>
                   <FontAwesomeIcon
                     icon={faPowerOff}
                     className={styles.cartIcon}
                     onClick={() => showLogoutModal()}
                   />
+                  </div>
                 )}
               </div>           
               {user.firstName ? (<div className={styles.userMessage}>Bonjour {user.firstName} !</div>) : ""}           

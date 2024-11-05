@@ -35,7 +35,7 @@ function Cart() {
     
           {/* Container flex pour le panier et le résumé de commande */}
           <div className="container mx-auto">
-            <div className='flex flex-nowrap space-x-10'>
+            <div className='flex flex-wrap md:flex-nowrap md:space-x-10'>
             
               {/* Section Articles */}
               <div className="box basis-full md:basis-2/3">
@@ -45,7 +45,7 @@ function Cart() {
       
               {/* Section Résumé de commande */}
               <div className="box basis-full md:basis-1/3">
-                <h2 className="title text-center">Ma commande</h2>
+                <h2 className="title md:text-center">Ma commande</h2>
                 <CartOrder />
               </div>
 
