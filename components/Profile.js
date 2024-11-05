@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "../styles/Profile.module.css";
 import UpdateUser from "./updateUser";
-import user from "../reducers/user";
 
 function Profile() {
   const token = useSelector((state) => state.user.value.token);
-  const user = useSelector((state) => state.user.value)
 
   const [userData, setUserData] = useState({
     userId: null,
@@ -348,7 +346,18 @@ function Profile() {
       ) : (
       <div>
         <h1>Mon Profil</h1>
-        
+        <h3>Mes Commandes</h3>
+                    {orders.length === 0 ? (
+                        <p>Aucune commande trouvée.</p>
+                    ) : (
+                        <ul>
+                            {orders.map((order) => (
+                                <li key={order._id}>
+                                    Commande #{order._id}, Total : {order.total} €, Statut : {order.order_status}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
         {/* Affichez les données utilisateur */}
         <p>Prénom: {userData.firstName}</p>
         <p>Nom: {userData.lastName}</p>
