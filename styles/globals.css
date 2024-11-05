@@ -176,3 +176,8 @@ h3.title {
 .image-gallery-thumbnail.active, .image-gallery-thumbnail:focus {
   border: 4px solid var(--color-secondary) !important;
 }
+
+/* Forms */
+.ant-form-item {
+  margin-bottom: 10px;
+}

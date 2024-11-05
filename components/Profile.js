@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "../styles/Profile.module.css";
+import UpdateUser from "./updateUser";
 import user from "../reducers/user";
 
 function Profile() {
@@ -15,7 +16,7 @@ function Profile() {
     lastName: "",
     email: "",
     password: "",
-    address: "",
+    addresses: "",
   });
   const [orders, setOrders] = useState([]);
   const [orderExp, setOrderExp] = useState([]);
@@ -43,6 +44,7 @@ function Profile() {
         });
         if (userResponse.ok) {
           const userData = await userResponse.json();
+          console.log("Données utilisateur récupérées:", userData)
           setUserData({
             userId: userData._id,
             isAdmin: userData.isAdmin,
@@ -180,15 +182,20 @@ function Profile() {
     }
   };
 
+  const handleUserUpdate = (updatedUserData) => {
+    setUserData(updatedUserData);
+  };
+
   return (
-    <div className="flex flex-col items-center px-4 py-6 max-w-4xl mx-auto text-gray-800">
-      
+    
+<div className="bg-red-50 flex flex-col items-center w-full px-4 py-6 max-w-8xl mx-auto text-gray-800">
+    
     {/* Titre principal */}
     <h2 className="text-3xl font-bold mb-6 text-center">
       {userData.isAdmin ? "Tableau de Bord Administrateur" : "Profil Utilisateur"}
     </h2>
 
-      {userData.isAdmin ? (
+    {userData.isAdmin ? (
         <div className={styles.admin}>
           <p className={styles.h2Admin}>
             Bienvenue sur le tableau de bord d'administration !
@@ -339,30 +346,27 @@ function Profile() {
           </form>
         </div>
       ) : (
-        <div className="w-full bg-white rounded-lg shadow-md p-6 mt-4">
-        <h3 className="text-lg font-semibold mb-4">Mes informations personnelles</h3>
-        <p>Prénom:  {userData.firstName} </p>
-        <p>Nom:  {userData.lastName} </p>
-        <p>Email:  {userData.email} </p>
-        <p>Mot de passe: {userData.password} </p>
-        <p>Adresse:  {userData.addresses} </p>
-        <p>Date d'inscription:  {userData.inscription_date} </p>
+      <div>
+        <h1>Mon Profil</h1>
+        
+        {/* Affichez les données utilisateur */}
+        <p>Prénom: {userData.firstName}</p>
+        <p>Nom: {userData.lastName}</p>
+        <p>Email: {userData.email}</p>
+        <p>Mot de passe: <a href="/forgot-password" className="text-blue-500 hover:underline">
+              Réinitialiser mon mot de passe
+            </a></p>
+        <p>Adresse: {userData.addresses}</p>
 
-        <h3 className="text-lg font-semibold mb-4">Mes Commandes</h3>
-        {orders.length === 0 ? (
-          <p className="text-gray-600">Aucune commande trouvée.</p>
-        ) : (
-          <ul className="space-y-2">
-            {orders.map((order) => (
-              <li key={order._id} className="border p-4 rounded-md shadow-sm bg-gray-50">
-                Commande #{order._id}, Total : {order.total} €, Statut : {order.order_status}
-              </li>
-            ))}
-          </ul>
-        )}
+
+        <UpdateUser userData={userData} onUpdate={handleUserUpdate} />
+
+        {/* Ajoutez un console.log pour déboguer */}
+        {console.log("Données utilisateur récupérées :", userData)}
+
       </div>
-      )}
-    </div>
+    )}
+  </div>
   );
 }
 
