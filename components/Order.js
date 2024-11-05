@@ -15,7 +15,8 @@ function Order() {
     const user = useSelector((state) => state.user.value);
     const [userId, setUserId] = useState('');
     const cartItems = useSelector((state) => state.cart.value);
-    const BACKEND = process.env.NEXT_PUBLIC_BACKEND;    const [form] = Form.useForm();
+    const BACKEND = process.env.NEXT_PUBLIC_BACKEND;    
+    const [form] = Form.useForm();
 
     const [formState, setFormState] = useState({ line1: '', line2: '', line3: '', zip_code: '', city: '', country: '', infos: '' });
     const [addressesList, setAddressesList] = useState();
