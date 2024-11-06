@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
-import { Form, Input, Button, message, Spin, Row, Col, Card } from "antd";
+import { Form, Input, Button, message, Card } from "antd";
 import { EditOutlined, SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import AddressSection from './AddressSection';
 
@@ -154,6 +154,10 @@ function UserInfos() {
             <p><strong>Prénom : </strong> {userData.firstName}</p>
             <p><strong>Nom : </strong> {userData.lastName}</p>
             <p><strong>Email : </strong> {userData.email}</p>
+            <p><strong>Password : </strong><a href="/forgot-password" className="link">
+              Modifier son mot de passe
+            </a> </p>
+
           </div>
         ) : (
           <Form
