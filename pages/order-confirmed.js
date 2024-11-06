@@ -8,6 +8,7 @@ function OrderConfirmed() {
     <>
     <Head>
         <title>Les Disques du Marais - Confirmation de commande</title>
+        <meta name='description' content='message de confirmation de commande auprès des Disques du Marais'></meta>
     </Head>
       <div className="layout">
         <Header />

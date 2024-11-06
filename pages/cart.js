@@ -11,6 +11,7 @@ function Cart() {
     <>
       <Head>
           <title>Les Disques du Marais - Panier</title>
+          <meta name='description' content='affichage du panier en cours sur Les Disques du Marais'></meta>
       </Head>
       <div className="layout">
         <Header />

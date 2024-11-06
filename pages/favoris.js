@@ -8,6 +8,7 @@ function favoris() {
     <>
       <Head>
         <title>Les Disques du Marais - Favoris</title>
+        <meta name='description' content="Page permettant d'accéder aux favoris enregistrés en cours de navigation "></meta>
       </Head>
       <div className="layout">
         <Header />

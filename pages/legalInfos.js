@@ -8,6 +8,7 @@ function DisplayLegalInfos() {
     <>
       <Head>
         <title>Les Disques du Marais - Informations légales</title>
+        <meta name='description' content='Informations légales du site Les Disques du Marais'></meta>
       </Head>
       <div className="layout">
         <Header />
