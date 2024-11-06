@@ -17,7 +17,6 @@ function MenuHeader() {
       fetch(`${BACKEND}/genres`)
         .then(response => response.json())
         .then(data => {
-          //console.log("data",data);
           setGenresData(data.allGenres.filter((data, i) => i >= 0));
         });
     }, []);
@@ -39,7 +38,6 @@ function MenuHeader() {
     ];
 
     const genres = genresData.map((data, i) => {
-      //console.log(data);
       let name = data.name.replace(/\//g, '_');
       let link = "/genre/"+name;
       let label = <Link href={link}>{data.name}</Link>
