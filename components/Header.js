@@ -105,13 +105,6 @@ function Header() {
 
   return (
     <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&family=Radio+Canada:ital,wght@0,300..700;1,300..700&display=swap"
-        rel="stylesheet"
-      ></link>
-
       <div className={styles.main}>
 
         <div className="container mx-auto px-2 max-w-full md:px-8 md:max-w-screen-2xl">
