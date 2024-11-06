@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { Form, Input, Checkbox, message } from "antd";
 import CartArticles from './CartArticles';
 import { useRouter } from "next/router";
-import { removeAllArticlesFromCart} from "../reducers/cart";
+import { removeAllArticlesFromCart } from "../reducers/cart";
 
 function Order() {
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ function Order() {
     const user = useSelector((state) => state.user.value);
     const [userId, setUserId] = useState('');
     const cartItems = useSelector((state) => state.cart.value);
-       
+
     const [form] = Form.useForm();
 
     const [formState, setFormState] = useState({ line1: '', line2: '', line3: '', zip_code: '', city: '', country: '', infos: '' });
@@ -34,7 +34,8 @@ function Order() {
     const [totalArticles, setTotalArticles] = useState();
     const [numberOfLP, setNumberOfLP] = useState(0);
     const [shipmentCountry, setShipmentCountry] = useState('');
-    const [btnStyle, setBtnStyle] = useState({ 'display' : 'none' });
+    const [btnStyle, setBtnStyle] = useState({ 'display': 'none' });
+ 
 
     useEffect(() => {
         if (!user.token) {
@@ -49,7 +50,7 @@ function Order() {
                         return (
                             <div className={styles.addressLine}>
                                 <label className='flex'>
-                                    <input key={i} type="radio" name="addressRadio" className='mr-2' onChange={(e) => { setDeliveryIndex(e.target.value); setDeliveryAddress(data.userData.adresses[i]); setShipmentCountry(data.userData.adresses[i].country) }} value={i} />
+                                    <input key={i} type="radio" name="addressRadio" className='mr-2' onChange={(e) => { setDeliveryIndex(e.target.value); setDeliveryAddress(data.userData.adresses[i]); setShipmentCountry(data.userData.adresses[i].country)}} value={i} />
                                     <span>
                                         <div>{item.line1}</div>
                                         <div>{item.line2}</div>
@@ -64,18 +65,14 @@ function Order() {
                     setAddressesList(addressesToDisplay);
                     setNewAddressIsSaved(false);
                     const totalArticles = cartItems.reduce((total, article) => {
-                     const articlePrice = Number(article.price);
-                     return total + articlePrice;
-                      }, 0);
-
+                        const articlePrice = Number(article.price);
+                        return total + articlePrice;
+                    }, 0);
                     setTotalArticles(totalArticles);
+                    calculateNumberOfLP();
                 }
             })
     }, [newAdressIsSaved]);
-
-    const handleClearAddress = () => {
-        setFormState({});
-    };
 
     const handleRegisterAddress = (e) => {
         fetch(`${BACKEND}/users/adresses/${user.token}`, {
@@ -85,73 +82,76 @@ function Order() {
         }).then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    //            setFormState({ line1: '', line2: '', line3: '', zip_code: '', city: '', country: '', infos: '' });
                     setNewAddressIsSaved(true);
                     form.resetFields();
                 }
             })
     };
-
-    const handleValidateOrderInfos = () => {
-        //setShipmentCountry(deliveryAddress.country);
-        console.log("numberOfLP",numberOfLP);
-        const numberOfArticles = cartItems.length;
+    //Calcul du nbre de LP
+    const calculateNumberOfLP=()=> {
+        let counter=0;
         setNumberOfLP(0);
         for (let item of cartItems) {
             if (item.format.includes("LP") || item.format.includes("12")) {
-                setNumberOfLP(numberOfLP++);
-                console.log("item.format",item.format);
+             counter++   
             };
-        }; 
-        console.log("numberOfLP",numberOfLP);       
+        };
+        setNumberOfLP(counter);    
+    };
+     
+
+    const handleValidateOrderInfos = () => {
+
+        const numberOfArticles = cartItems.length;
+
         //Calculate shipment amount
-           fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req,res)=>{
-             }).then(response => response.json())
-                   .then(shipmentData => {
-                       if (shipmentData.result) {  
-                           for (let item of shipmentData.allShipments) {
-                                    if (item.country === shipmentCountry) {
-                                        let LP_shipment;
-                                        let others_shipment;
-                                        if (numberOfLP>0) {
-                                            LP_shipment=item.shipment_price_LP[numberOfLP-1].price;  
-                                        }else {
-                                            LP_shipment=0; 
-                                        };
-                                        if (numberOfArticles-numberOfLP>0){
-                                           others_shipment=item.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price; 
-                                        }else {
-                                            others_shipment=0;  
-                                        };
-                                                                                                         
-                                        setShipment_price(LP_shipment + others_shipment);
-                                        //Calculate order total
-                                        setTotalOrder((totalArticles + LP_shipment + others_shipment));
-                                     }; 
-                                }
-                           }else {
-                               console.log('message:', 'Opérateur non trouvé')
-                           };                 
-                   });
-               setNumberOfLP(0);        
+        fetch(`${BACKEND}/shipments/shipmentByOperator/${deliveryChoice}`, (req, res) => {
+        }).then(response => response.json())
+            .then(shipmentData => {
+                if (shipmentData.result) {         
+                    const dataCountry = shipmentData.allShipments.find(e => e.country === shipmentCountry);
+                    if (dataCountry) {
+                        let LP_shipment;
+                        let others_shipment;
+                        
+                        if (numberOfLP > 0) {
+                            LP_shipment = dataCountry.shipment_price_LP[numberOfLP - 1].price;
+                        } else {
+                            LP_shipment = 0;
+                        };
+                        console.log('lp shipment', LP_shipment)
+                        if (numberOfArticles - numberOfLP > 0) {
+                            others_shipment = dataCountry.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price;
+                        } else {
+                            others_shipment = 0;
+                        };
+                        console.log('other shipment', others_shipment);
+                        setShipment_price(LP_shipment + others_shipment);
+                        //Calculate order total
+                        setTotalOrder((totalArticles + LP_shipment + others_shipment));
+                    }
+                } else {
+                    console.log('message:', 'Destination non desservie');
+                };
+            });
     };
 
     const handleValidateOrder = () => {
-       //préparation des infos à envoyer pour les articles
-       let articlesId=[]; 
-       for (let item of cartItems){
+        //préparation des infos à envoyer pour les articles
+        let articlesId = [];
+        for (let item of cartItems) {
             articlesId.push(item._id);
         };
-        
-        const OrderData={
-            user: userId,                 
-            total: totalOrder,             
+
+        const OrderData = {
+            user: userId,
+            total: totalOrder,
             shipment_operator: deliveryChoice,
-            shipment_price: shipment_price, 
+            shipment_price: shipment_price,
             shipping_adresse: deliveryAddress,
-            payment_media: paymentChoice,  
-            articles: articlesId,           
-            isPaid: true 
+            payment_media: paymentChoice,
+            articles: articlesId,
+            isPaid: true
         }
 
         //Enregistrement en base de la commande
@@ -162,13 +162,13 @@ function Order() {
         }).then(response => response.json())
             .then(data => {
                 if (data.result) {
-                   console.log('Commande enregistrée')
-                   //On vide le reducer du Panier
+                    console.log('Commande enregistrée')
+                    //On vide le reducer du Panier
                     dispatch(removeAllArticlesFromCart());
-                }else{
-                    console.log( "Pb lors de l'enregistrement de la commande")
+                } else {
+                    console.log("Pb lors de l'enregistrement de la commande")
                 }
-            })   
+            })
 
         //On renvoie vers la page de confirmation de commande
         router.push("/order-confirmed");
@@ -176,9 +176,9 @@ function Order() {
 
     //Affichage du bouton "Terminer la commande" si les informations sont valides
     useEffect(() => {
-        console.log("totalOrder",totalOrder);
-        console.log("paymentChoice",paymentChoice);
-        if(totalOrder>0 && paymentChoice) {
+        console.log("totalOrder", totalOrder);
+        console.log("paymentChoice", paymentChoice);
+        if (totalOrder > 0 && paymentChoice) {
             setBtnStyle({ 'display': 'block' });
         } else {
             setBtnStyle({ 'display': 'none' });
@@ -198,7 +198,7 @@ function Order() {
                 <div className='flex flex-wrap md:flex-nowrap md:space-x-10'>
                     <div className="box basis-full md:basis-3/5">
                         <div className={styles.addressContainer}>
-                            
+
                             <div className="flex flex-wrap md:flex-nowrap items-start">
                                 <div className="basis-full md:basis-1/2">
                                     <h2 className="title mb-3">Choix de l'adresse de livraison :</h2>
@@ -214,7 +214,7 @@ function Order() {
                                         autoComplete="on"
                                         form={form}
                                         className="w-full items-center"
-                                        >
+                                    >
                                         <Form.Item
                                             name="line1"
                                             rules={[{ required: true, message: "Veuillez entrer une adresse" }]}
@@ -285,7 +285,7 @@ function Order() {
                             </div>
                         </div>
 
-                        
+
 
                     </div>
                     <div className="box basis-full md:basis-2/5">
@@ -310,7 +310,7 @@ function Order() {
                 </div>
             </div>
         </>
-      
+
     );
 }
 
