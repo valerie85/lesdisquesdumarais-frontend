@@ -1,6 +1,6 @@
 import Article from '../components/Article';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 function SearchResult() {
   const BACKEND = process.env.NEXT_PUBLIC_BACKEND;

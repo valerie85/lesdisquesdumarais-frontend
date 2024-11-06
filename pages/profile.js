@@ -8,6 +8,8 @@ function profile() {
     <>
       <Head>
         <title>Les Disques du Marais - Mon profil</title>
+        <meta name='description' content="accès au profil utilisateur pour actualiser 
+        ses données comme nom, prénom, email, mot de passe, adresses de livraison"></meta>
       </Head>
       <div className="layout">
         <Header />

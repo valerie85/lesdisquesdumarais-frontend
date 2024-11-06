@@ -8,6 +8,7 @@ function Search() {
     <>
       <Head>
         <title>Les Disques du Marais - Recherche</title>
+        <meta name='description' content="page d'affichage des résultats d'une recherche par artiste ou par genre sur Les Disques du Marais"></meta>
       </Head>
       <div className="layout">
         <Header />

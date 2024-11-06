@@ -1,9 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart } from "../reducers/cart";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Modal, Button } from "antd";
+import { Modal} from "antd";
 import Login from "./Login";
 
 function CartOrder() {
@@ -11,7 +10,6 @@ function CartOrder() {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const user = useSelector((state) => state.user.value);
-  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.value);
 
   const totalArticles = cartItems.reduce((total, article) => {
@@ -19,7 +17,7 @@ function CartOrder() {
     return total + articlePrice;
   }, 0);
 
-  const totalWeightOrder = cartItems.reduce((totalWeight, article) => {
+/*  const totalWeightOrder = cartItems.reduce((totalWeight, article) => {
     const articleWeight = Number(article.weight);
     return totalWeight + articleWeight;
   }, 0);
@@ -36,6 +34,7 @@ function CartOrder() {
       return "Articles";
     }
   };
+  */
 
   const numberOfArticles = cartItems.length;
 

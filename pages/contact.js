@@ -8,6 +8,7 @@ function DisplayContact() {
     <>
       <Head>
         <title>Les Disques du Marais - Contact</title>
+        <meta name='description' content='Informations de contact pour joindre Les Disques du Marais par mail ou télephone'></meta>
       </Head>
       <div className="layout">
         <Header />

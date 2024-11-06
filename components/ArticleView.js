@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { faHeart, faRecordVinyl, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { addLike, removeLike } from '../reducers/likes';
-import { addToCart, removeFromCart } from '../reducers/cart';
+import { addToCart } from '../reducers/cart';
 import { useRouter } from 'next/router';
 import ImageGallery from "react-image-gallery";
 
@@ -56,7 +56,6 @@ function ArticleView() {
         setBreadcrumbLink(`../genre/${data.article.genre[0]}`);
           //récupération les images pour la galerie
           const pictures = data.article.pictures.map((data, i) => {
-            console.log("img n°", i, data);
             setArticlePictures( articlePictures => [...articlePictures, { original: data, thumbnail: data, }]);
           });
 
