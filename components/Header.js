@@ -67,8 +67,6 @@ function Header() {
       dispatch(removeAllLikes());
       setLogOutModalVisible(false);
         router.push('/');
-    } else {
-      message.error("Vous êtes déjà déconnecté")
     }
   };
 
