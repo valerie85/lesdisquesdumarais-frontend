@@ -119,13 +119,11 @@ function Order() {
                         } else {
                             LP_shipment = 0;
                         };
-                        console.log('lp shipment', LP_shipment)
                         if (numberOfArticles - numberOfLP > 0) {
                             others_shipment = dataCountry.shipment_price_otherFormats[(numberOfArticles - numberOfLP-1)].price;
                         } else {
                             others_shipment = 0;
                         };
-                        console.log('other shipment', others_shipment);
                         setShipment_price(LP_shipment + others_shipment);
                         //Calculate order total
                         setTotalOrder((totalArticles + LP_shipment + others_shipment));
