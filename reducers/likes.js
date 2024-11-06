@@ -14,8 +14,11 @@ export const likesSlice = createSlice({
     removeLike:(state,action)=> {
         state.value=state.value.filter(item=>item !== action.payload)
     },
+    removeAllLikes: (state)=>{
+      state.value=[];
+    }
   },
 });
 
-export const { addLike, removeLike } = likesSlice.actions;
+export const { addLike, removeLike, removeAllLikes } = likesSlice.actions;
 export default likesSlice.reducer;

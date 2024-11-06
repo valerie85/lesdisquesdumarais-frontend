@@ -1,27 +1,17 @@
 import React from "react";
-import styles from "../styles/Cart.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Head from "next/head";
-import Image from "next/image";
-
-// Imports FontAwesome
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHourglass3, faTrash } from "@fortawesome/free-solid-svg-icons";
-
-import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart } from "../reducers/cart";
 import CartArticles from "../components/CartArticles";
 import CartOrder from "../components/CartOrder";
 
 function Cart() {
-  const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.value);
-
+ 
   return (
     <>
       <Head>
           <title>Les Disques du Marais - Panier</title>
+          <meta name='description' content='affichage du panier en cours sur Les Disques du Marais'></meta>
       </Head>
       <div className="layout">
         <Header />
@@ -40,7 +30,7 @@ function Cart() {
               {/* Section Articles */}
               <div className="box basis-full md:basis-2/3">
                 <h2 className="title">Mes articles</h2>
-                <CartArticles />
+                <CartArticles isDeletable="true" />
               </div>
       
               {/* Section Résumé de commande */}

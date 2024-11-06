@@ -15,6 +15,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../reducers/user';
+import { removeAllArticlesFromCart} from "../reducers/cart";
+import { removeAllLikes } from "../reducers/likes";
 import { basicSearch } from '../reducers/search';
 import MenuHeader from '../components/MenuHeader';
 import { Modal, Button } from "antd";
@@ -60,7 +62,9 @@ function Header() {
 
   const handleLogout = () => {
     if (user.token) {
-      dispatch(logout())
+      dispatch(logout());
+      dispatch(removeAllArticlesFromCart());
+      dispatch(removeAllLikes());
       setLogOutModalVisible(false);
         router.push('/');
     } else {
@@ -103,16 +107,9 @@ function Header() {
 
   return (
     <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400..700;1,400..700&family=Radio+Canada:ital,wght@0,300..700;1,300..700&display=swap"
-        rel="stylesheet"
-      ></link>
-
       <div className={styles.main}>
 
-        <div className="container mx-auto px-0 max-w-full md:px-8 md:max-w-screen-2xl">
+        <div className="container mx-auto px-2 max-w-full md:px-8 md:max-w-screen-2xl">
           <div className={styles.content}>
             <div className={styles.logo}>
               <Link href="/">

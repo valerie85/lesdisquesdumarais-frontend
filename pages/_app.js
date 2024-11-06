@@ -14,18 +14,19 @@ const store = configureStore({
   reducer: { user, likes, cart, search },
 });
 
+
 function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <ConfigProvider
         theme={{
-          token: { colorPrimary: '#172A3A' },   
+          token: { colorPrimary: '#172A3A' },
           components: {
             Menu: {
               itemSelectedBg: '#09BC8A',
               itemSelectedColor: '#FFFFFF',
             },
-          },  
+          },
         }}
       >
         <Head>

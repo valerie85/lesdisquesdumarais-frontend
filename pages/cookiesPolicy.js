@@ -8,6 +8,7 @@ function DisplayCookiesPolicy() {
     <>
       <Head>
         <title>Les Disques du Marais - Politiques des Cookies</title>
+        <meta name='description' content='Politique des cookies du site Les Disques du Marais'></meta>
       </Head>
       <div className="layout">
         <Header />

@@ -5,7 +5,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart } from "../reducers/cart";
 
-function CartArticles() {
+function CartArticles(props) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.value);
 
@@ -38,7 +38,9 @@ function CartArticles() {
           onClick={() => removeCartItem(article)}
           className="absolute bottom-2 right-2 text-primary pb-2 pr-2 hover:text-red-700 transition-colors duration-200"
         >
-          <FontAwesomeIcon icon={faTrash} size="lg" alt="Supprimer l'article" />
+          {props.isDeletable=="true" ? (
+            <FontAwesomeIcon icon={faTrash} size="lg" alt="Supprimer l'article" />
+          ) : ("")}
         </button>
       </li>
     );
