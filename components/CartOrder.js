@@ -11,7 +11,7 @@ function CartOrder() {
 
   const user = useSelector((state) => state.user.value);
   const cartItems = useSelector((state) => state.cart.value);
-
+ 
   const totalArticles = cartItems.reduce((total, article) => {
     const articlePrice = Number(article.price);
     return total + articlePrice;
@@ -26,7 +26,7 @@ function CartOrder() {
     totalWeightOrder > 999
       ? `${(totalWeightOrder / 1000).toFixed(2)} kg`
       : `${totalWeightOrder} g`;
-
+*/
   const getArticleLabel = () => {
     if (cartItems.length === 1) {
       return "Article";
@@ -34,7 +34,7 @@ function CartOrder() {
       return "Articles";
     }
   };
-  */
+
 
   const numberOfArticles = cartItems.length;
 
