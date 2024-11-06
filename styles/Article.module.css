@@ -92,7 +92,7 @@
     width: 36px;
     height: 36px;
     line-height: 36px;
-    font-size: 0.9em;
+    font-size: 0.9em; 
 }
 .conditionMedia {
     background-color: var(--color-tertiary); 
