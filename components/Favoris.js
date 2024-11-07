@@ -51,7 +51,7 @@ function Favoris() {
       } 
     };
     fetchFavorites();
-  }, [token, likes, favorites]);
+  }, [token, likes]);
 
   
   return (
