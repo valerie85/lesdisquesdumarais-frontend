@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Input, Button, message, Row, Col, Popconfirm } from "antd";
 import { EditOutlined, SaveOutlined, CloseOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-
+ 
 // Composant pour afficher et modifier une adresse existante
 const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
   const [form] = Form.useForm();
