@@ -12,7 +12,7 @@ function Article(props) {
     const dispatch = useDispatch();
     const user= useSelector((state)=> state.user.value);
     const likes = useSelector((state) => state.likes.value);
-    const [isLiked, setIsLiked] = useState({ result: false, likeStyle: { 'color': 'var(--color-primary)' } });
+    const [isLiked, setIsLiked] = useState({ });
 
     let ImgSrc = "";  
     let ImgAlt = "";  
