@@ -58,6 +58,8 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
 
   const handleDelete = async () => {
     try {
+      console.log("Tentative de suppression - Index:", index, "UserId:", userId);
+      
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/delete-address`, {
         method: 'DELETE',
         headers: { 
@@ -65,25 +67,29 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
           'Authorization': token 
         },
         body: JSON.stringify({ 
-          userId,
+          userId,          // Pas besoin de String() ici
           addressIndex: index
         }),
       });
-
+  
+      console.log("Statut de la réponse:", response.status);
       const data = await response.json();
+      console.log("Données reçues:", data);
       
       if (data.result) {
         message.success('Adresse supprimée avec succès');
-        onDelete(index);
+        if (onDelete) {
+          onDelete(index);
+        }
       } else {
         message.error(data.message || 'Erreur lors de la suppression');
       }
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('Erreur complète:', error);
       message.error('Erreur lors de la suppression');
     }
   };
-
+  
   return (
     <Card 
       className="mb-4"

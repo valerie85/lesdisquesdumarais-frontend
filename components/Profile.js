@@ -177,8 +177,6 @@ function Profile() {
     }
   };
 
-console.log("commandes passées", orders[0])
-
   return (
     <div className="container mx-auto border-b">
       {/* Titre principal */}

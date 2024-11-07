@@ -27,6 +27,8 @@ function CartOrder() {
       ? `${(totalWeightOrder / 1000).toFixed(2)} kg`
       : `${totalWeightOrder} g`;
 
+   */
+
   const getArticleLabel = () => {
     if (cartItems.length === 1) {
       return "Article";
@@ -34,7 +36,7 @@ function CartOrder() {
       return "Articles";
     }
   };
-  */
+ 
 
   const numberOfArticles = cartItems.length;
 
