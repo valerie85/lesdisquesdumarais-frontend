@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Card, Form, Input, Button, message, Row, Col, Popconfirm } from "antd";
-import { EditOutlined, SaveOutlined, CloseOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
- 
+import {
+  EditOutlined,
+  SaveOutlined,
+  CloseOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+
 // Composant pour afficher et modifier une adresse existante
 const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
   const [form] = Form.useForm();
@@ -11,39 +17,42 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/update-addresses`, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': token 
-        },
-        body: JSON.stringify({ 
-          userId: userId,
-          addressIndex: index,
-          address: {
-            line1: values.line1,
-            line2: values.line2 || '',
-            line3: values.line3 || '',
-            zip_code: values.zip_code,
-            city: values.city,
-            country: values.country,
-            infos: values.infos || ''
-          }
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}/users/update-addresses`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            userId: userId,
+            addressIndex: index,
+            address: {
+              line1: values.line1,
+              line2: values.line2 || "",
+              line3: values.line3 || "",
+              zip_code: values.zip_code,
+              city: values.city,
+              country: values.country,
+              infos: values.infos || "",
+            },
+          }),
+        }
+      );
 
       const data = await response.json();
-      
+
       if (data.result) {
-        message.success('Adresse mise à jour avec succès');
+        message.success("Adresse mise à jour avec succès");
         onUpdate(values, index);
         setIsEditing(false);
       } else {
-        message.error(data.message || 'Erreur lors de la mise à jour');
+        message.error(data.message || "Erreur lors de la mise à jour");
       }
     } catch (error) {
-      console.error('Erreur:', error);
-      message.error('Erreur de connexion');
+      console.error("Erreur:", error);
+      message.error("Erreur de connexion");
     } finally {
       setLoading(false);
     }
@@ -58,46 +67,54 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
 
   const handleDelete = async () => {
     try {
-      console.log("Tentative de suppression - Index:", index, "UserId:", userId);
-      
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/delete-address`, {
-        method: 'DELETE',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': token 
-        },
-        body: JSON.stringify({ 
-          userId,          // Pas besoin de String() ici
-          addressIndex: index
-        }),
-      });
-  
+      console.log(
+        "Tentative de suppression - Index:",
+        index,
+        "UserId:",
+        userId
+      );
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}/users/delete-address`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            userId, // Pas besoin de String() ici
+            addressIndex: index,
+          }),
+        }
+      );
+
       console.log("Statut de la réponse:", response.status);
       const data = await response.json();
       console.log("Données reçues:", data);
-      
+
       if (data.result) {
-        message.success('Adresse supprimée avec succès');
+        message.success("Adresse supprimée avec succès");
         if (onDelete) {
           onDelete(index);
         }
       } else {
-        message.error(data.message || 'Erreur lors de la suppression');
+        message.error(data.message || "Erreur lors de la suppression");
       }
     } catch (error) {
-      console.error('Erreur complète:', error);
-      message.error('Erreur lors de la suppression');
+      console.error("Erreur complète:", error);
+      message.error("Erreur lors de la suppression");
     }
   };
-  
+
   return (
-    <Card 
+    <Card
       className="mb-4"
       title={`Adresse ${index + 1}`}
       extra={
         <div className="flex space-x-2">
-          <Button 
-            type={isEditing ? "default" : "primary"} 
+          <Button
+            type={isEditing ? "default" : "primary"}
             icon={isEditing ? <CloseOutlined /> : <EditOutlined />}
             onClick={toggleEdit}
           >
@@ -110,11 +127,7 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
             okText="Oui"
             cancelText="Non"
           >
-            <Button 
-              type="danger"
-              icon={<DeleteOutlined />}
-              danger
-            >
+            <Button type="danger" icon={<DeleteOutlined />} danger>
               Supprimer
             </Button>
           </Popconfirm>
@@ -124,13 +137,33 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
       {!isEditing ? (
         // Affichage de l'adresse
         <div className="address-display">
-          <p><strong>Adresse :</strong> {address.line1}</p>
-          {address.line2 && <p><strong>Complément 1 :</strong> {address.line2}</p>}
-          {address.line3 && <p><strong>Complément 2 :</strong> {address.line3}</p>}
-          <p><strong>Code postal :</strong> {address.zip_code}</p>
-          <p><strong>Ville :</strong> {address.city}</p>
-          <p><strong>Pays :</strong> {address.country}</p>
-          {address.infos && <p><strong>Informations :</strong> {address.infos}</p>}
+          <p>
+            <strong>Adresse :</strong> {address.line1}
+          </p>
+          {address.line2 && (
+            <p>
+              <strong>Complément 1 :</strong> {address.line2}
+            </p>
+          )}
+          {address.line3 && (
+            <p>
+              <strong>Complément 2 :</strong> {address.line3}
+            </p>
+          )}
+          <p>
+            <strong>Code postal :</strong> {address.zip_code}
+          </p>
+          <p>
+            <strong>Ville :</strong> {address.city}
+          </p>
+          <p>
+            <strong>Pays :</strong> {address.country}
+          </p>
+          {address.infos && (
+            <p>
+              <strong>Informations :</strong> {address.infos}
+            </p>
+          )}
         </div>
       ) : (
         // Formulaire de modification
@@ -145,7 +178,9 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
               <Form.Item
                 name="line1"
                 label="Adresse"
-                rules={[{ required: true, message: 'Veuillez saisir l\'adresse' }]}
+                rules={[
+                  { required: true, message: "Veuillez saisir l'adresse" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -164,7 +199,9 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
               <Form.Item
                 name="zip_code"
                 label="Code postal"
-                rules={[{ required: true, message: 'Veuillez saisir le code postal' }]}
+                rules={[
+                  { required: true, message: "Veuillez saisir le code postal" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -173,7 +210,9 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
               <Form.Item
                 name="city"
                 label="Ville"
-                rules={[{ required: true, message: 'Veuillez saisir la ville' }]}
+                rules={[
+                  { required: true, message: "Veuillez saisir la ville" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -182,7 +221,7 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
               <Form.Item
                 name="country"
                 label="Pays"
-                rules={[{ required: true, message: 'Veuillez saisir le pays' }]}
+                rules={[{ required: true, message: "Veuillez saisir le pays" }]}
               >
                 <Input />
               </Form.Item>
@@ -193,7 +232,7 @@ const AddressCard = ({ address, index, onUpdate, onDelete, token, userId }) => {
               </Form.Item>
             </Col>
           </Row>
-          <Button 
+          <Button
             type="primary"
             htmlType="submit"
             icon={<SaveOutlined />}
@@ -225,17 +264,13 @@ const NewAddressForm = ({ onSubmit, onCancel }) => {
 
   return (
     <Card className="mb-4" title="Nouvelle adresse">
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-      >
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
               name="line1"
               label="Adresse"
-              rules={[{ required: true, message: 'Veuillez saisir l\'adresse' }]}
+              rules={[{ required: true, message: "Veuillez saisir l'adresse" }]}
             >
               <Input />
             </Form.Item>
@@ -254,7 +289,9 @@ const NewAddressForm = ({ onSubmit, onCancel }) => {
             <Form.Item
               name="zip_code"
               label="Code postal"
-              rules={[{ required: true, message: 'Veuillez saisir le code postal' }]}
+              rules={[
+                { required: true, message: "Veuillez saisir le code postal" },
+              ]}
             >
               <Input />
             </Form.Item>
@@ -263,7 +300,7 @@ const NewAddressForm = ({ onSubmit, onCancel }) => {
             <Form.Item
               name="city"
               label="Ville"
-              rules={[{ required: true, message: 'Veuillez saisir la ville' }]}
+              rules={[{ required: true, message: "Veuillez saisir la ville" }]}
             >
               <Input />
             </Form.Item>
@@ -272,7 +309,7 @@ const NewAddressForm = ({ onSubmit, onCancel }) => {
             <Form.Item
               name="country"
               label="Pays"
-              rules={[{ required: true, message: 'Veuillez saisir le pays' }]}
+              rules={[{ required: true, message: "Veuillez saisir le pays" }]}
             >
               <Input />
             </Form.Item>
@@ -284,7 +321,7 @@ const NewAddressForm = ({ onSubmit, onCancel }) => {
           </Col>
         </Row>
         <div className="flex space-x-2">
-          <Button 
+          <Button
             type="primary"
             htmlType="submit"
             icon={<SaveOutlined />}
@@ -292,10 +329,7 @@ const NewAddressForm = ({ onSubmit, onCancel }) => {
           >
             Enregistrer
           </Button>
-          <Button 
-            onClick={onCancel}
-            icon={<CloseOutlined />}
-          >
+          <Button onClick={onCancel} icon={<CloseOutlined />}>
             Annuler
           </Button>
         </div>
@@ -304,34 +338,23 @@ const NewAddressForm = ({ onSubmit, onCancel }) => {
   );
 };
 
-const AddressSection = ({ addresses, token, userId, onAddressUpdate, onAddressDelete }) => {
+const AddressSection = ({
+  addresses,
+  token,
+  userId,
+  onAddressUpdate,
+  onAddressDelete,
+  onAddNewAddress,
+}) => {
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
 
   const handleAddNewAddress = async (values) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/adresses/${token}`, {
-        method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': token 
-        },
-        body: JSON.stringify({ 
-          formState: values
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (data.result) {
-        message.success('Nouvelle adresse ajoutée avec succès');
-        window.location.reload();
-        setShowNewAddressForm(false);
-      } else {
-        message.error(data.message || 'Erreur lors de l\'ajout de l\'adresse');
-      }
+      await onAddNewAddress(values);
+      setShowNewAddressForm(false);
     } catch (error) {
-      console.error('Erreur:', error);
-      message.error('Erreur de connexion');
+      console.error("Erreur:", error);
+      message.error("Erreur lors de l'ajout de l'adresse");
     }
   };
 
@@ -340,8 +363,8 @@ const AddressSection = ({ addresses, token, userId, onAddressUpdate, onAddressDe
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl">Mes adresses</h3>
         {!showNewAddressForm && (
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             icon={<PlusOutlined />}
             onClick={() => setShowNewAddressForm(true)}
           >

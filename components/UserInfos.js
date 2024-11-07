@@ -98,23 +98,55 @@ function UserInfos() {
     
     setUserData(prevData => {
       const updatedAddresses = [...prevData.addresses];
+      
       if (Array.isArray(newAddress)) {
-        
         return {
           ...prevData,
           addresses: newAddress
         };
       } else if (index !== undefined) {
-        
+        // Mise à jour d'une adresse existante
         updatedAddresses[index] = newAddress;
-        return {
-          ...prevData,
-          addresses: updatedAddresses
-        };
+      } else {
+        // Ajout d'une nouvelle adresse
+        updatedAddresses.push(newAddress);
       }
-      return prevData;
+      
+      return {
+        ...prevData,
+        addresses: updatedAddresses
+      };
     });
   };
+
+  const handleAddNewAddress = async (values) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/adresses/${token}`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': token 
+        },
+        body: JSON.stringify({ 
+          formState: values
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (data.result) {
+        message.success('Nouvelle adresse ajoutée avec succès');
+        // Mettre à jour l'état local avec la nouvelle adresse
+        handleAddressUpdate(values);
+      } else {
+        message.error(data.message || 'Erreur lors de l\'ajout de l\'adresse');
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      message.error('Erreur de connexion');
+    }
+  };
+
 
   const toggleEdit = () => {
     if (!isEditing) {
@@ -209,6 +241,7 @@ function UserInfos() {
         userId={userData.userId} 
         onAddressUpdate={handleAddressUpdate}
         onAddressDelete={handleAddressDelete}
+        onAddNewAddress={handleAddNewAddress} 
         className="text-xl mb-4"
       />
 
