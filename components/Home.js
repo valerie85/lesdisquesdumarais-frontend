@@ -12,7 +12,7 @@ function Home() {
   const [articlesPopData, setArticlesPopData] = useState([]);
   const [articlesFunkData, setArticlesFunkData] = useState([]);
   const [articlesJazzData, setArticlesJazzData] = useState([]);
-
+ 
   // Nombres d'articles affichés par genre
   let nbArticlesDisplay = 5;
 
