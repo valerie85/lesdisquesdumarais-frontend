@@ -11,7 +11,7 @@ function CartOrder() {
 
   const user = useSelector((state) => state.user.value);
   const cartItems = useSelector((state) => state.cart.value);
-
+ 
   const totalArticles = cartItems.reduce((total, article) => {
     const articlePrice = Number(article.price);
     return total + articlePrice;
@@ -37,7 +37,6 @@ function CartOrder() {
     }
   };
  
-
   const numberOfArticles = cartItems.length;
 
   const handleClickOrder = () => {

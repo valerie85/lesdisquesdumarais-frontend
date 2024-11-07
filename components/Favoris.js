@@ -47,10 +47,12 @@ function Favoris() {
         } catch (error) {
           console.error('Erreur lors de la recup des articles favoris:', error.message);
         }
+      } else {
+        setFavorites([]);
       }
     };
     fetchFavorites();
-  }, [token, likes]);
+  }, [token, likes, favorites]);
 
   const handleLikeClick = useCallback((articleId) => {
     const isLiked = likes.includes(articleId);
