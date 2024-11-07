@@ -47,9 +47,7 @@ function Favoris() {
         } catch (error) {
           console.error('Erreur lors de la recup des articles favoris:', error.message);
         }
-      } else {
-        setFavorites([]);
-      }
+      } 
     };
     fetchFavorites();
   }, [token, likes]);
