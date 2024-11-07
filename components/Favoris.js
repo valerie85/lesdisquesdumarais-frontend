@@ -7,6 +7,7 @@ function Favoris() {
   const token = useSelector((state) => state.user.value.token);
   const likes = useSelector((state) => state.likes.value);
   const [favorites, setFavorites] = useState([]);
+  const [isLiked, setIsLiked] = useState({ result: true, likeStyle: { 'color': 'var(--color-red)' } });
   const dispatch = useDispatch();
 
   const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
@@ -50,7 +51,7 @@ function Favoris() {
       } 
     };
     fetchFavorites();
-  }, [token, likes]);
+  }, [token, likes, favorites]);
 
   
   return (
