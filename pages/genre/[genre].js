@@ -12,6 +12,7 @@ function Genre() {
     <>
       <Head>
           <title>Les Disques du Marais - {genre}</title>
+          <meta name='description'>tous les articles du genre {genre}</meta>
       </Head>
       <div className="layout">
         <Header />
