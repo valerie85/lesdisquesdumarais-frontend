@@ -129,7 +129,7 @@ function Header() {
                 type="text"
                 placeholder="Rechercher un disque, un artiste"
                 id="keyword"
-                autoComplete="keyword" 
+                autoComplete="off" 
                 onChange={(e) => setKeyword(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter")
