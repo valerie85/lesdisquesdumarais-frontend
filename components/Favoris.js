@@ -52,42 +52,7 @@ function Favoris() {
     fetchFavorites();
   }, [token, likes]);
 
-  const handleLikeClick = useCallback((articleId) => {
-    const isLiked = likes.includes(articleId);
-
-    if (!token) {
-      if (!isLiked) {
-        dispatch(addLike(articleId));
-        setFavorites((prevFavorites) => [
-          ...prevFavorites,
-          { _id: articleId, title, price, pictures },
-        ]);
-      } else {
-        dispatch(removeLike(articleId));
-        setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav._id !== articleId));
-      }
-      return;
-    }
-
-    fetch(`${BACKEND}/users/like`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, articleId }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          if (data.message === 'favorite added') {
-            dispatch(addLike(articleId));
-          } else if (data.message === 'favorite removed') {
-            dispatch(removeLike(articleId));
-            setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav._id !== articleId));
-          }
-        }
-      })
-      .catch((error) => console.error('Erreur lors de la mise à jour des favoris:', error.message));
-  }, [token, likes, dispatch, BACKEND]);
-
+  
   return (
     <>
       <main>
@@ -106,19 +71,9 @@ function Favoris() {
             <div className="container mx-auto">
               <h2 className="title">Liste des articles</h2>
               <div className='flex flex-wrap'>
-                {favorites.map((favorite) => (
+                {favorites.map((favorite,i) => (
                     <Article
-                      _id={favorite._id}
-                      title={favorite.title}
-                      artist={favorite.artist}
-                      price={favorite.price}
-                      pictures={favorite.pictures}
-                      sleeve_condition={favorite.sleeve_condition}
-                      media_condition={favorite.media_condition}
-                      format={favorite.format}
-                      label={favorite.label}
-                      release_id={favorite.release_id}
-                      handleLikeClick={() => handleLikeClick(favorite._id)}
+                    key={i} {...favorite} 
                     />
                 ))}
               </div>
