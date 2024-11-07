@@ -52,7 +52,7 @@ function Favoris() {
       }
     };
     fetchFavorites();
-  }, [token, likes, favorites]);
+  }, [token, likes]);
 
   const handleLikeClick = useCallback((articleId) => {
     const isLiked = likes.includes(articleId);
