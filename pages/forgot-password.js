@@ -1,4 +1,3 @@
-// ForgotPassword.js
 import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import Header from '../components/Header';
@@ -7,7 +6,7 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
   const BACKEND = process.env.NEXT_PUBLIC_BACKEND;
   const handleSubmit = async (values) => {
-    // Envoie une requête à ton backend pour envoyer le lien de réinitialisation
+    
     try {
       const response = await fetch(`${BACKEND}/forgot-password`, {
         method: "POST",
