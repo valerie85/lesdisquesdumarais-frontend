@@ -12,9 +12,9 @@ function ArticlesList() {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-      // if (!genre) {
-      //   return;
-      // }
+       if (!genre) {
+         return;
+       }
       fetch(`${BACKEND}/genres`)
         .then(response => response.json())
         .then(data => {
