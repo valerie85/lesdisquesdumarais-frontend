@@ -5,6 +5,10 @@ const nextConfig = {
     domains: ['res.cloudinary.com'], // Ajoute Cloudinary aux domaines autorisés
   },
   reactStrictMode: true,
+  i18n: {
+    locales: ["fr"],
+    defaultLocale: "fr",
+},
   // ... vos autres configurations
 };
 
