@@ -118,7 +118,7 @@ function Login({ handleCancelLogin }) {
       {/* Formulaire d'Inscription */}
       <div className="basis-full md:basis-1/2 p-5">
         <h2 className="title text-center mb-4">Inscription</h2>
-        <Form layout="vertical" onFinish={handleSubmitSignUp} className="w-full">
+        <Form layout="vertical" onFinish={handleSubmitSignUp} autoComplete="off" className="w-full">
           <Form.Item
             label="Prénom"
             name="firstName"
