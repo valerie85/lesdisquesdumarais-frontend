@@ -112,7 +112,7 @@ function Header() {
             <div className={styles.logo}>
               <Link href="/">
                 <Image
-                  src="/logo.png"
+                  src="/LDDM.svg"
                   alt="Les Disques du Marais"
                   width={120}
                   height={120}
